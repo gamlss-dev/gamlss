@@ -296,6 +296,7 @@ GAIC <- function(object,..., k = 2 ) #UseMethod("AIC")
 }
 #-----------------------------------------------------------------------------------
 # the generalised R-squared funtion
+# This should work now with Binomial
 Rsq <- function(object, type = c("Cox Snell","Cragg Uhler","both"))
 {
   type <- match.arg(type)
