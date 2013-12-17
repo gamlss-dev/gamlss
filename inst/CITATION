@@ -1,0 +1,19 @@
+citHeader("To cite GAMLSS in publications use:")
+
+
+citEntry(
+ entry="Article",
+ title= "Generalized additive models for location, scale and shape,(with discussion)",
+ journal="Applied Statistics",
+ volume= "54",
+ part="3",
+ pages="507-554",
+ year="2005",
+ author = personList(as.person("R. A. Rigby"),
+                             as.person("D. M. Stasinopoulos")),
+ textVersion="Rigby R.A. and Stasinopoulos D.M. (2005). Generalized additive models for location, scale and shape,(with discussion), Appl. Statist., 54, part 3, pp 507-554.")
+
+
+
+citFooter("We have invested a lot of time and effort in creating GAMLSS,",
+          "please cite it when using it for data analysis.")

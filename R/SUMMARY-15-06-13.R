@@ -1,14 +1,18 @@
 # this is a test summary for using the vcov matrix
 # it should replace  he old summary.gamlss
 #---------------------------------------------------------------------------------------
-summary.gamlss<- function (object, type = c("vcov", "qr"), robust=FALSE, save = FALSE, ...) 
+summary.gamlss<- function (object,
+                           type = c("vcov", "qr"), robust = FALSE,
+                           save = FALSE, 
+                    hessian.fun = c("R", "PB"), 
+                           ...) 
 {
 type <- match.arg(type)
 ## if use the vcov for se's
 if (type=="vcov")
  {
 ## this will be moved  
-      covmat <- try(vcov(object,type="all", robust=robust), silent = TRUE) 
+      covmat <- try(vcov(object, type="all", robust=robust,  hessian.fun = hessian.fun), silent = TRUE) 
              if (any(class(covmat)%in%"try-error"||any(is.na(covmat$se))))
                  { 
                    warning(paste("summary: vcov has failed, option qr is used instead\n"))

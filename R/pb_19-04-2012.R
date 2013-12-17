@@ -386,7 +386,7 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
       # if (any(class(lambda)%in%"try-error")) {lambda<-100000}   
            fit <- regpen(y, X, w, lambda, D)
             fv <- X %*% fit$beta
-  }#--------------------------------------------------------------------------end of case 3
+  }#end of case 3
   # I need to calculate the hat matrix here for the variance of the smoother
   # this is not working for large X
   #    lev <- diag(X%*%solve(XWX + lambda * t(D) %*% D)%*%t(XW))

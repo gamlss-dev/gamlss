@@ -1,0 +1,89 @@
+# functions
+export(gamlss, gamlss.control, glim.control, is.gamlss,
+       centiles, centiles.com, centiles.split, centiles.pred,
+       centiles.fan,
+       find.hyper, fittedPlot, fv, lp, lpred,
+       pdf.plot, prof.dev, prof.term, refit, rqres.plot, wp,
+       IC, Q.stats, par.plot, histDist,
+       stepGAIC.VR, stepGAIC.CH, stepGAIC, gamlss.scope, stepGAICAll.A,
+       stepGAICAll.B, stepTGD, term.plot,
+       cs, gamlss.cs, cs.control,
+       scs,
+       ps, gamlss.ps,
+       pb, gamlss.pb, pb.control,
+       cy, gamlss.cy, cy.control,
+       pvc, gamlss.pvc, pvc.control,
+       fp, gamlss.fp,
+       bfp,
+       ra, gamlss.ra,
+       rc, gamlss.rc,
+       pp, gamlss.pp,
+       lo, gamlss.lo,
+   random, gamlss.random,
+        ri, gamlss.ri,
+     ridge, gamlss.ridge,
+       GAIC, .hat.WX,  gamlssNews,
+       predictAll, #own.linkfun, own.linkinv, own.mu.eta,own.valideta,
+        VGD, VGD1, VGD2, TGD,
+        edf, edfAll,
+        LR.test, dtop,
+        gamlssML, fitDist, histSmo, histSmoO, histSmoC, histSmoP,
+        calibration, lms, Rsq, gen.likelihood,
+        acfResid, rvcov, get.K, getSmo, 
+        .gamlss.sm.list, .gamlss.bi.list, .gamlss.multin.list,
+        plot2way)
+
+
+
+# datasets
+#export(abdom,aids,db,rent,usair,Mums,fabric)
+
+
+# needed for gamlss family
+#export(as.family, gamlss.family, gamlss.family.default, as.gamlss.family)
+
+# documented but unexported methods
+
+
+#importFrom(graphics, pairs, plot)
+importFrom(stats, AIC, deviance, coef, extractAIC, family, fitted,
+           formula, logLik, model.frame,  predict, residuals, terms, update,
+           loess)
+importFrom(MASS, addterm, dropterm, truehist)
+importFrom(survival, Surv, is.Surv)
+importFrom(graphics, plot)
+#importFrom(base, print)
+importFrom(splines, bs, ns, spline.des)
+#importFrom(gamlss.tr, trun)
+importFrom(gamlss.data)
+importFrom(gamlss.dist)
+importFrom(nlme)
+
+S3method(addterm, gamlss)
+S3method(add1, gamlss)
+S3method(drop1, gamlss)
+S3method(AIC, gamlss)
+S3method(coef, gamlss)
+S3method(deviance, gamlss)
+S3method(dropterm, gamlss)
+S3method(extractAIC, gamlss)
+S3method(fitted, gamlss)
+S3method(formula, gamlss)
+S3method(terms, gamlss)
+S3method(model.frame, gamlss)
+S3method(plot, gamlss)
+S3method(print, gamlss)
+S3method(residuals, gamlss)
+S3method(summary, gamlss)
+S3method(update, gamlss)
+S3method(predict, gamlss)
+S3method(model.matrix, gamlss)
+S3method(vcov, gamlss)
+S3method(logLik, gamlss)
+S3method(confint, gamlss)
+
+
+S3method(fitted, gamlssML)
+S3method(vcov, gamlssML)
+S3method(summary, gamlssML)
+S3method(plot, histSmo)

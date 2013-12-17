@@ -7,9 +7,43 @@
 vcov.gamlss <- function (object, 
                            type = c("vcov", "cor", "se", "coef", "all"),
                          robust = FALSE, 
+                    hessian.fun = c("R", "PB"),   
                 ...) 
 {
-      type <- match.arg(type)
+## local function -------------------------------------------------------------
+  HessianPB<-function (pars, fun, ..., .relStep = (.Machine$double.eps)^(1/3), 
+                       minAbsPar = 0) 
+  {
+    pars <- as.numeric(pars)
+    npar <- length(pars)
+    incr <- ifelse(abs(pars) <= minAbsPar, minAbsPar * .relStep, 
+                   abs(pars) * .relStep)
+    baseInd <- diag(npar)
+    frac <- c(1, incr, incr^2)
+    cols <- list(0, baseInd, -baseInd)
+    for (i in seq_along(pars)[-npar]) {
+      cols <- c(cols, list(baseInd[, i] + baseInd[, -(1:i)]))
+      frac <- c(frac, incr[i] * incr[-(1:i)])
+    }
+    indMat <- do.call("cbind", cols)
+    shifted <- pars + incr * indMat
+    indMat <- t(indMat)
+    Xcols <- list(1, indMat, indMat^2)
+    for (i in seq_along(pars)[-npar]) {
+      Xcols <- c(Xcols, list(indMat[, i] * indMat[, -(1:i)]))
+    }
+    coefs <- solve(do.call("cbind", Xcols), apply(shifted, 2, 
+                                                  fun, ...))/frac
+    Hess <- diag(coefs[1 + npar + seq_along(pars)], ncol = npar)
+    Hess[row(Hess) > col(Hess)] <- coefs[-(1:(1 + 2 * npar))]
+    list(mean = coefs[1], gradient = coefs[1 + seq_along(pars)], 
+         
+         Hessian = (Hess + t(Hess)))
+  }  
+  
+## end of local ----------------------------------------------------------------  
+       type <- match.arg(type)
+hessian.fun <- match.arg(hessian.fun)
   if (!is.gamlss(object)) 
      stop(paste("This is not an gamlss object", "\n", ""))
   coefBeta <- list()
@@ -33,7 +67,17 @@ vcov.gamlss <- function (object,
   }
    betaCoef <- unlist(coefBeta)      
    like.fun <- gen.likelihood(object)
-       hess <- optimHess(betaCoef, like.fun)
+## we have a problem here if the likelihood has a lot of parameter for example 
+## a lot of factors with large number of levels as in BAT data where 
+##  system.time(H <- HessianPB(betaCoef, like.fun))
+##      user  system elapsed 
+##      25.875   6.076  37.473 
+##  system.time(optimHess(betaCoef, like.fun))
+##      user  system elapsed 
+##      194.455  48.060 242.107
+## I think we should have a option to be able to use       
+       hess <- if (hessian.fun=="R" ) optimHess(betaCoef, like.fun)
+               else HessianPB(betaCoef, like.fun)$Hessian
      varCov <- try(solve(hess))
       if (any(class(beta)%in%"try-error"))
       {stop("the Hessian matrix is singular probably the model is overparametrised")}
