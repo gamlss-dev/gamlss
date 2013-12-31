@@ -63,7 +63,8 @@ hessian.fun <- match.arg(hessian.fun)
                       i, " formula standard errors for the linear terms maybe are not appropriate"))
     }
   #    parname <- paste(i, "start", sep = ".")
-     coefBeta <- c(coefBeta, coef(object, i))
+    nonNAcoef <- !is.na(coef(object, i))
+     coefBeta <- c(coefBeta, coef(object, i)[nonNAcoef])
   }
    betaCoef <- unlist(coefBeta)      
    like.fun <- gen.likelihood(object)

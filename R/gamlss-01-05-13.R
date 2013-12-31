@@ -36,6 +36,7 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
                    "ps", "pb", "cy", "tp", "pvc", # penalised splines        : ps, pb, cy tp pvc pbq
                    "pbq",                         # pb using Qfunction
                    "mrf",                         # Markov random fields
+                   "mrfa",                        # Markov random fields
                    "lo",                          # loess                    : lo
                    "random","ra","rc","rash","re",# random effect            : random, ra, rc, re (lme) rash
                    "fp","pp",                     # fractional poly          : fp, pp

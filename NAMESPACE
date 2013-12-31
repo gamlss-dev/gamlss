@@ -31,7 +31,7 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
         calibration, lms, Rsq, gen.likelihood,
         acfResid, rvcov, get.K, getSmo, 
         .gamlss.sm.list, .gamlss.bi.list, .gamlss.multin.list,
-        plot2way)
+        plot2way, loglogSurv1, loglogSurv2, loglogSurv3, loglogSurv, logSurv )
 
 
 

@@ -21,12 +21,20 @@ or
 Version 4.2-7
 
 1. gamlss 
-       i) gamlssML(): now allows fitting of binomial data (sorry never checked before) and the use of formula in the specification of the model (e.g, y~1)
+       i) gamlssML(): now allows the fitting  binomial data (sorry it never checked before) and the use of formula in the specification of the model (e.g, y~1) to be consistent with gamlss(). Note that explanatory variables will be ignored if used with gamlssML().
        ii) .gamlss.multin.list is now on NAMESPACE
        iii) the functions vcov.gamlss() and summary.gamlss() have now an extra argument 
-            hessian.fun with two altenatives "R" and "PB" in order to calculate the Hessian.
+            Hessian.fun with two alternatives "R" and "PB" in order to calculate the Hessian.
             The "R" option uses the R function optimHess() while the "PB" uses a local function 
-            based an equivalent function of Pinheiro and Bates in nlme package.
+            based a function of Pinheiro and Bates in nlme package.
+       iv) the function plot2way() is introduced as a way of plotting a two way interaction between two   categorical variables (factors).
+       v) the function 
+
+2. gamlss.dist
+       i) The use of the distributions BCCGo(), BCPEo() and BCTo()  had some side effects since the     equivalent d, p, q and r functions did not exist. Those function are identical to d, p, q, and r functions of  BCCG(), BCPE() and BCT(). In this version for consistency we added the functions dBCCGo(), pBCCGo(), qBCCGo(), rBCCGo(), dBCPEo(), pBCPEo(), qBCPEo() and rBCPEo(), dBCTo(), pBCTo(), qBCTo() and rBCTo().  
+       
+
+3. gamlss.tr NOTE that all function from thois package are n ow moved to gamlss.dist
 
 
 Version 4.2-6
