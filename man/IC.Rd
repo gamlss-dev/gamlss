@@ -15,9 +15,9 @@ The function \code{Rsq} compute a generalisation of the R-squared for not normal
 }
 \usage{
 IC(object, k = 2)
-\method{AIC}{gamlss}(object, ..., k = 2)
-GAIC(object, ..., k = 2 )
-\method{extractAIC}{gamlss}(fit, scale, k = 2, ...)
+\method{AIC}{gamlss}(object, ..., k = 2, c = FALSE)
+GAIC(object, ..., k = 2, c = FALSE )
+\method{extractAIC}{gamlss}(fit, scale, k = 2, c = FALSE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -25,6 +25,7 @@ GAIC(object, ..., k = 2 )
   \item{fit}{an gamlss fitted model}
   \item{\dots}{allows several GAMLSS object to be compared using a GAIC}
   \item{k}{the penalty with default \code{k=2.5}}
+  \item{c}{whether the corrected AIC, i.e. AICc, should be used, note that it applies only when  \code{k=2}}
   \item{scale}{this argument is not used in gamlss}
 }
 

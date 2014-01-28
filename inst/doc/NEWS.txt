@@ -22,19 +22,35 @@ Version 4.2-7
 
 1. gamlss 
        i) gamlssML(): now allows the fitting  binomial data (sorry it never checked before) and the use of formula in the specification of the model (e.g, y~1) to be consistent with gamlss(). Note that explanatory variables will be ignored if used with gamlssML().
-       ii) .gamlss.multin.list is now on NAMESPACE
+       ii)  .gamlss.multin.list is now on NAMESPACE
        iii) the functions vcov.gamlss() and summary.gamlss() have now an extra argument 
             Hessian.fun with two alternatives "R" and "PB" in order to calculate the Hessian.
             The "R" option uses the R function optimHess() while the "PB" uses a local function 
             based a function of Pinheiro and Bates in nlme package.
-       iv) the function plot2way() is introduced as a way of plotting a two way interaction between two   categorical variables (factors).
-       v) the function 
+       iv)  the function plot2way() is introduced as a way of plotting a two way interaction between two
+            categorical variables (factors).
+        v)  the functions vcov.gamlss() and gen.likelihood() now works even if NA are in the coefficients 
+             of the beta the paraneters
+       vi)  The functions loglogSurv1(), loglogSurv2(), loglogSurv3(), loglogSurv() and logSurv() are
+            introduced as a way of exploring  the tail behaviour of a distribution.
+       vii) AIC(), GAIC() and  extractAIC() have a new argument "c" which if k=2 and c=TRUE gives the corrected AIC that is, AICc (suggested by Mario Alvarado).
 
 2. gamlss.dist
-       i) The use of the distributions BCCGo(), BCPEo() and BCTo()  had some side effects since the     equivalent d, p, q and r functions did not exist. Those function are identical to d, p, q, and r functions of  BCCG(), BCPE() and BCT(). In this version for consistency we added the functions dBCCGo(), pBCCGo(), qBCCGo(), rBCCGo(), dBCPEo(), pBCPEo(), qBCPEo() and rBCPEo(), dBCTo(), pBCTo(), qBCTo() and rBCTo().  
+       i) The use of the distributions BCCGo(), BCPEo() and BCTo()  (which are identical to BCCG, BCPE 
+          and BCT respectively apart from the fact that they using log link for mu) had some side effects
+          because the equivalent d, p, q and r functions did not exist. In this version to avoid the 
+          problem we have added the functions dBCCGo(), pBCCGo(), qBCCGo(), rBCCGo(), dBCPEo(), 
+          pBCPEo(), qBCPEo() and rBCPEo(), dBCTo(), pBCTo(), qBCTo() and rBCTo(). Those functions
+          are identical to  d, p, q, and r functions of  BCCG(), BCPE() and BCT(). 
        
 
-3. gamlss.tr NOTE that all function from thois package are n ow moved to gamlss.dist
+3. gamlss.tr
+        i) functions fitTail() and fitTailAll() are introduced for fitting truncated distributions to 
+           the tails and creating Hill type of plots respectively.
+
+4. gamlss.demo
+      i) The distributions SN1, SN2, LOGITNO, LOGNO2, TF2 and SST are added to the demos
+
 
 
 Version 4.2-6

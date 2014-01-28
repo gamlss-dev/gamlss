@@ -4,12 +4,14 @@
 #----------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------
 # extractAIC  needs MASS
-extractAIC.gamlss<-function (fit, scale, k = 2, ...) 
+extractAIC.gamlss<-function (fit, scale, k = 2, c = FALSE,  ...) 
 {
     if (is.gamlss(fit)) 
        {
         edf <- fit$df.fit
-        aic <- fit$G.dev + fit$df.fit * k
+          N <- fit$N
+        Cor <- if ((k == 2)&&(c==TRUE)) (2*edf*(edf+1))/(N-edf-1) else 0 
+        aic <- fit$G.dev + fit$df.fit * k + Cor
         return( c(edf, aic))
        }
     else stop(paste("this is not a gamlss object"))
@@ -60,7 +62,7 @@ dropterm.gamlss<-function (object,
     ns <- length(scope)
     ans <- matrix(nrow = ns + 1, ncol = 2, dimnames = list(c("<none>", 
         scope), c("df", "AIC")))
-    ans[1, ] <- extractAIC(object, scale, k = k, ...)
+    ans[1, ] <- extractAIC(object, scale, k = k,   ...)
     for (i in seq(ns)) 
       {
         tt <- scope[i]
@@ -74,7 +76,7 @@ dropterm.gamlss<-function (object,
                   cat("Model with term ", tt, "has failed \n")       
                   ans[i + 1, ] <- NA# extractAIC(object, scale, k = k, ...)          
                  }
-            else ans[i + 1, ] <- extractAIC(nfit, scale, k = k, ...)
+            else ans[i + 1, ] <- extractAIC(nfit, scale, k = k,   ...)
       }
     dfs <- ans[1, 1] - ans[, 1]
     dfs[1] <- NA
@@ -132,7 +134,7 @@ addterm.gamlss <- function (object,
     ns <- length(scope)
     ans <- matrix(nrow = ns + 1, ncol = 2, dimnames = list(c("<none>", 
         scope), c("df", "AIC")))
-    ans[1, ] <- extractAIC(object, scale, k = k, ...)
+    ans[1, ] <- extractAIC(object, scale, k = k,   ...)
     for (i in seq(ns)) 
       {
         tt <- scope[i]
@@ -146,7 +148,7 @@ addterm.gamlss <- function (object,
                   cat("Model with term ", tt, "has failed \n")       
                   ans[i + 1, ] <- NA# extractAIC(object, scale, k = k, ...)          
                  }
-            else ans[i + 1, ] <- extractAIC(nfit, scale, k = k, ...)
+            else ans[i + 1, ] <- extractAIC(nfit, scale, k = k,  ...)
       }
     dfs <- ans[, 1] - ans[1, 1]
     dfs[1] <- NA
@@ -294,7 +296,7 @@ stepGAIC.VR <-function(object,
          n <- object[[nmm]]
     else n <- length(residuals(object))
      fit <- object
-    bAIC <- extractAIC(fit, scale, k = k, ...)
+    bAIC <- extractAIC(fit, scale, k = k,  ...)
      edf <- bAIC[1]
     bAIC <- bAIC[2]
     if (is.na(bAIC)) 

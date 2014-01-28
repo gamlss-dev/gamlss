@@ -37,6 +37,8 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
                    "pbq",                         # pb using Qfunction
                    "mrf",                         # Markov random fields
                    "mrfa",                        # Markov random fields
+                   "sap",                         # seperation of Anisotropic penelties
+                   "sap3",                         # 
                    "lo",                          # loess                    : lo
                    "random","ra","rc","rash","re",# random effect            : random, ra, rc, re (lme) rash
                    "fp","pp",                     # fractional poly          : fp, pp
@@ -55,8 +57,8 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
                    "sv",                          # suppor vector machines   : sv 
                    "ma",                          # mars                     : ma
                    "pr",                          # projection pursuit Reg   : pr
-				   "pc",                          # principal component regr : pc
-				   "pa")                          # partial regression       : pr
+				           "pc",                          # principal component regr : pc
+				           "pa")                          # partial regression       : pr
                    
 # note that predict only read 2 characters Monday, May 4, 2009 at 11:27
 ##----------------------------------------------------------------------------------------

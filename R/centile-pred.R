@@ -113,7 +113,6 @@ if (!is.character(xname)) stop(paste("The xname argument is not a character", "\
 #if(!obj$type=="Continuous") 
 #   stop(paste("The centiles are working only with continuous distributions", "\n", ""))
 ## if power 
- browser()
     xvar <- if (!is.null(power))   xvar <-  xvalues^power
            else xvalues
 ## create a data frame

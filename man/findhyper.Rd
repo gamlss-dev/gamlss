@@ -77,7 +77,7 @@ op
 attach(abdom)
 mod2 <- quote(gamlss(y~cs(nx,df=p[1]),family=BCT,
                 control=gamlss.control(trace=FALSE)))
-op2<-find.hyper1(model=mod2, other=quote(nx<-x^p[2]), parameters=c(3,0.5), 
+op2<-find.hyper(model=mod2, other=quote(nx<-x^p[2]), parameters=c(3,0.5), 
                 lower=c(1,0.001), steps=c(0.1,0.001))
 op2
 detach(abdom)
