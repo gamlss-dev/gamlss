@@ -17,7 +17,7 @@ centiles.pred <- function(obj,
                       legend = TRUE, 
                               ...)
 {
-## ------function calc.cent
+## ------function calc.cent-----------------------------------------------------
 # Huiqi  
  calc.cent <- function(xvar, cent) {
          o <- order(xvar)

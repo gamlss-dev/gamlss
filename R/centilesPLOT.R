@@ -22,8 +22,9 @@ centiles<-function (obj,
                     save = FALSE, 
                     plot = TRUE,
                   points = TRUE,  # this is new Saturday, August 14, 2010 MS
-                     pch = "+", 
-                     col = "blue", 
+                     pch =  15,
+                     cex = 0.5,
+                     col = gray(0.7), 
             col.centiles = 1:length(cent)+2, 
             lty.centiles = 1, 
             lwd.centiles = 1,  #Handling for line appearance 
@@ -53,7 +54,7 @@ centiles<-function (obj,
           col.centiles <- rep(col.centiles,length(cent))
           if (points==TRUE)
           {
-          plot(oxvar, oyvar, type = "p", col = col, pch = pch, 
+          plot(oxvar, oyvar, type = "p", col = col, pch = pch, cex = cex,  
                xlab = xlab, ylab = ylab, xlim = xlim, ylim, ...) 
           }
           else

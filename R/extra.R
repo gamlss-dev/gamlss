@@ -70,13 +70,16 @@ residuals.gamlss<-function (object, what = c("z-scores", "mu", "sigma", "nu", "t
                             type=c("simple","weighted","partial"), terms = NULL, ...) 
 {
 # Possible residuals
-#   z-cores         simpe or weighted
-#           simple just take the original:  object$residuals
-#           weighted   
-#                "zero ones" "frequencies"
-#                                           "continuous"   rep(object$residuals, w)
-#                                             "other"      revaluate  expanded: eval(object$rqres)                                     
-#                 "other weights"                          warning + object$residuals
+#  I)  z-scores  i) simpe or weighted
+#                       simple just take the original:  object$residuals
+#               ii) weighted   
+#       
+#                   a) "zero ones"  or "frequencies" 
+#                               a1) Continuous rep(object$residuals, w)
+#                               a2) discrete
+#                   b) other    warning + object$residuals
+#                                                                    
+#  II)           "simple",  "weighted",  "partial"                   
 # 
 #  if what mu sigma nu tau  (the question here is whether w is needed) 
 #type   simple       
@@ -85,35 +88,36 @@ residuals.gamlss<-function (object, what = c("z-scores", "mu", "sigma", "nu", "t
 type <- match.arg(type)
 what <- match.arg(what)
    w <- object$weights
-if(what=="z-scores")
+if(what=="z-scores")                            #      if z-scores  (I) 
  {
-  if (all(w==1)) x <- object$residuals
-  else if (all(trunc(w)==w)) 
-        { if (object$type== "Continuous")  x <- rep(object$residuals, w)
-          else{
+  if (all(w==1)) x <- object$residuals          #      i) simpe or weighted
+                                                #     ii) weighted   
+  else if (all(trunc(w)==w))                    # a) "zero ones"  or  "frequencies" 
+        { if (object$type== "Continuous")     x <- rep(object$residuals, w) # a1 continuous
+          else{                                     # a2  discrete case
                y  <- rep(object$y, w)
-               mu <- rep(fitted(object, "mu"),w)
-               if(any(object$family%in%.gamlss.bi.list)){ bd <- rep(object$bd,w)} # MS Wednesday, July 23, 2003 at 12:03   
+               if ("mu"%in%object$parameters) mu <- rep(fitted(object, "mu"),w)
                if ("sigma"%in%object$parameters)  sigma <- rep(fitted(object,"sigma"),w)
                if ("nu"%in%object$parameters)        nu <- rep(fitted(object,"nu"),w)
                if ("tau"%in%object$parameters)      tau <- rep(fitted(object,"tau"),w)
+               if(any(object$family%in%.gamlss.bi.list)){ bd <- rep(object$bd,w)} # MS Wednesday, July 23, 2003 at 12:03   
                x <- eval(object$rqres)
               }  
-         }
-
+         }  # now weights NOT "zero ones"  or  "frequencies"                             
 else { warning("weights which are not frequencies are used: residuals remain unweighted")
            x <- object$residuals
      } # naresid(object$na.action, object$residuals)
- }
- else
- {
+ } # if not z-scores
+ else   # II) If not z-scores
+ { 
  if (!what%in%object$par) stop(paste(what,"is not a parameter in the object","\n"))
     wv  <- object[[paste(what, "wv", sep=".")]]
     l.p <- object[[paste(what, "lp", sep=".")]]
     wt  <- object[[paste(what, "wt", sep=".")]]
-    x   <- if (type == "simple") wv - l.p 
-         else if (type == "weighted") sqrt(wt)*(wv-l.p)
-         else  (wv-l.p) +lpred(object, what = what, type = "terms", terms =terms) 
+    os  <- object[[paste(what, "offset", sep=".")]]# offset is added 9-12-14 MS
+    x   <- if (type == "simple") wv - l.p + os
+         else if (type == "weighted") sqrt(wt)*(wv-l.p + os)
+         else  (wv-l.p + os) +lpred(object, what = what, type = "terms", terms =terms) 
  } 
 x
 }

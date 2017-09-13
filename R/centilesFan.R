@@ -15,8 +15,9 @@ centiles.fan<-function (obj,
                     ylim = range(obj$y), 
                   points = FALSE,
                   median = TRUE,  
-                     pch = "+", 
-                     col = "blue", 
+                     pch =  15,
+                     cex = 0.5,
+                     col = gray(0.7),  
                   colors = c("cm","gray", "rainbow", "heat", "terrain", "topo"),  
                            ...)        
 {
@@ -91,7 +92,7 @@ centiles.fan<-function (obj,
     }
  if (points==TRUE)
     {
-          points(oxvar, oyvar,  col = col , pch =pch,  ...) 
+          points(oxvar, oyvar,  col = col , cex = cex, pch = pch,  ...) 
     } 
  if (median==TRUE)
     {

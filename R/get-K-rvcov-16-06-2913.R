@@ -126,12 +126,13 @@ if (!is.gamlss(object)) stop("needs a gamlss object")
 if (what=="K") K else AllX
 }
 #-------------------------------------------------------------------------------
-rvcov <- function(object, type = c("vcov", "cor", "se", "coef", "all"))
+rvcov <- function(object, type = c("vcov", "cor", "se", "coef", "all"),  hessian.fun = c("R", "PB"))
 {
     type <- match.arg(type)
+    hessian.fun <- match.arg( hessian.fun)
   if (!("gamlss" %in% class(object))) 
     stop("the null model is not a gamlss model")
-        V <- vcov(object)
+        V <- vcov(object, hessian.fun= hessian.fun)
         K <- get.K(object)
    varCov <- V%*%K%*%V
       se <- sqrt(diag(varCov))

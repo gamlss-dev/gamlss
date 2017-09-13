@@ -198,18 +198,20 @@ if (npoly==3)
 ## final fit
     power <- powerbest
      x.fp <- bfp(xvar, c(power))
-     one  <- rep(1,length(xvar))
-     x.fp <- cbind(one,x.fp)
-      fit <- lm.wfit(x=x.fp,y=y,w=w,method="qr")# 
+    # one  <- rep(1,length(xvar))
+    # x.fp <- cbind(one,x.fp)
+      fit <- lm(y~x.fp,weights=w)# 
 residuals <- fit$residuals
       cov <-  diag(chol2inv(fit$qr$qr[1:fit$rank, 1:fit$rank, drop = FALSE]))
       lev <- (hat(fit$qr) -.hat.WX(w,rep(1,length(w))))
       var <- lev/w # MS Tuesday, June 22, 2004 at 20:58
+fit$power <- power
+#fit$varcoeff <- cov
 if (is.null(xeval)) # if no prediction  
  {
 list(x = xvar, fitted.values = fitted(fit), residuals = resid(fit),
-     var = var, nl.df = df, lambda = NA, 
-      coefSmo=list(coef = coef(fit), power = power, varcoeff = cov) )    
+     var = var, nl.df = df, lambda = power, 
+     coefSmo = fit)    
  }
 else 
  {# if prediction

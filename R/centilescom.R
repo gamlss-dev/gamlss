@@ -36,8 +36,8 @@ if (length(list(...)))   # more than one fitted model
       if (plot)
         {
         if (no.data==FALSE) type<-"p" else type<-"n"
-        plot(oxvar, oyvar, type=type, col="blue", pch="+", xlab= xlab, 
-             ylab=ylab, xlim=xlim, ylim=ylim)
+        plot(oxvar, oyvar, type=type, pch = 15, cex = 0.5, col = gray(0.7),
+             xlab= xlab, ylab=ylab, xlim=xlim, ylim=ylim)
         title(Title)#  
         }
        ltype <- 0 
@@ -106,7 +106,7 @@ else
         if (plot)
         {
      if (no.data==FALSE) type <- "p" else type <- "n"    
-    plot(oxvar, oyvar, type = type , col = "blue", pch = "+",
+    plot(oxvar, oyvar, type = type ,  pch =  15, cex = 0.5, col =  gray(0.7),
            xlab = xlab, ylab = ylab ,xlim = xlim, ylim, ...)#
                   title(Title)#  , cex.main = 1.1
         }          
