@@ -1,14 +1,20 @@
 Package: gamlss
-Description: The library for fitting GAMLSS models.
-Version: 4.2-7
-Date: 2013-11-1
-Title: Generalised Additive Models for Location Scale and Shape.
-Author: Mikis Stasinopoulos <d.stasinopoulos@londonmet.ac.uk>, Bob
-        Rigby <r.rigby@londonmet.ac.uk> with contributions from
-        Calliope Akantziliotou and Vlasios Voudouris
-Maintainer: Mikis Stasinopoulos <d.stasinopoulos@londonmet.ac.uk>
-Depends: R (>= 2.15.0), graphics, stats, splines, utils, gamlss.data, gamlss.dist, nlme 
+Description: Functions for fitting Generalized Additive Models for Location Scale and Shape.
+Version: 5.0-3
+Date: 2017-09-14
+Authors@R: c(person("Mikis", "Stasinopoulos", role = c("aut", "cre", "cph"), 
+             email = "mikis.stasinopoulos@gamlss.org"),
+           person("Bob", "Rigby", role = c("aut")), 
+           person("Vlasios", "Voudouris", role = "ctb",  
+           email= "vlasios.voudouris@abm-analytics.com"),
+           person("Calliope", "Akantziliotou", role = "ctb"),
+           person("Marco", "Enea", role = "ctb"),
+           person("Daniil", "Kiose", role = "ctb") 
+           )
+Title: Generalised Additive Models for Location Scale and Shape
+Maintainer: Mikis Stasinopoulos <mikis.stasinopoulos@gamlss.org>
+Depends: R (>= 3.3.0), graphics, stats, splines, utils, grDevices, gamlss.data (>= 5.0-0), gamlss.dist (>= 4.3.1), nlme, parallel 
 LazyLoad: yes
-Imports: MASS, survival
+Imports: MASS, survival, methods
 License: GPL-2 | GPL-3 
 URL: http://www.gamlss.org/
