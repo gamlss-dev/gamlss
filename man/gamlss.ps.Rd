@@ -1,24 +1,31 @@
 \name{gamlss.ps}
 \alias{gamlss.ps}
 \alias{gamlss.pb}
+\alias{gamlss.pbo}
 \alias{gamlss.cy}
 \alias{gamlss.pvc}
 \alias{gamlss.ri}
-\alias{gamlss.ridge}
+\alias{gamlss.pbm}
+\alias{gamlss.pbz}
+\alias{gamlss.pbc}
+\alias{gamlss.pbp}
 
-
-\title{Support for Functions ps(), pb(), cy() and ri() }
+\title{Support for Functions  for smoothers}
 \description{
- Those functions  are support for the functions \code{ps()} and \code{pb()}.
+ Those functions  are support for the functions  \code{pb()}, \code{pbo()},  \code{ps()},  \code{ridge()},  \code{ri()},  \code{cy()},  \code{pvc()},  and \code{pbm()}.
 The functions are not intended to be called directly by users. 
 }
 \usage{
-gamlss.ps(x, y, w, xeval = NULL, ...)
 gamlss.pb(x, y, w, xeval = NULL, ...)
-gamlss.ridge(x, y, w, xeval = NULL, ...)
+gamlss.pbo(x, y, w, xeval = NULL, ...)
+gamlss.ps(x, y, w, xeval = NULL, ...)
 gamlss.ri(x, y, w, xeval = NULL, ...)
 gamlss.cy(x, y, w, xeval = NULL, ...)
 gamlss.pvc(x, y, w, xeval = NULL, ...)
+gamlss.pbm(x, y, w, xeval = NULL, ...)
+gamlss.pbz(x, y, w, xeval = NULL, ...)
+gamlss.pbc(x, y, w, xeval = NULL, ...)
+gamlss.pbp(x, y, w, xeval = NULL, ...)
 }
 
 \arguments{
@@ -30,23 +37,22 @@ gamlss.pvc(x, y, w, xeval = NULL, ...)
 }
 
 \value{
-  
-  \item{comp1 }{Description of 'comp1'}
-  \item{comp2 }{Description of 'comp2'}
-  ...
+All function return fitted smoothers.  
 }
 \references{ Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
-Stasinopoulos D. M., Rigby R.A. and Akantziliotou C. (2003) Instructions on how to use the GAMLSS package in R.
-Accompanying documentation in the current GAMLSS  help files, (see also  \url{http://www.gamlss.org/}).  
 
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
 \emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+
+(see also \url{http://www.gamlss.org/}).
 }
 
-\author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk} }
+\author{ Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby}
 
-\seealso{ \code{\link{gamlss}}, \code{\link{ps}},  \code{\link{pb}} }
+\seealso{ \code{\link{gamlss}}, \code{\link{pb}},  \code{\link{ps}}, \code{\link{ri}},\code{\link{ridge}},\code{\link{cy}},\code{\link{pvc}},\code{\link{pbm}} }
 
 \keyword{regression}% 

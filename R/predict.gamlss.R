@@ -26,10 +26,11 @@
 ### 4) NA coefficients are not working yet : should be OK
 predict.gamlss <- function(object, 
                            what = c("mu", "sigma", "nu", "tau"), 
-                           newdata = NULL, 
+                      parameter = NULL,
+                        newdata = NULL, 
                            type = c("link", "response", "terms"), # terms not working 
-                           terms = NULL, 
-                           se.fit = FALSE, 
+                          terms = NULL, 
+                         se.fit = FALSE, 
                            data = NULL, ...)                                                                  
 {
 ## this little function put data frames together 
@@ -79,7 +80,8 @@ if (se.fit)
   if (!(inherits(newdata, "data.frame")))
     stop("newdata must be a data frame ") # or a frame mumber
 ## getting which parameter and type   
-       what <- match.arg(what)
+       what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
        type <- match.arg(type)
 ## get the original call 
        Call <- object$call
@@ -236,10 +238,10 @@ if (!is.null(smo.mat))
 attr(new.m, "class") <- NULL
            residuals <-  if (!is.null(off.num)) object[[paste(what,"wv",sep=".")]] - object[[paste(what,"lp",sep=".")]]+offsetVar[onlydata]
                          else object[[paste(what,"wv",sep=".")]] - object[[paste(what,"lp",sep=".")]]
-       for(TT in smooth.labels)
+        for(TT in smooth.labels)
          { 
             if (is.matrix(m[[TT]])) # the problem is that for some smoother the m[[TT]] is a matrix (for example pvc())
-             { # MS 27-6-11         # in this case  we have tp protect the dim attributes of data[[tt]]
+             { # MS 27-6-11         # in this case  we have to protect the dim attributes of data[[tt]]
               nm <- names(attributes(m[[TT]])) # first we get the names of all attributes 
               attributes(data[[TT]]) <- attributes(m[[TT]])[nm[-c(1,2)]]# then we pass all but
              }                                 # 1 and 2 i.e. dim and names
@@ -250,7 +252,7 @@ attr(new.m, "class") <- NULL
      # debug(gamlss.pvc)
           pred.s[, TT] <- eval(Call)
          }
-        if(type == "terms")
+if(type == "terms")
             {
             # pred[, smooth.wanted] <- pred[, smooth.wanted] + pred.s[, smooth.wanted]
             pred[, smooth.labels] <- pred[, smooth.labels] + pred.s[, smooth.labels]
@@ -284,51 +286,52 @@ pred
 # allows the user to get all the parameters using the  predict.gamlss().
 # creates a list containing y if exist in the newdata 
 # and predicted mu sigma nu and tau 
+# THIS FUNCTION HAS BEEN MOVED
 #----------------------------------------------------------------------------------------
-predictAll <-function(object, 
-                    newdata = NULL, 
-                       type = c("response", "link", "terms"),# note that default is "response" 
-                      terms = NULL,   
-                     se.fit = FALSE, 
-                             ...)       
- {
-  type <- match.arg(type)
-## if no new data then give all the fitted from the old
- if (is.null(newdata))  # 
-    {
-    out <- list(y=object$y)
-      if ("mu" %in% object$par)  
-         out$mu <- lpred(object, what = "mu", type = type, terms = terms, se.fit = se.fit, ... )
-     if ("sigma" %in% object$par)  
-      out$sigma <- lpred(object, what = "sigma", type = type, terms = terms, se.fit = se.fit, ... )
-     if (  "nu" %in% object$par)     
-         out$nu <- lpred(object, what = "nu", type = type, terms = terms, se.fit = se.fit, ... )
-     if ( "tau" %in% object$par)    
-        out$tau <- lpred(object, what = "tau", type = type, terms = terms, se.fit = se.fit, ... )
-        attr(out, "family") <- object$family
-    return(out)
-    }
-  else
-    {
-      out <- list()
-      if ("mu" %in% object$par) #
-         out$mu <- predict(object,newdata=newdata, what = "mu", type = type, terms = terms, se.fit = se.fit, ... )
-     if ("sigma" %in% object$par)  
-      out$sigma <- predict(object, newdata=newdata, what = "sigma", type = type, terms = terms, se.fit = se.fit, ... )
-     if ("nu" %in% object$par)  
-         out$nu <- predict(object, newdata=newdata, what = "nu", type = type, terms = terms, se.fit = se.fit, ... )
-     if ("tau" %in% object$par)  
-        out$tau <- predict(object, newdata=newdata, what = "tau", type = type, terms = terms, se.fit = se.fit, ... )
-     if (as.character(object$mu.formula[[2]])%in%names(newdata)) 
-          out$y <-  newdata[,as.character(object$mu.formula[[2]])]
-     attr(out, "family") <- object$family
-     #out<- list(out,  family=object$family, parameters=object$parameters,  call=object$call, 
-     #         weights=object$weights, G.deviance=object$G.deviance, N=object$N, type=object$type, 
-     #         #residuals=object , 
-     #         noObs=object$noObs,df.fit=object$df.fit, df.residual=object$df.residuals)
-     #      class(out) <- c("gamlssPredict", "gamlss")
-       return(out)
-     }  
- }
-#----------------------------------------------------------------------------------------    
-  
+# predictAll <-function(object, 
+#                     newdata = NULL, 
+#                        type = c("response", "link", "terms"),# note that default is "response" 
+#                       terms = NULL,   
+#                      se.fit = FALSE, 
+#                              ...)       
+#  {
+#   type <- match.arg(type)
+# ## if no new data then give all the fitted from the old
+#  if (is.null(newdata))  # 
+#     {
+#     out <- list(y=object$y)
+#       if ("mu" %in% object$par)  
+#          out$mu <- lpred(object, what = "mu", type = type, terms = terms, se.fit = se.fit, ... )
+#      if ("sigma" %in% object$par)  
+#       out$sigma <- lpred(object, what = "sigma", type = type, terms = terms, se.fit = se.fit, ... )
+#      if (  "nu" %in% object$par)     
+#          out$nu <- lpred(object, what = "nu", type = type, terms = terms, se.fit = se.fit, ... )
+#      if ( "tau" %in% object$par)    
+#         out$tau <- lpred(object, what = "tau", type = type, terms = terms, se.fit = se.fit, ... )
+#         attr(out, "family") <- object$family
+#     return(out)
+#     }
+#   else
+#     {
+#       out <- list()
+#       if ("mu" %in% object$par) #
+#          out$mu <- predict(object,newdata=newdata, what = "mu", type = type, terms = terms, se.fit = se.fit, ... )
+#      if ("sigma" %in% object$par)  
+#       out$sigma <- predict(object, newdata=newdata, what = "sigma", type = type, terms = terms, se.fit = se.fit, ... )
+#      if ("nu" %in% object$par)  
+#          out$nu <- predict(object, newdata=newdata, what = "nu", type = type, terms = terms, se.fit = se.fit, ... )
+#      if ("tau" %in% object$par)  
+#         out$tau <- predict(object, newdata=newdata, what = "tau", type = type, terms = terms, se.fit = se.fit, ... )
+#      if (as.character(object$mu.formula[[2]])%in%names(newdata)) 
+#           out$y <-  newdata[,as.character(object$mu.formula[[2]])]
+#      attr(out, "family") <- object$family
+#      #out<- list(out,  family=object$family, parameters=object$parameters,  call=object$call, 
+#      #         weights=object$weights, G.deviance=object$G.deviance, N=object$N, type=object$type, 
+#      #         #residuals=object , 
+#      #         noObs=object$noObs,df.fit=object$df.fit, df.residual=object$df.residuals)
+#      #      class(out) <- c("gamlssPredict", "gamlss")
+#        return(out)
+#      }  
+#  }
+# #----------------------------------------------------------------------------------------    
+#   

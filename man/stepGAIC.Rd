@@ -5,33 +5,31 @@
 \alias{stepGAIC.VR}
 \alias{stepGAICAll.A}
 \alias{stepGAICAll.B}
-
-\alias{stepTGD}
+\alias{drop1All}
+\alias{add1All}
 
 \title{Choose a model by GAIC in a Stepwise Algorithm}
 
 \description{
-The function \code{stepGAIC()} performs stepwise 
-model selection using a Generalized Akaike Information Criterion.
-The function \code{stepGAIC()} calls one of the two functions \code{stepGAIC.VR()} or \code{stepGAIC.CH()} depending on the argument 
-\code{additive}. 
-The function \code{stepGAIC.VR()} is based on the function \code{stepAIC()} given in the library MASS of Venables and Ripley (2002).
-The function  \code{stepGAIC.CH} is based on the S function \code{step.gam()} (see Chambers and Hastie (1991)) 
-and it is more suited for model with smoothing additive terms, (see below comments for the additive function \code{pb()}).  
-Both functions have been adapted to work with  gamlss objects.  The main difference for the user is the \code{scope} 
-argument, see below. 
-If the \code{stepGAIC()} is called with the argument \code{additive=FALSE} then the  \code{stepGAIC.VR()} is called else the 
-\code{stepGAIC.CH()}.
 
-While the functions \code{stepGAIC.VR()} and \code{stepGAIC.CH()} are used to build models for individual parameters of the distribution 
-of the response variable, the functions \code{stepGAICAll.A()} and \code{stepGAICAll.A()}  are building a model for all 
-the parameters.
-Both the functions  \code{stepGAICAll.A()} and \code{stepGAICAll.B()} are based on \code{stepGAIC.VR()}.
-The use two different  strategies for selecting a appropriate final model.    \code{stepGAICAll.A()} has   the following
-strategy: 
+The function \code{stepGAIC()} performs stepwise model selection using a Generalized Akaike Information Criterion (GAIC). It is based on the function \code{stepAIC()} given in the library MASS of Venables and Ripley (2002). The function has been changed recently to allow parallel computation.  The parallel computations are similar to the ones performed in the function \code{boot()} of the \pkg{boot} package. Note that since version 4.3-5 of \pkg{gamlss} the  \code{stepGAIC()} do not have the option of using the function \code{stepGAIC.CH} through the argument \code{additive}. 
+
+Note that \code{stepGAIC()}  is relying to the \code{dropterm()} and \code{addterm()} methods applyied to gamlss objects.    \code{drop1()} and \code{add1()} are equivalent methods  to the  \code{dropterm()} and \code{addterm()} respectivelly but with different default arguments (see the examples). 
+
+The function \code{stepGAIC.VR()} is the old version  of \code{stepGAIC()} with no parallel computations.    
+
+The function  \code{stepGAIC.CH} is based on the S function \code{step.gam()} (see Chambers and Hastie (1991)) and it is more suited for model with smoothing additive terms when the degrees of freedom for smoothing are fixed in advance. This is something which rarely used these days, as most of the smoothing functions allow the calculations of the smoothing parameter,  see for example the additive function \code{pb()}).  
+
+The functions \code{stepGAIC.VR()} and \code{stepGAIC.CH()} have been adapted to work with  gamlss objects and  the main difference is the \code{scope} argument, see below. 
+
+
+While the functions \code{stepGAIC()} is used to build models for individual parameters of the distribution  of the response variable, the functions \code{stepGAICAll.A()} and \code{stepGAICAll.A()}  are building  models for all  the parameters.
+
+The functions  \code{stepGAICAll.A()} and \code{stepGAICAll.B()} are based on the \code{stepGAIC()} function but use  different  strategies for selecting a appropriate final model.    
+
+\code{stepGAICAll.A()} has the following strategy: 
  
-Stategy A:
-
+Strategy A:
  
 i) build a model for \code{mu} using a forward approach. 
 
@@ -53,42 +51,50 @@ are needed (backward).
 Note for this strategy to work the \code{scope} argument should be set appropriately. 
 
 
-\code{stepGAICAll.B()} uses the same procedure as the function  \code{stepGAIC.VR()} but each term in the scope is fitted 
-to ALL the parameters of the distribution, rather than the one specified  by the argument \code{what} of \code{stepGAIC.VR()}.
+\code{stepGAICAll.B()} uses the same procedure as the function  \code{stepGAIC()} but each term in the scope is fitted  to all the parameters of the distribution, rather than the one specified  by the argument \code{what} of \code{stepGAIC()}. 
+The \code{stepGAICAll.B()} relies on the \code{add1All()} and \code{drop1All()} functions for the selection of variabes.
  
 
 }
 \usage{
 
+stepGAIC(object, scope, direction = c("both", "backward", "forward"), 
+          trace = T, keep = NULL, steps = 1000, scale = 0, 
+          what = c("mu", "sigma", "nu", "tau"), parameter= NULL, k = 2, 
+          parallel = c("no", "multicore", "snow"), ncpus = 1L, cl = NULL, 
+          ...)
+
 stepGAIC.VR(object, scope, direction = c("both", "backward", "forward"), 
          trace = T, keep = NULL, steps = 1000, scale = 0, 
-         what = c("mu", "sigma", "nu", "tau"), k = 2, ...)
+         what = c("mu", "sigma", "nu", "tau"), parameter= NULL, k = 2, 
+         ...)
 
 stepGAIC.CH(object, scope = gamlss.scope(model.frame(object)), 
-            direction = c("both", "backward", "forward"), trace = T, keep = NULL, 
-            steps = 1000, what = c("mu", "sigma", "nu", "tau"), k = 2, ...)
+            direction = c("both", "backward", "forward"), trace = T, 
+            keep = NULL, steps = 1000, what = c("mu", "sigma", "nu", "tau"),
+            parameter= NULL, k = 2, ...)
 
-
-stepGAIC(object, scope = gamlss.scope(model.frame(object)), 
-          direction = c("both", "backward", "forward"), 
-          trace = T, keep = NULL, steps = 1000, 
-          what = c("mu", "sigma", "nu", "tau"), k = 2, 
-          additive = FALSE, ...)
 
 stepGAICAll.A(object, scope = NULL, sigma.scope = NULL, nu.scope = NULL, 
               tau.scope = NULL, mu.try = TRUE, sigma.try = TRUE, 
-              nu.try = TRUE, tau.try = TRUE, ...)
+              nu.try = TRUE, tau.try = TRUE,  
+              parallel = c("no", "multicore", "snow"), ncpus = 1L, 
+              cl = NULL,  ...)
 
-
-stepGAICAll.B(object, scope, direction = c("both", "backward", "forward"), 
-               trace = T, keep = NULL, steps = 1000, scale = 0, k = 2, ...)
                
-stepTGD(object, scope, newdata, direction = c("both", "backward", "forward"), 
-              trace = T, keep = NULL, steps = 1000, 
-              what = c("mu", "sigma", "nu", "tau"), ...)
-
+stepGAICAll.B(object, scope, direction = c("both", "backward", "forward"), 
+              trace = T, keep = NULL, steps = 1000, scale = 0, k = 2, 
+              parallel = c("no", "multicore", "snow"), ncpus = 1L, 
+              cl = NULL, ...) 
+               
+drop1All(object, scope, test = c("Chisq", "none"), k = 2, sorted = FALSE, 
+              trace = FALSE, parallel = c("no", "multicore", "snow"), 
+              ncpus = 1L, cl = NULL, ...)
+              
+add1All(object, scope, test = c("Chisq", "none"), k = 2, sorted = FALSE, 
+              trace = FALSE, parallel = c("no", "multicore", "snow"), 
+              ncpus = 1L, cl = NULL, ...)              
 }
-
 
 
 \arguments{
@@ -120,10 +126,14 @@ stepTGD(object, scope, newdata, direction = c("both", "backward", "forward"),
           to stop the process early. }
   \item{scale}{scale is nor used in gamlss}
   \item{what}{which distribution parameter is required, default \code{what="mu"} }
+  \item{parameter}{equivalent to \code{what}}
   \item{k}{ the multiple of the number of degrees of freedom used for the
           penalty. Only 'k = 2' gives the genuine AIC: 'k = log(n)' is
           sometimes referred to as BIC or SBC.}
-  \item{additive}{if \code{additive=TRUE} then \code{stepGAIC.CH} is used else \code{stepGAIC.CH}, default value is FALSE}
+   \item{parallel}{The type of parallel operation to be used (if any). If missing, the default is "no".}
+   \item{ncpus}{integer: number of processes to be used in parallel operation: typically     one would chose this to the number of available CPUs.}
+  \item{cl}{An optional parallel or snow cluster for use if \code{parallel = "snow"}. If not supplied, a cluster on the local machine is created for the duration of the call.
+}
    \item{sigma.scope}{scope for \code{sigma} if different to \code{scope} in \code{stepGAICAll.A()}}
   \item{nu.scope}{scope for \code{nu} if different to \code{scope} in \code{stepGAICAll.A()}}
   \item{tau.scope}{scope for \code{tau} if different to \code{scope} in \code{stepGAICAll.A()}}
@@ -131,7 +141,8 @@ stepTGD(object, scope, newdata, direction = c("both", "backward", "forward"),
   \item{sigma.try}{The default value is TRUE, set to FALSE if no model for \code{sigma} is needed}
   \item{nu.try}{The default value is TRUE, set to FALSE if no model for \code{nu} is needed}
   \item{tau.try}{The default value is TRUE, set to FALSE if no model for \code{tau} is needed}
-   \item{newdata}{The new data set where the Test Global Deviance (TGD) will be evaluated}
+  \item{test}{whether to print the chi-square test or not}
+  \item{sorted}{whether to sort the results}        
   \item{\dots}{ any additional arguments to 'extractAIC'. (None are currently
           used.)  }
 }
@@ -164,11 +175,8 @@ that one term from each of the term formulas of the parameters be present in the
 This also implies that any terms in formula of the distribution parameter not contained in any of the term formulas 
 will be forced to be present in every model considered.
 
-When the smoother used in \code{gamlss} modeling belongs to the new generation of smoothers allowing the determination of the  smoothing parameters
+When the smoother used in \code{gamlss} modelling belongs to the new generation of smoothers allowing the determination of the  smoothing parameters
 automatically (i.e. \code{pb()}, \code{cy()}) then the function   \code{stepGAIC.VR()} can be used for model selection (see example below).
-
-The function \code{stepTGD} is a clone function of \code{stepGAIC.VR()} where the selection criterion is not anymore a GAIC but the Test
-Global Deviance, that is, the deviance (-2log(Likelihood)) evaluated at the test data  rather than the training ones.  
 
 }
 \value{
@@ -187,11 +195,12 @@ Chambers, J. M. and Hastie, T. J. (1991). \emph{Statistical Models in S}, Chapma
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
-Stasinopoulos D. M., Rigby R.A. and Akantziliotou C. (2006) Instructions on how to use the GAMLSS package in R.
-Accompanying documentation in the current GAMLSS  help files, (see also  \url{http://www.gamlss.org/}). 
 
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
 \emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+(see also \url{http://www.gamlss.org/}).
 
 Venables, W. N. and Ripley, B. D. (2002) \emph{Modern Applied
      Statistics with S}. Fourth edition.  Springer.
@@ -204,48 +213,71 @@ Venables, W. N. and Ripley, B. D. (2002) \emph{Modern Applied
 \examples{
 \dontrun{
 data(usair)
-# Note default of additive=FALSE
-# fitting all variables linearly 
+# -----------------------------------------------------------------------------
+#  null model 
+mod0<-gamlss(y~1, data=usair, family=GA)
+#  all the explanatotory variables x1:x6 fitted linearly 
 mod1<-gamlss(y~., data=usair, family=GA)
+#-------------------------------------------------------------------------------
+# droping terms 
+dropterm(mod1)
+# with chi-square information
+drop1(mod1)
+# for parallel computations use something like 
+nC <- detectCores()
+drop1(mod1, parallel="snow",  ncpus=nC)
+drop1(mod1, parallel="multicore",  ncpus=nC)
+#------------------------------------------------------------------------------
+# adding terms
+addterm(mod0, scope=as.formula(paste("~", paste(names(usair[-1]),
+                  collapse="+"),sep="")))
+# with chi-square information
+add1(mod0, scope=as.formula(paste("~", paste(names(usair[-1]),
+                  collapse="+"),sep="")))
+# for parallel computations 
+nC <- detectCores()
+add1(mod0, scope=as.formula(paste("~", paste(names(usair[-1]),
+                  collapse="+"),sep="")), parallel="snow",  ncpus=nC)
+#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# stepGAIC 
 # find the best subset for the mu
-mod2<-stepGAIC(mod1)
+mod2 <- stepGAIC(mod1)
 mod2$anova
+#--------------------------------------------------------------
+# for parallel computations 
+mod21 <- stepGAIC(mod1, , parallel="snow",  ncpus=nC)
+#--------------------------------------------------------------
 # find the best subset for sigma
 mod3<-stepGAIC(mod2, what="sigma", scope=~x1+x2+x3+x4+x5+x6)
 mod3$anova
+#--------------------------------------------------------------
 # find the best model using pb() smoother 
 #only three variables are used here for simplicity
-mod10 <-gamlss(y~1, data=usair, family=GA)
-mod20<-stepGAIC(mod10, scope=list(lower=~1, upper=~pb(x1)+pb(x2)+pb(x5)))
+mod20<-stepGAIC(mod0, scope=list(lower=~1, upper=~pb(x1)+pb(x2)+pb(x5)))
 edf(mod20)
-# x1 and x2 enter linearly
-# now use the stepGAIC.CH function
+# note that x1 and x2 enter linearly
+#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# the stepGAIC.CH function (no parallel here)
 # creating a scope from the usair model frame 
 gs<-gamlss.scope(model.frame(y~x1+x2+x3+x4+x5+x6, data=usair))
 gs 
-mod4<-gamlss(y~1, data=usair, family=GA)
-mod5<-stepGAIC(mod4,gs, additive=TRUE)
+mod5<-stepGAIC.CH(mod0,gs)
 mod5$anova
-mod6<-stepGAIC(mod5, what="sigma", scope=~x1+x2+x3+x4+x5+x6)
-mod6$anova
-mod6
+#-----------------------------------------------------------------------------=-
+#------------------------------------------------------------------------------
 # now stepGAICAll.A    
-mod7<-stepGAICAll.A(mod4, scope=list(lower=~1,upper=~x1+x2+x3+x4+x5+x6)) 
+mod7<-stepGAICAll.A(mod0, scope=list(lower=~1,upper=~x1+x2+x3+x4+x5+x6)) 
+#-----------------------------------------------------------------------------=-
+#------------------------------------------------------------------------------
 # now  stepGAICAll.B
-mod8<-stepGAICAll.B(mod4, scope=list(lower=~1,upper=~x1+x2+x3+x4+x5+x6))
-# now stepTGD()
-data(aep)
-# sampling from the data
-rand <- sample(2, dim(aep)[1], replace=TRUE, prob=c(0.6,0.4))
-# the proportions in the sample
-table(rand)/dim(aep)[1]
-oldaep<-aep[rand==1,]
-newaep<-aep[rand==2,] 
-m0<-gamlss(y~ward+year+loglos, data=oldaep, family=BB)
-#checking mu
-m1 <- stepTGD(m0, newdata=newaep) 
-#checking sigma 
-m2 <- stepTGD(m0,scope=~ward+year, newdata=newaep, what="sigma") 
+drop1All(mod1, parallel="snow",  ncpus=nC)
+add1All(mod0, scope=as.formula(paste("~", paste(names(usair[-1]),
+                  collapse="+"))), parallel="snow",  ncpus=nC)
+mod8<-stepGAICAll.B(mod0, scope=list(lower=~1,upper=~x1+x2+x3+x4+x5+x6))
+#-----------------------------------------------------------------------------=-
+#------------------------------------------------------------------------------
 }
 }
 \keyword{regression}

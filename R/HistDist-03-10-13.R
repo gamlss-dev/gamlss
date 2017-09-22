@@ -15,6 +15,9 @@ histDist <- function(y,
                     xlab = NULL, 
                     ylab = NULL, 
                     data = NULL,
+                 line.wd = 2,
+                 line.ty = 1, 
+                line.col = "red",
                       ... )
 {
              FA <- as.gamlss.family(family)    
@@ -198,13 +201,12 @@ switch(typeDist,
             truehist(y, xlim = xlim, ylim = ylim, xlab=xlab, ylab=ylab, nbins=nbins, main = main, col="gray", lty=3, 
                      border="blue", fg=rainbow(12)[9], col.main = "blue4", col.lab = "blue4", col.axis = "blue")
                      #Poppy's Function
-            lines(x1, y1, col = "red", col.axis = "blue", col.main = "blue4", col.lab = "blue4", 
-                       lwd=2,fg = gray(0.7))
+            lines(x1, y1, col = line.col, col.axis = "blue", col.main = "blue4", col.lab = "blue4", 
+                       lwd=line.wd, lty=line.ty, fg = gray(0.7))
             if (density==TRUE) 
                  { dens<-density(y)
-                  lines(dens$x, dens$y, col="blue") 
+                  lines(dens$x, dens$y, col="blue",lwd=line.wd,lty=line.ty) 
                  }
-                   
            #===================================================================
               },
       "Discrete"=
@@ -221,9 +223,10 @@ switch(typeDist,
                                      col.lab = "blue4", ylim=ylim, xlim=xlim, ylab=ylab, 
                                      xlab=xlab, main=main)
                         yy1 <- y1[ x1%in%dft[[1]]] # this is to make sure that we have as many points as in the bar plot
-                        lines(r, yy1, type='h', col = "red",  lwd=2, col.axis = "blue", 
-                                    col.main = "blue4", col.lab = "blue4", fg = gray(0.7))  
-                        points(r, yy1,  col="red", pch=21, lwd=2,col.axis = "blue") # extra points  
+                        lines(r, yy1, type='h', col = line.col,  lwd=line.wd, col.axis = "blue", 
+                                    col.main = "blue4", col.lab = "blue4", lty=line.ty,
+                                    fg = gray(0.7))  
+                        points(r, yy1,  col=line.col, pch=21, lwd=2, col.axis = "blue") # extra points  
                         }
                       else  
                         {
@@ -240,9 +243,11 @@ switch(typeDist,
                                 col.lab = "blue4", main=main, fg=rainbow(12)[9])#P
                         #plot(y1/bd~I(y1/bd), type="h", xlim=mm, main=main)
                         #points(y1/bd, y1/bd,  cex= bd/mean(bd))
-                        lines( fitted(mod), rep(1,length(fitted(mod))), type="h", col="red" )
-                        points(fitted(mod), rep(0, length(fitted(mod))), col = "red", pch=25)
-                        points(fitted(mod),rep(1,length(fitted(mod))),   col="red", pch=24)
+                        lines( fitted(mod), rep(1,length(fitted(mod))), type="h", 
+                               col = line.col, lwd=line.wd,  lty=line.ty  )
+                        # lwd=line.wd   col = line.col  lty=line.ty  
+                        points(fitted(mod), rep(0, length(fitted(mod))), col = line.col, pch=25)
+                        points(fitted(mod),rep(1,length(fitted(mod))),   col=line.col, pch=24)
                         }
 
                 }  
@@ -284,10 +289,11 @@ switch(typeDist,
                       #              col.lab = "blue4", main=main, ...)
                       #    }        
                             yy1<- y1[ x1%in%dft[[1]]] # this is to make sure that we have as many points as in the bar plot
-                            lines(r, yy1, type='h', col = "red",  lwd=2, col.axis = "blue", 
-                                    col.main = "blue4", col.lab = "blue4", fg = gray(0.7))  
-                            points(r, yy1,  col="red", pch=21, lwd=2,col.axis = "blue") # extra points  
-                 }       
+                            lines(r, yy1, type='h',col = line.col, lwd=line.wd, 
+                                  col.axis = "blue", lty=line.ty,
+                                  col.main = "blue4", col.lab = "blue4", fg = gray(0.7))  
+                            points(r, yy1,  col=line.col, pch=21, lwd=2,col.axis = "blue") # extra points  
+                 }  
               },
         "Mixed"=
               {

@@ -99,19 +99,19 @@ if (plot)
               segments( rcrossing, y0,  rcrossing, lim, lty = 3)
                   CI[2] <- rcrossing
                 }
-                cat("*******************************************************************", "\n")
+                cat("******************************************************************", "\n")
                 cat("The Maximum Likelihood estimator is " ,PML, "\n")
                 cat("with a Global Deviance equal to ", Gmin, "\n")
                 if ((I.C[1] > lim) && (I.C[m] > lim))    
                 {cat("A ", perc,"% Confidence interval is: (" ,lcrossing, ",", rcrossing, ") \n")}
-                cat("*******************************************************************", "\n")             
+                cat("******************************************************************", "\n")             
       } # end if GD 
     else
     {
-      cat("*******************************************************************", "\n")
+      cat("******************************************************************", "\n")
       cat("The Mimimum is " ,PML, "\n")
       cat("with an an GAIC(",penalty,") =", Gmin,  "\n")
-      cat("*******************************************************************", "\n")
+      cat("******************************************************************", "\n")
     }
     } # end if plot 
         out <-list(values=prof.out, fun=prof.fun, min=min, max=max, max.value=PML, CI=if(criterion=="GD") CI else NULL, criterion=criterion)

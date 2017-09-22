@@ -6,6 +6,7 @@ update.gamlss <- function (object,
                           formula., 
                           ..., 
                           what = c("mu", "sigma", "nu", "tau", "All"),
+                          parameter= NULL,
                           evaluate = TRUE) 
 {
     call <- object$call
@@ -14,7 +15,8 @@ update.gamlss <- function (object,
     extras <- match.call(expand.dots = FALSE)$...
     if (!missing(formula.)) 
         {
-        what <- match.arg(what) 
+      what <- if (!is.null(parameter))  {
+        match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
         if (what=="mu") 
          { call$formula <- update.formula(formula(object,what), formula.) }
         else if (what=="sigma"||what=="nu"||what=="tau")  

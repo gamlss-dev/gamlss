@@ -11,7 +11,7 @@
 # and sigma_b as
 # (fit$fit$coef^2)/m1$df
 # the ratio is not input for smooth.spline() but spar
-# spar is λ = r * 256^(3*spar - 1) where r is in the code but not in the output
+# spar is lambda = r * 256^(3*spar - 1) where r is in the code but not in the output
 # 3) cs() can be use the same interface and fix df's YES
 #----------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------

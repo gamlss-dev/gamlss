@@ -2,7 +2,7 @@ fittedPlot <- function (object, ..., x = NULL, color = TRUE, line.type = FALSE, 
 {
     if (length(list(...))) {
         object <- list(object, ...)
-        nobj <- length(object)
+         nobj <- length(object)
         isgamlss <- unlist(lapply(object, is.gamlss))
         if (!any(isgamlss)) 
             stop("some of the objects are not gamlss")
@@ -72,7 +72,7 @@ fittedPlot <- function (object, ..., x = NULL, color = TRUE, line.type = FALSE, 
                 lines(x.o, mu.mat[, ii], col = col, lty = ltype)
                 if (color == TRUE) 
                   col <- col + 1
-                if (line.type == TRUE) 
+                if (length(line.type)>1) 
                   ltype <- ltype + 1
             }
         }
@@ -92,7 +92,7 @@ fittedPlot <- function (object, ..., x = NULL, color = TRUE, line.type = FALSE, 
                 lines(x.o, sigma.mat[, ii], col = col, lty = ltype)
                 if (color == TRUE) 
                   col <- col + 1
-                if (line.type == TRUE) 
+                if (length(line.type)>1) 
                   ltype <- ltype + 1
             }
         }
@@ -112,7 +112,7 @@ fittedPlot <- function (object, ..., x = NULL, color = TRUE, line.type = FALSE, 
                 lines(x.o, nu.mat[, ii], col = col, lty = ltype)
                 if (color == TRUE) 
                   col <- col + 1
-                if (line.type == TRUE) 
+                if (length(line.type)>1) 
                   ltype <- ltype + 1
             }
         }
@@ -132,7 +132,7 @@ fittedPlot <- function (object, ..., x = NULL, color = TRUE, line.type = FALSE, 
                 lines(x.o, tau.mat[, ii], col = col, lty = ltype)
                 if (color == TRUE) 
                   col <- col + 1
-                if (line.type == TRUE) 
+                if (length(line.type)>1) 
                   ltype <- ltype + 1
             }
         }

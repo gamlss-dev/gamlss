@@ -1,14 +1,15 @@
 # TODO: Add comment
 #  It uses the NPL.bands() function of  Ross Darnell from package SMIR
 # detrented Owen's plot 
-# Author: MS
+# Author: MS BR and VV
 #########################################################################################
 #----------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------
 #########################################################################################
 dtop<-function( object = NULL,
 		          xvar = NULL, 
-		          resid = NULL,
+		         resid = NULL,
+		          type = c("Owen", "JW"), 
 		    conf.level = c("95", "99"),
 		       n.inter = 4,
 		   xcut.points = NULL, 
@@ -23,42 +24,82 @@ dtop<-function( object = NULL,
 ##-------------------------------------------------------------------------------
 ## this is the NPL.bands() function of  Ross Darnell from package SMIR
 ##-------------------------------------------------------------------------------	
-	NPL.bands <- function (x, conf.level = c("95", "99")) 
-	{
-		if (!is.numeric(x)) 
-			stop("argument must be numeric")
-        conf.level <- match.arg(conf.level)
-		yn <- table(x)
-		yi <- as.numeric(names(yn))
-		cn <- as.numeric(cumsum(yn))
-		nn <- rep(sum(yn) + 1, length(cn))
-		p <- as.numeric(cn/nn)
-		if (conf.level == "95") 
-		    {
-			lambda <- ifelse(nn <= 100, (3.0123 + 0.4835 * log(nn) - 
-								0.00957 * (log(nn))^2 - 0.001488 * (log(nn))^3), 
-					(3.0806 + 0.4894 * log(nn) - 0.02086 * (log(nn))^2))
-		    }
-		else 
-		    {
-			if (conf.level == "99") {
-				lambda <- ifelse(nn <= 100, (-4.626 - 0.541 * log(nn) + 
-									0.0242 * (log(nn))^2), (-4.71 - 0.512 * log(nn) + 
-									0.0219 * (log(nn))^2))
-			}
-		#else stop("Must be either 0.95 or 0.99")
-	    }
-		lambda <- sqrt(2 * lambda)
-		phi <- pbeta(p, 1/3, 1/3)
-		se <- 1/(5.3 * sqrt(nn * (p * (1 - p))^(1/3)))
-		phiu <- phi + lambda * se
-		phiu <- ifelse(phiu > 1, 1, phiu)
-		phil <- phi - lambda * se
-		phil <- ifelse(phil < 0, 0, phil)
-		pu <- qbeta(phiu, 1/3, 1/3)
-		pl <- qbeta(phil, 1/3, 1/3)
-		list(x = yi, lower = pl, upper = pu)
-	}
+  NPOwen.bands <- function (x, conf.level = c("95", "99")) 
+  {
+    if (!is.numeric(x)) 
+      stop("argument must be numeric")
+    conf.level <- match.arg(conf.level)
+    yn <- table(x)
+    yi <- as.numeric(names(yn))
+    cn <- as.numeric(cumsum(yn))
+    nn <- rep(sum(yn) + 1, length(cn))
+    p <- as.numeric(cn/nn)
+    if (conf.level == "95") 
+    {
+      lambda <- ifelse(nn <= 100, (3.0123 + 0.4835 * log(nn) - 
+                                     0.00957 * (log(nn))^2 - 0.001488 * (log(nn))^3), 
+                       (3.0806 + 0.4894 * log(nn) - 0.02086 * (log(nn))^2))
+    }
+    else 
+    {
+      if (conf.level == "99") {
+        lambda <- ifelse(nn <= 100, (-4.626 - 0.541 * log(nn) + 
+                                       0.0242 * (log(nn))^2), (-4.71 - 0.512 * log(nn) + 
+                                                                 0.0219 * (log(nn))^2))
+      }
+      #else stop("Must be either 0.95 or 0.99")
+    }
+    lambda <- sqrt(2 * lambda)
+    phi <- pbeta(p, 1/3, 1/3)
+    se <- 1/(5.3 * sqrt(nn * (p * (1 - p))^(1/3)))
+    phiu <- phi + lambda * se
+    phiu <- ifelse(phiu > 1, 1, phiu)
+    phil <- phi - lambda * se
+    phil <- ifelse(phil < 0, 0, phil)
+    pu <- qbeta(phiu, 1/3, 1/3)
+    pl <- qbeta(phil, 1/3, 1/3)
+    list(x = yi, lower = pl, upper = pu)
+  }
+##------------------------------------------------------------------------------  
+  NPJagerWellner.bands <- function (x, conf.level = c("95", "99")) 
+  {
+    if (!is.numeric(x)) 
+      stop("argument must be numeric")
+    conf.level <- match.arg(conf.level)
+    yn <- table(x)
+    yi <- as.numeric(names(yn))
+    cn <- as.numeric(cumsum(yn))
+    nn <- rep(sum(yn) + 1, length(cn))
+    p <- as.numeric(cn/nn)
+    if (conf.level == "95") 
+    {
+      lambda <- ifelse(nn <= 100, (3.6792 + 0.5720 * log(nn) - 0.0567 * (log(nn))^2 + 
+                                     0.0027 * (log(nn))^3), 
+                       (3.7752 + 0.5062 * log(nn) - 0.0417 * (log(nn))^2)+
+                         0.0016* (log(nn)^3))
+    }
+    else 
+    {
+      if (conf.level == "99") {
+        lambda <- ifelse(nn <= 100, (5.3318 + 0.5539 * log(nn) - 
+                                       0.00370 * (log(nn))^2), 
+                         (5.6392 + 0.4018 * log(nn) - 
+                            0.0183 * (log(nn))^2))
+      }
+      #else stop("Must be either 0.95 or 0.99")
+    }
+    lambda <- sqrt(2 * lambda)
+    phi <- pbeta(p, 1/3, 1/3)
+    se <- 1/(5.3 * sqrt(nn * (p * (1 - p))^(1/3)))
+    phiu <- phi + lambda * se
+    phiu <- ifelse(phiu > 1, 1, phiu)
+    phil <- phi - lambda * se
+    phil <- ifelse(phil < 0, 0, phil)
+    pu <- qbeta(phiu, 1/3, 1/3)
+    pl <- qbeta(phil, 1/3, 1/3)
+    list(x = yi, lower = pl, upper = pu)
+  }
+  
 ##-----------------------------------------------------------------------------
 ##----------------------------------------------------------------------------- 
 	get.intervals <- function (xvar, xcut.points ) 
@@ -98,7 +139,8 @@ panel.fun<-function (x, y, col = par("col"), bg = NA, pch = par("pch"),
 #	qq <- as.data.frame(qqnorm(y, plot = FALSE))
 #	qq$y <- qq$y - qq$x  
 #	grid(nx=NA,ny=NA, lwd = 2) 
-	xx <- NPL.bands(y, conf.level=conf.level)
+  xx <- switch(type, "Owen" = NPOwen.bands(resid, conf.level=conf.level),
+                     "JW"=NPJagerWellner.bands(resid, conf.level=conf.level)) 
 	lower <- qnorm(xx$lower)-xx$x      
 	upper <- qnorm(xx$upper)-xx$x
 	if (!"ylim"%in%names(args))
@@ -137,10 +179,13 @@ panel.fun<-function (x, y, col = par("col"), bg = NA, pch = par("pch"),
 	if (is.null(object)&&is.null(resid))  stop(paste("A fitted object with resid() method or the argument resid should be used ", "\n", ""))
 	resid <- if (is.null(object)) resid else resid(object)  
 	conf.level <- match.arg(conf.level)
+	type <- match.arg(type)
 	 args <- list(...)
 	if(is.null(xvar)) # if there is no x-variable
 		{
-			   xx <- NPL.bands(resid, conf.level=conf.level)
+			   xx <- switch(type, "Owen" = NPOwen.bands(resid, conf.level=conf.level),
+			                       "JW"=NPJagerWellner.bands(resid, conf.level=conf.level)) 
+			   
 			lower <- qnorm(xx$lower)-xx$x      
 			upper <- qnorm(xx$upper)-xx$x
 		if (!"ylim"%in%names(args))
@@ -198,3 +243,5 @@ panel.fun<-function (x, y, col = par("col"), bg = NA, pch = par("pch"),
 		#	}
 		}
 }
+#-------------------------------------------------------------------------------
+

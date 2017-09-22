@@ -5,11 +5,13 @@
 plot2way <- function(obj,
                               terms = list(), # I think should be a list
                                what = c("mu","sigma","nu","tau"), 
+                               parameter = NULL,
                               #type = c("link", "response"),
                         show.legend = TRUE,
                                ... )
 {
-        what <- match.arg(what)
+        what <- if (!is.null(parameter))  {
+       match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
         if (!is.gamlss(obj))  stop(paste("This is not a gamlss object", "\n", ""))
         if (!is.character(terms))  stop("the terms argument should be a character vector with two elements" )
 #       type <- match.arg(type)

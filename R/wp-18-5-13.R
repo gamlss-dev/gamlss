@@ -30,7 +30,8 @@ wp <- function ( object = NULL,
 		               line = TRUE,
 		           ylim.all = 12*sqrt(1/length(resid)),
 		          ylim.worm = 12*sqrt(n.inter/length(resid)),   
-		                cex = 1, 
+		                cex = 1,
+		            cex.lab = 1,
 		                pch = 21,
 #                  data = NULL,
 		                  ...)
@@ -201,7 +202,7 @@ if (!grepl("$", deparse(substitute(xvar)), fixed=T)&&!grepl("~", deparse(substit
 			warning("Some points are missed out ", "\n","increase the x limits using xlim.all" )
 		}
 		plot(qq$x,qq$y,ylab="Deviation", xlab="Unit normal quantile", 
-				xlim=c(-xlim.all,xlim.all), ylim=c(-ylim.all , ylim.all), cex=cex, pch=pch ,   bg = "wheat", )
+				xlim=c(-xlim.all,xlim.all), ylim=c(-ylim.all , ylim.all), cex=cex, pch=pch , bg = "wheat",cex.lab=cex.lab )
 		grid(lty = "solid")
 		abline(0, 0, lty = 2, col = 2)
 		abline(0, 100000, lty = 2, col = 2)

@@ -11,9 +11,9 @@
 ## weighted.mean() !out  
 ## checklink()
 
-#####################################################################################
+################################################################################
 #                          refit                                               
-#####################################################################################
+################################################################################
 #refit <- function (object,...)# MS Friday, June 6, 2003 at 11:43
 #UseMethod("refit")
 
@@ -40,51 +40,53 @@ refit <- function (object, ...)
   # rm(itercontrol,envir=sys.frame(sys.parent()))# taken out Monday, March 17, 2008
    a
 }
-######################################################################################
+################################################################################
 #                         fitted.gamlss
-######################################################################################
-fitted.gamlss<-function (object, what = c("mu", "sigma", "nu", "tau"), ... ) 
+################################################################################
+fitted.gamlss<-function (object, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ... ) 
 {
-what <- match.arg(what)
+  what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
 if (!what%in%object$par) stop(paste(what,"is not a parameter in the gamlss object","\n"))
 x <-  if (is.null(object$na.action)) object[[paste(what,"fv",sep=".")]]
       else napredict(object$na.action, object[[paste(what,"fv",sep=".")]])
 x
 }
-######################################################################################
+################################################################################
 #                         coef.gamlss
-######################################################################################
-coef.gamlss<-function (object, what = c("mu", "sigma", "nu", "tau"), ... ) 
+################################################################################
+coef.gamlss<-function (object, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ... ) 
 {
-what <- match.arg(what)
+  what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
 if (!what%in%object$par) stop(paste(what,"is not a parameter in the object","\n"))
 x <- object[[paste(what,"coefficients",sep=".")]]
 x
 }
-#######################################################################################
+################################################################################
 #                 residual or resid.gamlss
-#######################################################################################
-#--------------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------------
+################################################################################
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 residuals.gamlss<-function (object, what = c("z-scores", "mu", "sigma", "nu", "tau"), 
                             type=c("simple","weighted","partial"), terms = NULL, ...) 
 {
-# Possible residuals
-#  I)  z-scores  i) simpe or weighted
-#                       simple just take the original:  object$residuals
-#               ii) weighted   
-#       
-#                   a) "zero ones"  or "frequencies" 
-#                               a1) Continuous rep(object$residuals, w)
-#                               a2) discrete
-#                   b) other    warning + object$residuals
-#                                                                    
-#  II)           "simple",  "weighted",  "partial"                   
-# 
-#  if what mu sigma nu tau  (the question here is whether w is needed) 
-#type   simple       
-#       weighted
-#       partial
+## Possible residuals
+##  I)  z-scores  i) simpe or weighted
+##                       simple just take the original:  object$residuals
+##               ii) weighted   
+##       
+##                   a) "zero ones"  or "frequencies" 
+##                               a1) Continuous rep(object$residuals, w)
+##                               a2) discrete
+##                   b) other    warning + object$residuals
+##                                                                    
+##  II)           "simple",  "weighted",  "partial"                   
+## 
+##  if what mu sigma nu tau  (the question here is whether w is needed) 
+## type   simple       
+##       weighted
+##       partial
 type <- match.arg(type)
 what <- match.arg(what)
    w <- object$weights
@@ -95,13 +97,13 @@ if(what=="z-scores")                            #      if z-scores  (I)
   else if (all(trunc(w)==w))                    # a) "zero ones"  or  "frequencies" 
         { if (object$type== "Continuous")     x <- rep(object$residuals, w) # a1 continuous
           else{                                     # a2  discrete case
-               y  <- rep(object$y, w)
-               if ("mu"%in%object$parameters) mu <- rep(fitted(object, "mu"),w)
-               if ("sigma"%in%object$parameters)  sigma <- rep(fitted(object,"sigma"),w)
-               if ("nu"%in%object$parameters)        nu <- rep(fitted(object,"nu"),w)
-               if ("tau"%in%object$parameters)      tau <- rep(fitted(object,"tau"),w)
-               if(any(object$family%in%.gamlss.bi.list)){ bd <- rep(object$bd,w)} # MS Wednesday, July 23, 2003 at 12:03   
-               x <- eval(object$rqres)
+          y  <- rep(object$y, w)
+      if ("mu"%in%object$parameters)        mu <- rep(fitted(object, "mu"),w)
+      if ("sigma"%in%object$parameters)  sigma <- rep(fitted(object,"sigma"),w)
+      if ("nu"%in%object$parameters)        nu <- rep(fitted(object,"nu"),w)
+      if ("tau"%in%object$parameters)      tau <- rep(fitted(object,"tau"),w)
+      if(any(object$family%in%.gamlss.bi.list)){ bd <- rep(object$bd,w)} # MS Wednesday, July 23, 2003 at 12:03   
+          x <- eval(object$rqres)
               }  
          }  # now weights NOT "zero ones"  or  "frequencies"                             
 else { warning("weights which are not frequencies are used: residuals remain unweighted")
@@ -121,11 +123,11 @@ else { warning("weights which are not frequencies are used: residuals remain unw
  } 
 x
 }
-#######################################################################################
+################################################################################
 
-#######################################################################################
+################################################################################
 #                     deviance.gamlss
-#######################################################################################
+################################################################################
 deviance.gamlss<-function(object, what = c("G", "P"), ...)
 { 
   what <- match.arg(what)
@@ -134,37 +136,40 @@ deviance.gamlss<-function(object, what = c("G", "P"), ...)
   else stop("put G for Global or P for Penalized deviance")
  x 
 }
-#######################################################################################
+################################################################################
 #                   lp
-#######################################################################################
+################################################################################
 ## lm  see also lpred()
-lp <-function (obj, what = "mu", ... ) 
+lp <-function (obj, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ... ) 
 {
-what <- as.character(substitute(what))
+  what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
 if (!what%in%obj$par) stop(paste(what,"is not a parameter in the object","\n"))
 x <- obj[[paste(what,"lp",sep=".")]]
 x
 }
-#######################################################################################
+################################################################################
 #                   fv
-#######################################################################################
+################################################################################
 ## fv  see also fitted and lpred()
-fv <-function (obj, what = "mu", ... ) 
+fv <-function (obj, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ... ) 
 {
-what <- as.character(substitute(what))
+  what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
 if (!what%in%obj$par) stop(paste(what,"is not a parameter in the object","\n"))
 x <- obj[[paste(what,"fv",sep=".")]]
 x
 }
-#######################################################################################
+################################################################################
 #                 model.frame.gamlss
-#######################################################################################
+################################################################################
 # new MS Thursday, June 24, 2004 at 13:45
-model.frame.gamlss <-function (formula, what = c("mu", "sigma", "nu", "tau"), ...) 
+model.frame.gamlss <-function (formula, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ...) 
 {
   object <- formula
     dots <- list(...)
-    what <- match.arg(what) 
+    what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
     Call <- object$call
      parform <- formula(object, what)
     #parform <- object[[paste(what, "formula", sep=".")]]
@@ -174,64 +179,81 @@ model.frame.gamlss <-function (formula, what = c("mu", "sigma", "nu", "tau"), ..
       mf <- model.frame(Terms, data, xlev = object[[paste(what,"xlevels",sep=".")]])
    mf
 }
-#######################################################################################
+################################################################################
 #                 terms.gamlss
-#######################################################################################
-terms.gamlss <- function (x, what = c("mu", "sigma", "nu", "tau"), ...) 
+################################################################################
+terms.gamlss <- function (x, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ...) 
 {
-what <- match.arg(what)
+  what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
 if (!what%in%x$par) stop(paste(what,"is not a parameter in the object","\n"))
     v <- x[[paste(what,"terms",sep=".")]]
     if (is.null(v)) 
         stop("no terms component")
     return(v)
 }
-#######################################################################################
+################################################################################
 #                  model.matrix
-#######################################################################################
-model.matrix.gamlss <- function (object, what = c("mu", "sigma", "nu", "tau"), ...) 
+################################################################################
+model.matrix.gamlss <- function (object, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ...) 
 {
-what <- match.arg(what)
+  what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
 if (!what%in%object$par) stop(paste(what,"is not a parameter in the object","\n"))
     v <- object[[paste(what,"x",sep=".")]]
     if (is.null(v)) 
         stop("no terms component")
     return(v)
 }
-#######################################################################################
+################################################################################
 #                 formula.gamlss
-#######################################################################################
-formula.gamlss<-function (x, what = c("mu", "sigma", "nu", "tau"), ... ) 
+################################################################################
+# formula.gamlss<-function (x, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ... ) 
+# {
+#   what <- if (!is.null(parameter))  {
+#     match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
+#  if (!what%in%x$par) stop(paste(what,"is not a parameter in the object","\n")) 
+#     fo <- x[[paste(what,"formula",sep=".")]]
+#  ## the problem is when "." is in the formula, if true get formula from terms
+#  if (length(fo)==2 && "."%in%strsplit(as.character(fo),split="")[[2]])# no resp 
+#     fo <- formula(x[[paste(what,"terms",sep=".")]])
+#  if (length(fo)==3 &&  "."%in%strsplit(as.character(fo), split = "")[[3]])# "."%in%strsplit(as.character(fo), split = "")[[3]]
+#     fo <- formula(x[[paste(what,"terms",sep=".")]])
+#     fo
+# }
+formula.gamlss<-function (x, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ... ) 
 {
- what <- match.arg(what)
- if (!what%in%x$par) stop(paste(what,"is not a parameter in the object","\n")) 
-    fo <- x[[paste(what,"formula",sep=".")]]
- ## the problem is when "." is in the formula, if true get formula from terms
- if (length(fo)==2 && "."%in%strsplit(as.character(fo),split="")[[2]])# no resp 
+  what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
+  if (!what%in%x$par) stop(paste(what,"is not a parameter in the object","\n"))
+  fo <- x[[paste(what,"formula",sep=".")]]
+  # Making it not a "formula" to prevent incompatibility with package:formula.tools when using as.character()
+  class(fo) = "formula_"
+  ## the problem is when "." is in the formula, if true get formula from terms
+  if ((length(fo)==2 && "."%in%strsplit(as.character(fo),split="")[[2]]) || (length(fo)==3 &&  "."%in%strsplit(as.character(fo), split = "")[[3]]))
     fo <- formula(x[[paste(what,"terms",sep=".")]])
- if (length(fo)==3 &&  "."%in%strsplit(as.character(fo), split = "")[[3]])# "."%in%strsplit(as.character(fo), split = "")[[3]]
-    fo <- formula(x[[paste(what,"terms",sep=".")]])
-    fo
+  class(fo) = "formula"
+  fo
 }
-#######################################################################################
+################################################################################
 #                 is.gamlss 
-#######################################################################################
+################################################################################
 is.gamlss <- function (x) 
 inherits(x, "gamlss")
 #--------------------------------------------------------------------------------------
 #is.formula <- function (x)
 #inherits(x,"formula")
-#######################################################################################
+################################################################################
 #                   IC
-#######################################################################################
+################################################################################
 IC <- function(object, k=2)
 {
 if (is.gamlss(object)) object$G.dev+object$df.fit*k 
 else stop(paste("this is not a gamlss object"))
 }
-#######################################################################################
+################################################################################
 #                 AIC.gamlss 
-#######################################################################################
+################################################################################
 AIC.gamlss <- function (object, ..., k = 2, c = FALSE) 
 {
  if (length(list(...))) 
@@ -259,7 +281,7 @@ AIC.gamlss <- function (object, ..., k = 2, c = FALSE)
        val 
       }
 }
-
+################################################################################
 GAIC <- function(object,..., k = 2, c = FALSE ) #UseMethod("AIC")
 {
  if (length(list(...))) 
@@ -286,7 +308,7 @@ GAIC <- function(object,..., k = 2, c = FALSE ) #UseMethod("AIC")
        val 
       }
 }
-
+################################################################################
 ## a small utility function to get the hat matrix from a weighted regression
 ## used in cs() and other additive terms 
 ## MS Tuesday, June 22, 2004 at 21:26
@@ -307,7 +329,7 @@ GAIC <- function(object,..., k = 2, c = FALSE ) #UseMethod("AIC")
     h<-hat(qr(WX))
     h
 }
-#-----------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # the generalised R-squared funtion
 # This should work now with Binomial
 Rsq <- function(object, type = c("Cox Snell","Cragg Uhler","both"))
@@ -315,15 +337,16 @@ Rsq <- function(object, type = c("Cox Snell","Cragg Uhler","both"))
   type <- match.arg(type)
   if (!is.gamlss(object)) stop("this is design for gamlss objects only")
   #  m0 <- update(object,  formula=~1, sigma.formula=~1, nu.formula=~1, tau.formula=~1, trace=F)
-  suppressWarnings(m0 <- gamlssML(object$y, family=object$family))
+  Y <- if (object$family[1]%in%.gamlss.bi.list) cbind(object$y, object$bd-object$y) else object$y
+  suppressWarnings(m0 <- gamlssML(Y~1, family=object$family[1]))
   rsq1 <- 1-exp((2/object$N)*(logLik(m0)[1]-logLik(object)[1]))
   rsq2 <- rsq1/(1-exp((2/object$N)*logLik(m0)[1]))
   if (type=="Cox Snell") return(rsq1)
   if (type=="Cragg Uhler") return(rsq2)
   if (type=="both") return(list(CoxSnell=rsq1, CraggUhler=rsq2)) 
 }
-#-----------------------------------------------------------------------------------
-#-----------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # the function is in a new file now
 # this intoducing the shifted log and logit links 
 # MS Sunday, February 20, 2005 
@@ -431,7 +454,7 @@ Rsq <- function(object, type = c("Cox Snell","Cragg Uhler","both"))
 #    list(linkfun = linkfun, linkinv = linkinv, mu.eta = mu.eta, 
 #        valideta = valideta)
 #}
-##----------------------------------------------------------------------------------------
+##------------------------------------------------------------------------------
 # numerical derivatives
 # taken from the Writing R Extensions p 48
 # modified to have a varied delta 
@@ -452,4 +475,4 @@ delta <-  if (is.null(delta)) eps * min(1, abs(old)) else delta
 attr(ans, "gradient") <- grad
 ans
 }
-#----------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------

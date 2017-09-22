@@ -6,32 +6,44 @@
 # the grouping of distributions
 #-------------------------------------------------------------------------------
 .realline <- c( 
-  "NO", "GU", "RG" ,"LO", "NET", # 2 par
-  "TF", "PE", "SN1", "SN2",  # 3 par
-  "SHASHo", "EGB2", "JSU", "SEP1", "SEP2", "SEP3", "SEP4", # 4 par
-   "ST1", "ST2", "ST3", "ST4", "ST5", "GT")  # 4 par 
+                    "NO", "GU", "RG" ,"LO", "NET", # 2 par
+  "TF", "TF2", "PE","PE2", "SN1", "SN2", "exGAUS", # 3 par
+  "SHASH", "SHASHo","SHASHo2",                     # 4 par
+  "EGB2", "JSU", "JSUo",                           # 4 par 
+  "SEP1", "SEP2", "SEP3", "SEP4",                  # 4 par 
+   "ST1", "ST2", "ST3", "ST4", "ST5", "SST",       # 4 par 
+  "GT")  
 #--------------------------------------------------------------------------------
-.realplus <- c( "EXP", # 1 par
+.realplus <- c( "EXP",                           # 1 par
   "GA","IG","LOGNO", "WEI3", "IGAMMA","PARETO2", # 2 par
-  "BCCGo", "exGAUS", "GG", "GIG",  # 3 par
-  "BCTo", "BCPEo")  # 4 par 
+  "BCCGo", "exGAUS", "GG", "GIG",                # 3 par
+  "BCTo", "BCPEo", "GB2")                        # 4 par 
 #--------------------------------------------------------------------------------
-.real0to1 <- c("BE", "BEINF", "BEINF0", "BEINF1", "BEOI", "BEZI", "GB1")
+.real0to1 <- c("BE", "LOGITNO", "BEINF", "BEINF0", "BEINF1", "BEOI", "BEZI", "GB1")
 #--------------------------------------------------------------------------------
-.realAll <- c( "EXP", # 1 par
-  "GA","IG","LOGNO", "WEI3", "IGAMMA","PARETO2", # 2 par
-  "BCCGo", "exGAUS", "GG", "GIG",  # 3 par
-  "BCTo", "BCPEo",
+.realAll <- c( "EXP",                                      # 1 par
+  "GA","IG","LOGNO", "WEI3", "IGAMMA","PARETO2","GP",      # 2 par
+  "BCCGo", "exGAUS", "GG", "GIG",                          # 3 par
+  "BCTo", "BCPEo",                                         # 4 par
   "GU", "RG" ,"LO", "NET", # 2 par
-    "TF", "PE", "SN1", "SN2",    # 3 par
+  "TF", "PE", "SN1", "SN2",    # 3 par
   "SHASHo", "EGB2", "JSU", "SEP1", "SEP2", "SEP3", "SEP4", # 4 par
-   "ST1", "ST2", "ST3", "ST4", "ST5", "GT"             
-              )  # 4 par
+   "ST1", "ST2", "ST3", "ST4", "ST5", "GT" )               # 4 par
+          
+
 #--------------------------------------------------------------------------------               
 #--------------------------------------------------------------------------------
-.counts <- c("PO", "GEOM", "LG", "YULE", "WARING", "NBI", "NBII", "PIG", "DEL", "SICHEL", "ZIP","ZIP2", "ZAP", "ZALG", "ZINBI", "ZANBI", "ZIPIG")
+.counts <- c("GEOM", "GEOMo", "LG", "PO", "YULE","ZIPF", # 1 par
+             "NBI", "NBII", "PIG",  "WARING", "ZALG", 
+             "ZAP", "ZAZIPF", "ZIP", "ZIP2", "GPO", "DPO",# 2 par 
+             "BNB", "NBF", "DEL", "SICHEL", "SI",
+             "ZANBI", "ZAPIG", "ZINBI", "ZIPIG", "ZANBF", # 3 par
+             "ZABNB", "ZASICHEL", "ZINBF", "ZIBNB",       # 4 par
+             "ZISICHEL")
 #--------------------------------------------------------------------------------
-.binom <- c("BI", "BB", "ZIBI", "ZIBB", "ZABI", "ZABB" )
+.binom <- c("BI",                            # 1 par
+            "BB", "ZIBI", "ZABI", "DBI",     # 2 par
+            "ZIBB",  "ZABB" )                # 3 par
 #-------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------
@@ -39,27 +51,30 @@ fitDist <- function(y,
                     k = 2, # for the AIC
                  type = c("realAll", "realline", "realplus","real0to1","counts", "binom" ), 
            try.gamlss = FALSE,  # whether to try the gamlss() if gamlssML() fails
-                extra = NULL,
-                 data = NULL, ...) # for extra distributions to include 
+                extra = NULL,  # for extra distributions to include 
+                 data = NULL, ...)
 {
   # if (!is.null(data)) {attach(data); on.exit(detach(data))}
   #if (!is.null(data)) {attach(data, name="TheDatA"); on.exit(detach(TheDatA))}
-  y <- if (!is.null(data)) get(deparse(substitute(y)), envir=as.environment(data)) else y
-  type <- match.arg(type)
+       y <- if (!is.null(data)) get(deparse(substitute(y)), envir=as.environment(data)) else y
+    type <- match.arg(type)
     DIST <- switch(type, "realAll"=.realAll, 
                         "realline"=.realline, 
                         "realplus"=.realplus,
-                         "real0to1"=.real0to1,
+                        "real0to1"=.real0to1,
                           "counts"=.counts,
                            "binom"=.binom 
                   )
-if  (!is.null(extra)) DIST <- c(DIST, extra)
-    m0 <- switch(type,  "realAll"= gamlssML(y, family=NO),
-                       "realline"= gamlssML(y, family=NO), 
-                       "realplus"= gamlssML(y, family=EXP),
-                       "real0to1"= gamlssML(y, family=BE),
-                         "counts"= gamlssML(y, family=PO),
-                          "binom"= gamlssML(y, family=BI) 
+if  (!is.null(extra)) DIST <- unique(c(DIST, extra))
+    # we need weights here 
+#if  ("weights"%in%names(list(...))) wlist(...)$weights else rep()
+    
+    m0 <- switch(type,  "realAll"= gamlssML(y, family=NO, ...),
+                       "realline"= gamlssML(y, family=NO, ...), 
+                       "realplus"= gamlssML(y, family=EXP, ...),
+                       "real0to1"= gamlssML(y, family=BE, ...),
+                         "counts"= gamlssML(y, family=PO, ...),
+                          "binom"= gamlssML(y, family=BI, ...) 
                  ) 
   failed <- list() 
     fits <- list()

@@ -3,7 +3,6 @@
 \alias{predictAll}
 
 
-
 \title{Extract Predictor Values and Standard Errors For New Data In a GAMLSS Model }
 \description{
  \code{predict.gamlss} is the GAMLSS specific method which produce predictors for a new data set   
@@ -15,22 +14,30 @@ data values can also be extracted using the function \code{lpred()} (which is ca
 }
 \usage{
 \method{predict}{gamlss}(object, what = c("mu", "sigma", "nu", "tau"), 
-               newdata = NULL, type = c("link", "response", "terms"), 
-               terms = NULL, se.fit = FALSE, data = NULL, ...)
+                parameter= NULL,
+                newdata = NULL, type = c("link", "response", "terms"), 
+                terms = NULL, se.fit = FALSE, data = NULL, ...)
 predictAll(object, newdata = NULL, type = c("response", "link", "terms"), 
-               terms = NULL, se.fit = FALSE, ...)
-
+                terms = NULL, se.fit = FALSE, use.weights = FALSE, 
+                data = NULL, y.value = "median", 
+                set.to = .Machine$double.xmin,
+                output = c("list", "matrix"), ...)
 }
 
 \arguments{
   \item{object}{a GAMLSS fitted model}
   \item{what}{ which distribution parameter is required, default \code{what="mu"}}
+  \item{parameter}{equivalent to \code{what}}
   \item{newdata}{a data frame containing new values for the explanatory variables used in the model}
   \item{type}{the default, gets the linear predictor for the specified distribution parameter. 
              \code{type="response"} gets the fitted values for the parameter while \code{type="terms"} gets the fitted terms contribution}
   \item{terms}{if \code{type="terms"}, which terms to be selected (default is all terms)}
    \item{se.fit}{if TRUE the approximate standard errors of the appropriate type are extracted if exist}
+    \item{use.weights}{if \code{use.weights=TRUE} the old data and the \code{newdata} are merged and the model is refitted with weights equal to the prior weights for the old data  observationa and   equal to a very small value (see option \code{set.to}) for the .\code{newdata} values. This trick allows to obtain standard errors for all parameters} 
   \item{data}{ the data frame used in the original fit if is not defined in the call}
+  \item{y.value}{how to get  the response values for the \code{newdata} if they do not exist. The default is taking the median, \code{y.value="median"}. Other function like "max", "min" are alloed. Also numerical values.}
+  \item{set.to}{what values the weights for the \code{newdata} should take}
+  \item{output}{whether the output to be a `list' (default) or a 'matrix'}
   \item{\dots}{ for extra arguments }
 }
 
@@ -50,11 +57,12 @@ contain a data.frame with the new names and the transformed values in which pred
 \references{ Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
-Stasinopoulos D. M., Rigby R.A. and Akantziliotou C. (2006) Instructions on how to use the GAMLSS package in R.
-Accompanying documentation in the current GAMLSS  help files, (see also  \url{http://www.gamlss.org/}). 
-
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
 \emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+
+(see also \url{http://www.gamlss.org/}).
 }
 
 \author{Mikis Stasinopoulos }

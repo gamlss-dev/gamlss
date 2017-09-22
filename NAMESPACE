@@ -1,4 +1,3 @@
-# functions
 export(gamlss, gamlss.control, glim.control, is.gamlss,
        centiles, centiles.com, centiles.split, centiles.pred,
        centiles.fan,
@@ -6,32 +5,43 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
        pdf.plot, prof.dev, prof.term, refit, rqres.plot, wp,
        IC, Q.stats, par.plot, histDist,
        stepGAIC.VR, stepGAIC.CH, stepGAIC, gamlss.scope, stepGAICAll.A,
-       stepGAICAll.B, stepTGD, term.plot,
+       stepGAICAll.B,  drop1All, add1All, term.plot,# stepTGD,
+       drop1TGD, add1TGD, stepTGD,stepTGDAll.A,
        cs, gamlss.cs, cs.control,
        scs,
        ps, gamlss.ps,
        pb, gamlss.pb, pb.control,
+       pbp, gamlss.pbp, pbp.control,
+       pbm, gamlss.pbm, pbm.control,
+       pbo, gamlss.pbo, pbo.control,
+       pbz, gamlss.pbz, pbz.control,
        cy, gamlss.cy, cy.control,
        pvc, gamlss.pvc, pvc.control,
+       pbc, gamlss.pbc, pbc.control,
        fp, gamlss.fp,
        bfp,
-       ra, gamlss.ra,
-       rc, gamlss.rc,
+       re, gamlss.re,
+#       rc, gamlss.rc,
        pp, gamlss.pp,
        lo, gamlss.lo,
    random, gamlss.random,
         ri, gamlss.ri,
-     ridge, gamlss.ridge,
        GAIC, .hat.WX,  gamlssNews,
        predictAll, #own.linkfun, own.linkinv, own.mu.eta,own.valideta,
-        VGD, VGD1, VGD2, TGD,
-        edf, edfAll,
-        LR.test, dtop,
-        gamlssML, fitDist, histSmo, histSmoO, histSmoC, histSmoP,
-        calibration, lms, Rsq, gen.likelihood,
-        acfResid, rvcov, get.K, getSmo, 
-        .gamlss.sm.list, .gamlss.bi.list, .gamlss.multin.list,
-        plot2way, loglogSurv1, loglogSurv2, loglogSurv3, loglogSurv, logSurv )
+  #      VGD, VGD1, VGD2, TGD,
+       gamlssVGD, VGD,  getTGD, TGD, gamlssCV, CV,
+       edf, edfAll,
+       LR.test, dtop,
+       gamlssML, fitDist, histSmo, histSmoO, histSmoC, histSmoP,
+       calibration, lms, z.scores, Rsq, gen.likelihood,
+       acfResid, rvcov, get.K, getSmo, 
+       .gamlss.sm.list, .gamlss.bi.list, .gamlss.multin.list,
+       .counts, .binom, .realline, .realplus,  
+       plot2way, loglogSurv1, loglogSurv2, loglogSurv3, loglogSurv, logSurv, 
+       quantSheets.control, quantSheets, findPower, z.scoresQS,
+       getZmatrix, vis.lo, VC.test,
+       pcat, gamlss.pcat, plotDF, plotLambda,
+       getPEF, devianceIncr)
 
 
 
@@ -46,18 +56,24 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
 
 
 #importFrom(graphics, pairs, plot)
-importFrom(stats, AIC, deviance, coef, extractAIC, family, fitted,
-           formula, logLik, model.frame,  predict, residuals, terms, update,
-           loess)
+#importFrom(stats, AIC, deviance, coef, extractAIC, family, fitted,
+#          formula, logLik, model.frame,  predict, residuals, terms, update,
+#           loess)
 importFrom(MASS, addterm, dropterm, truehist)
 importFrom(survival, Surv, is.Surv)
-importFrom(graphics, plot)
+importFrom("methods", "is")
+#importFrom(graphics, plot)
 #importFrom(base, print)
-importFrom(splines, bs, ns, spline.des)
+importFrom(splines, bs, ns, spline.des, splineDesign)
 #importFrom(gamlss.tr, trun)
-importFrom(gamlss.data)
-importFrom(gamlss.dist)
-importFrom(nlme)
+import(stats)
+import(graphics)
+import(gamlss.data)
+import(gamlss.dist)
+importFrom(nlme, lme, varFixed, ranef)
+import(parallel)
+import(utils)
+import(grDevices)
 
 S3method(addterm, gamlss)
 S3method(add1, gamlss)
@@ -82,8 +98,45 @@ S3method(vcov, gamlss)
 S3method(logLik, gamlss)
 S3method(confint, gamlss)
 
+S3method(predict, lms)
+
+S3method(print, quantSheets)
+S3method(predict, quantSheets)
+S3method(fitted, quantSheets)
+S3method(residuals, quantSheets)
+
+S3method(print, pcat)
+S3method(fitted, pcat)
+S3method(coef, pcat)
+S3method(plot, pcat)
+S3method(coef, pcat)
 
 S3method(fitted, gamlssML)
 S3method(vcov, gamlssML)
 S3method(summary, gamlssML)
 S3method(plot, histSmo)
+S3method(lines, histSmo)
+S3method(print, histSmo)
+S3method(plot, pvc)
+S3method(fitted, pvc)
+S3method(coef, pvc)
+S3method(print, pvc)
+S3method(plot, ri)
+S3method(coef, ri)
+S3method(fitted, ri)
+S3method(print, ri)
+S3method(plot, random)
+S3method(coef, random)
+S3method(fitted, random)
+S3method(print, random)
+
+S3method(plot, pb)
+S3method(coef, pb)
+S3method(fitted, pb)
+S3method(print, pb)
+S3method(print, pbm)
+S3method(print, pbz)
+S3method(print, pbc)
+S3method(print, cy)
+
+useDynLib(gamlss, .registration = TRUE)

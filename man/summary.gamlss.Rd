@@ -8,7 +8,8 @@
 \usage{
 \method{summary}{gamlss}(object, type = c("vcov", "qr"), 
                        robust=FALSE, save = FALSE,
-                       hessian.fun = c("R", "PB"), ...)
+                       hessian.fun = c("R", "PB"), 
+                       digits = max(3, getOption("digits") - 3),...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,10 +23,11 @@
   \item{robust}{whether robust (sandwich) standard errors are required}
   \item{save}{whether to save the environment of the function so to have access to its values}
   \item{hessian.fun}{whether when calculate the Hessian should use the "R" function \code{optimHess()} or a function based on Pinheiro and Bates \code{nlme} package, "PB".}
-  \item{\dots}{for extra arguments}
+ \item{digits}{the number of digits in the output}
+\item{\dots}{for extra arguments}
 }
 \details{Using the  default value \code{type="vcov"}, the \code{vcov()} method for gamlss is used to get  
-  the variance covariance matrix (and consequently the standard errors)of the beta parameters. 
+  the variance covariance matrix (and consequently the standard errors) of the beta parameters. 
   The variance covariance matrix is  calculated using the inverse of the numerical second derivatives
   of the observed information matrix. This is a more reliable method since it take into the account the 
   inter-correlation between the all the parameters. The \code{type="qr"} assumes that the parameters are fixed 
@@ -38,13 +40,15 @@
 \references{Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
-Stasinopoulos D. M., Rigby R.A. and Akantziliotou C. (2003) Instructions on how to use the GAMLSS package in R.
-Accompanying documentation in the current GAMLSS  help files, (see also  \url{http://www.gamlss.org/}).
 
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
 \emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+
+(see also \url{http://www.gamlss.org/}).
  }
-\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk} and Calliope Akantziliotou }
+\author{Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby  and Calliope Akantziliotou }
 
 \seealso{  \code{\link{gamlss}}, \code{\link{deviance.gamlss}},  \code{\link{fitted.gamlss}} }
 \examples{

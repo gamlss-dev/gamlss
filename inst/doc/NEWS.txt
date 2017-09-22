@@ -3,21 +3,308 @@ GAMLSS is a R package implementing the Generalised Additive Models for
 location scale shape of Rigby and Stasinopoulos (2005),  Appl. Statist.,
 54,  pp. 507-554.
 
-A manual in a pdf form is included with the package and can be found
-in the windows version by using the menu
+The book "Flexible Regression and Smoothing: Using GAMLSS in R" explains 
+how the models can be used in R.
 
-help/HTML help/packages/gamlss/directory/gamlss-manual.pdf
-
-More information and papers about GAMLSS can be found in
+More more information about books and papers related to GAMLSS can be found in
 
 http://www.gamlss.org/
 
 Question or suggestions about GAMLSS can be send to
 
-   d.stasinopoulos@londonmet.ac.uk
+   mikis.stasinopoulos@gamlss.org
 or
    r.rigby@londonmet.ac.uk
----------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Version 5.0-3
+
+1. gamlss
+     i) the function devianceIncr() is introduced to calculate the global deviance increment. 
+     ii) An argument for changing the size of the axis is added in wp()
+     iii) The method of caclulating the average of rqres.plot() has changes   
+
+2. gamlss.dist
+     i) Double binomial distribution is introduced
+      
+
+Version 5.0-2
+1. gamlss  
+       i) The function lms() has been changed. Now the different fittings do not start from the previous values of the normal model. This was found to fail in cases where the number of observations was relative small (thanks Tanmay Nath for point  out to us).
+      ii) ri() is amended so it can be used when the number of variables are larger than the number of observations. In such case we found that maybe the starting value for lambda (argument start) may have to change from 10 to a bigger value say 1000?.   
+      iii) gamlssML() accepts both Y or formula Y~1 (and some bug which had to do with not using the foruma when used within another function is corrected)
+
+2. gamlss.add 
+        i) Marco Enea have done some adjustments on the way data is dealt by  ga() and ba()
+       ii) the degrees of freedom of tr() function now are corrected. They are the number of leaves + the number of beak points. This effects the results on the page 309 of the book.
+       
+3. gamlss.dist 
+       i) The discrete distribution BNB() (Beta negative binomial) is introduced together with its zero adjusted and zero inflated versions ZABNB() and ZIBNB().
+      ii) The zero adjusted and zero inflated versions  of the Sichel (SICHEL) distribution are introduced ZASICHEL() and ZISICHEL().
+     iii) The zero adjusted PIG is introduced ZAPIG()
+      iv) the cdf of the GG distribution had an error when nu<0 (it was spotted by Felix Hunschede) and now is corrected.
+
+
+Version 5.0-1
+1. gamlss i)  term.plot() is amended when call vis.lo()
+          ii) gen.likelihood(): a bug preening the function to work for NA                       coefficient is corrected 
+          iii) dependence is now from R version 3.3.0 since the function 
+               startsWith() used by both gen.likelihood() and getPEF()  is new on                 the R 3.3.0 version as pointed out by Uwe Ligges.
+          iv) fitDist() A bug when weights were used is corrected 
+           v) gamlss() the iterative weights (wt) and fitted values (fv)
+              in glim.fit are prevented to go to Inf or very extreme values.
+          vi) gamlssML() the weights arguments is fixed. Now the beginning of 
+              the function is similar to gamlss()
+             
+2. gamlss.add i) Marco Enea done some adjustments on the way data is dealt by ga()               and ba()
+              ii) the degrees of freedom of tr() function now are corrected. They               are the number of leaves + the number of beak points. 
+
+Version 5.0-0
+1. gamlss i) gen.likelihood() :a bug in the function gen.likelihood() which was failing                for binomial family distribution has been corrected 
+             (Thanks to Jason Martinez who point it out) 
+             Also the function now can cope with fixed distribution parameters
+             (Thanks to Tim Cole and Lynn Sleeper)
+        ii)  lms(): a bug in the lms() function which effect the transformation of the 
+             x-variable is corrected.
+       iii)  fitted.plot() the condition for line.type has been amended 
+        iv)  gen.likelihood(): The function did not work with "data=an.omit(data)" 
+             (Thanks to Jonathan Williams)
+         v)  dtop() the formula of Jager and Wellner (2004) was added on.
+         vi) the function getPEF() for getting the partial effect of continuous variables              is introduced
+        vii) predictAll() has changed. Now it includes the method of obtain the predictive
+              values (and its se's) using weights
+       viii) histDist() more arguments are added for changing the colour, type and width of              the fitted distribution line.
+         x) pb() fixing the degrees of freedom is amended it now works with log-lambda and             also gives a warning if the df desired df's are not acheive.
+        xi) the global deviance tolerance has now set to infinity in gamlss.control(), 
+             i.e gd.tol=Inf. This allows models with estimated smoothing parameters to be                  more flexible in each iteration.  
+        xii) vcov() and summarry() now can cope with fixed distribution parameters. Note that 
+             robust variance covariance i.e. rvcov() is not working with fixed parameters.
+        
+2.  gamlss.dist 
+        i) the  EGB2 and  GB2 distribution had the link function for sigma changed from                 identity to log 
+        ii) the Negative Binomial Family (NBF) has been added
+        
+3.   gamlss.data 
+        i) the film90 data are changed to preserve anonymity  
+       ii) the eu15 data set is added.
+       
+4.   gamlss.add
+        i) the ga() have changed (thanks to Daniil) and it lot faster
+       ii) the ba() function is added interfacing with bam() of package mgcv of Simon Wood
+       
+5.   gamlss.add2 is created for extra smoothing terms within GAMLSS.
+        i) the ma() for fitting MARS models using the earth packages is introduced.
+        
+Version 4.4-0
+
+1. gamlss   i) the term.plot() did not plot (by mistake) a gam object. 
+               This is now corrected 
+           ii) the vis.lo() is introduced for plotting fitted loess curves 
+          iii) VC.test() for Vuong and Clarke test is introduced (use with caution) 
+           iv) the function stepVGDAll.A() is introduced. 
+            v) Q.stats() function is amended so the number of observations in each intervals add up to                the total number of observations (that was a bug)
+           vi) the pcat() function for reducing the levels of a categorical 
+               variable is introduced.
+          vii) the pbc() a more robust version of cy() is introduced.
+2. gamlss.mx
+            i) the function plotMP() is added
+3. gamlss.data
+            i) the Tokyo rainfall data is included in gamlss now as an example of cycle 
+               P-spline  smoothing
+           ii) the data set grip (hand grip strength) is added (for centile estimation)
+          iii) the data set leukemia is added (for random effect analysis)
+            v) the data oil is included
+
+Version 4.3-7
+
+1. gamlss i) the function random() had a bug which did not take the df's. This is now     corrected
+          ii) when the functions pb(), pbm(), pbz(), cy() and random() were used a list was created. Now R object are created of class "pb", "pbm", "pbz", "cy" and"random" respectively. Those objects can be accessed after the fit using the function getSmo(). The methods print(), plot(), fitted() and coef() can be applied to them
+         iii) the function histSmo() has been revised
+          iv) the function getZmatrix() is created to facilitate fitting smoother using the re() function.
+           v) The function lo()  has been revised (it was failing under 3.2.3 (2015-12-10)) 
+
+2. gamlss.data i) the glasses data set, a nice example of a mixture distribution, is added
+               ii) the respInf data set: an example of  binary random effects
+               iii) the meta data set: an example of binomial non=parametric random effect model
+
+
+
+Version 4.3-6
+1. gamlss i) the functions add1TGD() drop1TGD() and stepTGD() are added to the namespace
+             (something which was missed with the version Version 4.3-5)
+          ii) the function stepGAICAll.A() can use parallel computations
+          iii) the function get.smoothers() within gamlss() has been modified to 
+               preserve the order of the terms in the formula (previously it was taking
+               the order of the .gamlss.sm.list). This was rather confusing when you are
+               trying to retrieve information on the smoothers using for example 
+               the function getSmoo().
+          iv) The function pbz() is introduced. The function is similar to pb() 
+              but allows the fitted smoother to go to a constant rather than    linear curve which is useful for model selection
+Version 4.3-5
+1. gamlss  i) the functions   VGD(), VGD1(), VGD2(), TGD() have been removed and 
+               replaced by the functions 
+                   1) gamlssVGD,  
+                   2) VGD(),  
+                   3) getTGD(), 
+                   4) TGD(),
+                   5) gamlssCV(), 
+                   6) CV(). 
+               The function gamlssVGD() fits a gamlss model to the training data. 
+               The results is a gamlss objects with three extra components: 
+                  a) VGD the global deviance applied to the validation data sets. 
+                  b) predictError  
+                  c) residVal the residuals for the  validation  data set. 
+               The function VGD() extract the validated global deviance. 
+               The function getTGD() assumes that the users already have fitted 
+                a models and now he/she interested  to evaluate the global deviance 
+                at a new (validation or test) data set. 
+               TGD()}  extracts the validated/test global deviance,
+               The function gamlssCV() performs a k-fold cross validation on a 
+               gamlss models. 
+               The function CV()} extract the cross validated  global deviance. 
+
+          ii)  The functions dropterm.gamlss(), addterm.gamlss() and stepGAIC() can 
+               use parallel computing. stepGAIC() no longer has the argument additive.
+                
+         iii) The functions drop1All() and add1All() are added while the function 
+              stepGAICAll.B() works now with parallel. 
+
+         iv)  The function rqres.plot() has modified to allow  arguments for the wp()
+              function.
+      
+          v) pb(): an extra condition was added if the number of distinct points of the   
+              x-variable  is less the number of interval (in control) then the number of 
+              intervals is set  to number of   distinct values of x (thanks to Juliane Manitz 
+              for point out the problem) 
+          
+         vi) rqres() function is modified to produce the correct randomised residuals for 
+             mass point 1 in the INFBE and INFBE1 distributions. 
+             Also rqres1() (a hidden function as rqres()) is created  for allowing to fix the 
+             seed in the randomisation. To use the function use gamlss:::rqres1(). 
+               
+        vii) pbm(): is using svd now like pb() 
+
+        viii) term.plot() the  warning when nn() or ga() was used (when ylim is calculated for 
+               "common") is suppressed.
+
+         ix) A lot of functions within gamlss have the arguments "what" as a way to refer to a specific
+            parameter of the distribution. We decide to include also the argument "parameter" as more
+            intuitive way of referring to a specific parameter. In his version if say `parameter="mu"' 
+            is set then take over from the  "what" argument. The function effected are 
+             fitted.gamlss(), coef.gamlss(), lp(), fv(), model.frame.gamlss(), terms.gamlss(),
+             model.matrix.gamlss(), formula.gamlss(), update.gamlss(), dropterm.gamlss(),
+             addterm.gamlsss(), stepGAIC(), edf(), lpred(), confint.gamlss(), fitted.gamlssML(),
+             getSmo(), predict,lms(), plot2way(), predict.gamlss(),stepGAIC.VR(), stepGAIC.CH().
+
+          x) The function ri() (for ridge regression) is rewriten. Now the function allows different type of penalties. For example using the argument "Lp=1" or "Lp=0" a lasso or a selection of linear terms can be done respectively.    
+
+1. gamlss.dist A bug in is pBB() is fixed thanks to Jonatan Kallus.
+
+
+Version 4.3-3
+
+1. gamlss
+           i) The glim.fit() function within gamlss() has a line added to 
+              prevent the iterative weighs wt to go to Inf. 
+          ii) The tp() function within lms() and quantSheets() has changed name
+              and modified slightly 
+         iii) The vcoc.gamlss() has the warnings changed and allows if the 
+              inverse of the Hessian (R) fails to recalculated using different 
+              ().
+          iv) The output of the term.plot() function has changed.  
+           v) IMPORTANT: pb() has a new version which is faster than the old one.
+               Th old pb() function is renamed and called pbo()
+          vi) The summary.gamlss() functions instead of giving an R warning for
+                additive terms it gives a "Note" in the output.
+         vii) Q.stats() has been modified to .n.iter=5 will work with small 
+                data
+
+2.  gamlss.demo 
+           i) The Locmean(), Locpoly(), WLocmean() and  WLocpoly()  functions 
+              were moved from the package gamlss.util to here since they are 
+              used only for the demos.
+          ii) The function demo.LocalRegression() is added
+
+3. gamlss.dist
+            i) The discrete distribution double Poison DPO() is added.
+            ii) a modification on plotZAGA() is added 
+
+4. gamlss.util 
+           i) garmaFit() is modified to allow binomial (and binary) fits 
+              (Thanks to Matthias Schmid for point out to us). 
+          ii) scattersmooth() the argument "cols" was added to allow different 
+              schemes of colours. This also allow the package not to depend to 
+              the package colorspace even though the plot is not looking as good.
+              If you have the colorspace in you version of R you can still use 
+              the old scheme, see the example in scattersmooth().
+          iii) plotSimpleGamlss() : had a minor amendment thanks to Michael Guan. 
+5. gamlss.add
+            i) the function plotNN() is added for plotting fitted neural netwarks 
+--------------------------------------------------------------------------------
+Version 4.3-1
+
+1. gamlss
+          i)  the functions centiles(), centiles.fan() and centiles.com() had 
+              some of the plotting options changed
+          ii) the lms() the function has changed with some extra arguments added,
+              and a with an extra predict.lms() method. Now the lms object 
+              (created by lms()) can be used with centiles.pred().
+          iii) z.scores() function for lms object is added to simplify getting 
+               the z.scores for new observations
+          iv) the function quantSheets() is added. It uses the method of 
+              Schnabel and Eilers (2013) to create quantiles curves for 
+              centile estimation. The created object has print(), fitted(),
+              predict() and  resid() methods. 
+           v) the functions z.scoresQS() and findPower() are also added to 
+              assist centile estimation modelling using quantSheets().
+
+2. gamlss.dist
+          i) the function flexDist() is moved from gamlss.util to gamlss.dist
+         ii) a bug is fixed in the qZAGA() and qZAIG() functions
+  
+
+--------------------------------------------------------------------------------
+Version 4.3-0
+
+1. gamlss
+          i)   kri is added as another smoother
+          ii)  rvcov() the argument hessian.fun is added
+          iii) fp() now saves the lm fitted models and it can be access using 
+               getSmo()
+          vi)  ra() and rc() are gone to be replaced by re() and interface for calling mle() within gamlss
+
+
+2. gamlss.dist
+
+          i) Family() is amended to save a function rather just a list
+          ii) all the FORTRAN source files have now translated to C thanks to 
+              Marco Enea
+          iii)  ST3C a version of ST3 written in C rather in R is added thanks to 
+               Alexios Ghalanos
+
+3, gamlss.add 
+          i) fk() now does not print the results in each iteration (it was left 
+              by mistake in the last version) 
+          ii) ga() ,tr() and nn() now can take bigger formula.
+
+
+Version 4.2-8
+
+1. gamlss
+
+       i) pb(), cy(), ri(), and pvc(): now  divide with the correct number of observations if prior weights with zeros are used.
+
+       ii) pbm() is added as a new additive function allowing monotonic curve smooth fitting
+    
+
+2. gamlss.add
+       i) the function tr() is added for fitting decision trees within gamlss
+
+3. gamlss.data
+
+        i) the new data set rent99 is added
+        ii) the data mviBig is added 
+
+
 Version 4.2-7
 
 1. gamlss 

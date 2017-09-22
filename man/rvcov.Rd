@@ -8,7 +8,8 @@ Robust Variance-Covariance matrix of the parameters from a fitted GAMLSS model
 The function \code{rvcov()} is design for providing  robust standard errors for the parameters estimates of a GAMLSS fitted model. The same result can be achieved by using \code{vcov(fitted_model,robust=TRUE)}. The function \code{get.()} gets the \eqn{K} matrix (see details below).  
 }
 \usage{
-rvcov(object, type = c("vcov", "cor", "se", "coef", "all"))
+rvcov(object, type = c("vcov", "cor", "se", "coef", "all"),
+                      hessian.fun = c("R", "PB") )
 get.K(object, what = c("K", "Deriv"))
 }
 %- maybe also 'usage' for other objects documented here.
@@ -19,9 +20,10 @@ a GAMLSS fitted object
   \item{type}{this argument for \code{rvcov()} function 
 whether variance-covariance matrix, correlation matrix, standard errors  or  all of them  
 }
-  \item{what}{this an argument for the function \code{ket.K()} allowing to get either \eqn{K} or the first derivative of the likelihood with respect to the parameters (the \eqn{\beta}'s in  the GAMLSS notation). 
+  \item{what}{this an argument for the function \code{ket.K()} allowing to get either \eqn{K} or the first derivative of the likelihood with respect to the parameters (the \eqn{\beta}'s in  the GAMLSS notation).} 
+\item{hessian.fun}{How to obtain numerically the Hessian i) using \code{optimHess()}, option     \code{"R"}  ii) using a function by Pinheiro and Bates taken from package \code{nlme}, option \code{"PB"}.}
 }
-}
+
 \details{
 The robust standard errors are calculated for the robust sandwich estimator of the variance-covariance given by \eqn{S=VKV} where \eqn{V} is the standard variance-covariance matrix (the inverse of the information matrix) and \eqn{K} is an estimate of the variance of he first derivatives of he likelihood.  The function \code{get.K()} is use the get the required \eqn{K} matrix.
 }
@@ -32,13 +34,14 @@ A variance covariance matrix or other relevant output
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
-Stasinopoulos D. M., Rigby R.A. and Akantziliotou C. (2006) Instructions on how to use the GAMLSS package in R.
-Accompanying documentation in the current GAMLSS  help files, (see also  \url{http://www.gamlss.org/}).
-
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
 \emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+
+(see also \url{http://www.gamlss.org/}).
 }
-\author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk} and Vlasios Voudouris}
+\author{ Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby and Vlasios Voudouris}
 
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

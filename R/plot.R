@@ -102,7 +102,7 @@ plot.gamlss <- function (x, xvar=NULL, parameters=NULL, ts=FALSE, summaries=TRUE
                     b.1 <- m.3^2/m.2^3
                 sqrtb.1 <- sign(m.3)*sqrt(abs(b.1))
                     b.2 <- m.4/m.2^2 
-                     cat("*******************************************************************")
+                     cat("******************************************************************")
                      cat("\n")
                      if (identical(x$type,"Continuous")) 
                          {cat("\t","     Summary of the Quantile Residuals")}
@@ -113,7 +113,7 @@ plot.gamlss <- function (x, xvar=NULL, parameters=NULL, ts=FALSE, summaries=TRUE
                      cat("               coef. of skewness  = ", sqrtb.1, "\n")
                      cat("               coef. of kurtosis  = ", b.2, "\n")
                      cat("Filliben correlation coefficient  = ", Filliben, "\n")
-                     cat("*******************************************************************")
+                     cat("******************************************************************")
                      cat("\n")
 
                }

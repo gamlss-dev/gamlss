@@ -1,7 +1,8 @@
 #======================================================================================
-edf <- function(obj, what = c("mu", "sigma", "nu", "tau"), print=TRUE, ...)
+edf <- function(obj, what = c("mu", "sigma", "nu", "tau"), parameter= NULL,  print=TRUE, ...)
  {
- what <- match.arg(what)
+what <- if (!is.null(parameter))  {
+    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
  x <- obj[[paste(what,"coefSmo",sep=".")]]
  s <- obj[[paste(what,"s",sep=".")]]
  P <- length(x)

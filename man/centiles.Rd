@@ -13,13 +13,13 @@ centiles(obj, xvar = NULL, cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6),
          legend = TRUE, ylab = "y", xlab = "x", main = NULL, 
          main.gsub = "@", xleg = min(xvar), yleg = max(obj$y), 
          xlim = range(xvar), ylim = range(obj$y), save = FALSE, 
-         plot = TRUE, points = TRUE, pch = "+", col = "blue", 
+         plot = TRUE, points = TRUE,  pch =  15, cex = 0.5, col =  gray(0.7), 
          col.centiles = 1:length(cent) + 2, lty.centiles = 1, lwd.centiles = 1, ...)
 centiles.fan(obj, xvar = NULL, cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6), 
          ylab = "y", xlab = "x", main = NULL, main.gsub = "@", 
          xleg = min(xvar), yleg = max(obj$y), xlim = range(xvar), 
-         ylim = range(obj$y), points = FALSE,  median = TRUE,  pch = "+", 
-         col = "blue", 
+         ylim = range(obj$y), points = FALSE,  median = TRUE, pch =  15, 
+         cex = 0.5, col =  gray(0.7),
          colors = c("cm", "gray", "rainbow", "heat", "terrain", "topo"), ...)
 }
 
@@ -42,6 +42,7 @@ centiles.fan(obj, xvar = NULL, cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6),
             In this case the sample percentages are printed but are not saved }
   \item{plot}{whether to plot the centiles. This option is useful for \code{centile.split} } 
   \item{pch}{the character to be used as the default in plotting points see \code{par}}
+   \item{cex}{size of  character see \code{par}}
   \item{col}{plotting colour see \code{par}}
   \item{col.centiles}{Plotting colours  for the centile curves}
   \item{lty.centiles}{line type for the centile curves}
@@ -66,14 +67,15 @@ A centile plot is produced and the sample centiles below each centile curve are 
 \references{Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
-Stasinopoulos D. M., Rigby R.A. and Akantziliotou C. (2006) Instructions on how to use the GAMLSS package in R.
-Accompanying documentation in the current GAMLSS  help files, (see also  \url{http://www.gamlss.org/}). 
-
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
 \emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+
+(see also \url{http://www.gamlss.org/}).
 }
 
-\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk} with contribution from Steve Ellison}
+\author{Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby \email{r.rigby@londonmet.ac.uk} with contribution from Steve Ellison}
 
 
 \section{Warning }{This function is appropriate only when one continuous explanatory variable is fitted in the model}  

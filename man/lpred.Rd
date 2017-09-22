@@ -13,15 +13,16 @@ The function \code{lp} extract only the linear predictor. If prediction is requi
 function \code{predict.gamlss()}.
 }
 \usage{
-lpred(obj, what = c("mu", "sigma", "nu", "tau"), 
+lpred(obj, what = c("mu", "sigma", "nu", "tau"), parameter= NULL,
            type = c("link", "response", "terms"), 
            terms = NULL, se.fit = FALSE, ...)
-lp(obj, what = "mu", ...)
+lp(obj, what = c("mu", "sigma", "nu", "tau"), parameter= NULL, ... ) 
 }
 
 \arguments{
  \item{obj}{a GAMLSS fitted model}
  \item{what}{which distribution parameter is required, default \code{what="mu"} }
+ \item{parameter}{equivalent to \code{what}}
  \item{type}{\code{type="link"} (the default) gets the linear predictor for the specified distribution parameter. 
              \code{type="response"} gets the fitted values for the parameter while \code{type="terms"} gets the fitted terms contribution}
  \item{terms}{if \code{type="terms"}, which terms to be selected (default is all terms) }
@@ -37,12 +38,14 @@ If \code{se.fit=TRUE} a list containing  the appropriate \code{type}, \code{fit}
 \references{Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
-Stasinopoulos D. M., Rigby R.A. and Akantziliotou C. (2006) Instructions on how to use the GAMLSS package in R.
-Accompanying documentation in the current GAMLSS  help files, (see also  \url{http://www.gamlss.org/}). 
-
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
 \emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+
+(see also \url{http://www.gamlss.org/}).
 }
+
 
 \author{Mikis Stasinopoulos}
 

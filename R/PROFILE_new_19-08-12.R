@@ -9,7 +9,7 @@ prof.dev<- function ( object,
                        perc = 95, 
                       ...) 
 {
-    cat("*******************************************************************", "\n")
+    cat("******************************************************************", "\n")
    if (is.null(object$y) ) 
        stop(paste(deparse(substitute(object)), "does not have `y' components"))
    if (is.null(min)) 
@@ -95,7 +95,7 @@ prof.dev<- function ( object,
             if ("nu"%in%object$parameters)       object$call$nu.start <- out$nu.fv
             if ("tau"%in%object$parameters)     object$call$tau.start <- out$tau.fv
         }
-        cat("*******************************************************************", "\n")
+        cat("******************************************************************", "\n")
     }
  
  prof.out <- cbind(interval, G.deviances)
@@ -142,12 +142,12 @@ if (plot)
               segments( rcrossing, y0,  rcrossing, lim, lty = 3)
                CI[2] <- rcrossing
     }
-    cat("*******************************************************************", "\n")
+    cat("******************************************************************", "\n")
     cat("The Maximum Likelihood estimator is " ,PML, "\n")
     cat("with a Global Deviance equal to ", Gmin, "\n")
     if ((loglik[1] > lim) && (loglik[m] > lim))    
         {cat("A ", perc,"% Confidence interval is: (" ,lcrossing, ",", rcrossing, ") \n")}
-    cat("*******************************************************************", "\n")           
+    cat("******************************************************************", "\n")           
           out <-list(values=prof.out, fun=prof.fun, min=min, max=max, max.value=PML, CI=CI, criterion="GD" )
         class(out) <- "ProfLikelihood.gamlss"
      return(invisible(out))

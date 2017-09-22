@@ -29,7 +29,7 @@ gamlss.cs(x, y, w, df = NULL, spar = NULL, xeval = NULL, ...)
   \item{nl.df}{the smoothing degrees of freedom excluding the constant and linear terms, i.e. (df-2)}
   \item{coefSmo}{this is a list containing among others the knots and the coefficients}
 }
-\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk} }
+\author{Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby}
 
 \seealso{ \code{\link{gamlss}}, \code{\link{cs}} }
 

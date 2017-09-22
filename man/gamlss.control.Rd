@@ -10,7 +10,7 @@
 }
 \usage{
 gamlss.control(c.crit = 0.001, n.cyc = 20, mu.step = 1, sigma.step = 1, nu.step = 1, 
-               tau.step = 1, gd.tol = 5, iter = 0, trace = TRUE, autostep = TRUE, 
+               tau.step = 1, gd.tol = Inf, iter = 0, trace = TRUE, autostep = TRUE, 
                save = TRUE, ...)
 
 }
@@ -22,7 +22,7 @@ gamlss.control(c.crit = 0.001, n.cyc = 20, mu.step = 1, sigma.step = 1, nu.step 
   \item{sigma.step}{the step length for the parameter \code{sigma} }
   \item{nu.step}{the step length for the parameter \code{nu} }
   \item{tau.step}{the step length for the parameter \code{tau} }
-  \item{gd.tol}{global deviance tolerance level}
+  \item{gd.tol}{global deviance tolerance level (set more recently to Inf to allow the algorithm to conversed even if the global deviance change dramatically during the iterations)}
   \item{iter}{starting value for the number of iterations, typically set to 0 unless the function \code{\link{refit}} is used} 
   \item{trace}{whether to print at each iteration (TRUE) or not (FALSE) }
   \item{autostep}{whether the steps should be halved automatically if the new global deviance is greater that the old one, 
@@ -49,14 +49,16 @@ When `trace' is TRUE, calls to the function \code{cat} produce the output for ea
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
-Stasinopoulos D. M., Rigby R.A. and Akantziliotou C. (2006) Instructions on how to use the GAMLSS package in R.
-Accompanying documentation in the current GAMLSS  help files, (see also  \url{http://www.gamlss.org/}). 
-
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
 \emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+
+(see also \url{http://www.gamlss.org/}).
+
 }
 
-\author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk} 
+\author{ Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby 
 }
 
 \seealso{ \code{\link{gamlss}} }

@@ -2,20 +2,19 @@
 \alias{wp}
 \title{ Worm plot}
 \description{
-Provides a single plot or multiple worm plots for a GAMLSS fitted or more general for any fitted models where the method resid() exist and the residuals are defined sensibly. The worm plot (a de-trended QQ-plot), van Buuren and Fredriks M. (2001), is a diagnostic tool for checking the residuals within different ranges (by default not overlapping) of the explanatory variable(s).
+Provides a single plot or multiple worm plots for a GAMLSS fitted or more general for any fitted models where the method \code{resid()} exist and the residuals are defined sensibly. The worm plot (a de-trended QQ-plot), van Buuren and Fredriks M. (2001), is a diagnostic tool for checking the residuals within different ranges (by default not overlapping) of the explanatory variable(s).
           }
 \usage{
-wp(object=NULL, xvar = NULL,  resid = NULL, n.inter = 4,
-    xcut.points = NULL, 
-   overlap = 0, xlim.all = 4, xlim.worm = 3.5, 
-   show.given = TRUE, line = TRUE, 
-   ylim.all = 12 * sqrt(1/length(resid)), 
-   ylim.worm = 12 * sqrt(n.inter/length(resid)), 
-   cex = 1, pch = 21, ...)
+wp(object = NULL, xvar = NULL, resid = NULL, n.inter = 4,
+  xcut.points = NULL, overlap = 0, xlim.all = 4, 
+  xlim.worm = 3.5, show.given = TRUE, line = TRUE, 
+  ylim.all = 12 * sqrt(1/length(resid)), 
+  ylim.worm = 12 * sqrt(n.inter/length(resid)), 
+  cex = 1, cex.lab = 1, pch = 21, ...)
 }
 
 \arguments{
-  \item{object}{a GAMLSS fitted object or any other fitted model where the resid() method works (preferably it should be standarised or quantile residuals)}
+  \item{object}{a GAMLSS fitted object or any other fitted model where the \code{resid()} method works (preferably it should be standardised or quantile residuals)}
   \item{xvar}{the explanatory variable(s) against which the worm plots will be plotted. If only one variable is involved use \code{xvar=x1} if two variables are involved use \code{xvar=~x1*x2}. See also note below for use of formula if the data argument is not found in the fitted model}
   \item{resid}{if object is missing this argument can be used to specify the residual vector (again it should a quantile residuals or it be assumed to come from a normal distribution)}
   \item{n.inter}{the number of intervals in which the explanatory variable \code{xvar} will be cut}
@@ -27,7 +26,8 @@ wp(object=NULL, xvar = NULL,  resid = NULL, n.inter = 4,
   \item{line}{whether to plot the polynomial line in the worm plot, default value is \code{line=TRUE}}
   \item{ylim.all}{for the single plot, this value is the y-variable limit, default value is \code{ylim.all=12*sqrt(1/length(fitted(object)))}}
   \item{ylim.worm}{for multiple plots, this values is the y-variable limit, default value is \code{ylim.worm=12*sqrt(n.inter/length(fitted(object)))}}
-  \item{cex}{ the cex plotting parameter with default \code{cex=1}}
+  \item{cex}{ the cex plotting parameter for changing the side of worm with default \code{cex=1}}
+  \item{cex.lab}{the cex plotting parameter for changing the size of the axis labels}
   \item{pch}{ the pch plotting parameter with default \code{pch=21} }
    \item{\dots}{for extra arguments}
  }
@@ -44,18 +44,18 @@ Two variables can be displayed with the use of a formula, i.e. \code{xvar=~x1*x2
 \value{
   For multiple plots the \code{xvar} intervals and the coefficients of the fitted cubic polynomials to the residuals (within each \code{xvar} interval) are returned.   
 }
-\note{Note that the \code{wp()} function, if the argument \code{object} is used, is looking for the data argument of the object. If the argument \code{data} exists it uses its enviroment to find   \code{xvar} (whether it is a formula or not). As a result if \code{data} exists withing \code{object}  
-\code{xvar=~x*f} can be used (assuming thet \code{x} and \code{f} are in the data) otherwise the variable should be expicitly defined i.e. \code{xvar=~data$x*data$f}.
+\note{Note that the \code{wp()} function, if the argument \code{object} is used, is looking for the data argument of the object. If the argument \code{data} exists it uses its environment to find   \code{xvar} (whether it is a formula or not). As a result if \code{data} exists within \code{object}  
+\code{xvar=~x*f} can be used (assuming that \code{x} and \code{f} are in the data) otherwise the variable should be explicitly defined i.e. \code{xvar=~data$x*data$f}.
 }
 \references{
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), \emph{Appl. Statist.}, \bold{54}, part 3,
 1-38. 
  
-Stasinopoulos D. M., Rigby R.A. and Akantziliotou C. (2006) Instructions on how to use the GAMLSS package in R.
-Accompanying documentation in the current GAMLSS  help files, (see also  \url{http://www.gamlss.org/}).
-
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
 \emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+(see also \url{http://www.gamlss.org/}).
            
 van Buuren and Fredriks M. (2001) Worm plot: simple diagnostic device for modelling growth reference curves. 
             \emph{Statistics in Medicine}, \bold{20}, 1259--1277
