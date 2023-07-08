@@ -102,14 +102,14 @@ draw.polys.in <-function( polys,
   { # if object is defined  we must two alternatives
     ## i) it is MRF object
     ## ii) a list which defines the values and the areas    
-    if(class(object)=="MRF")
+    if(is(object,"GMRF"))
     {
       y.y <- object$beta 
       #  x.x <- object$x
     }
     else
     {
-      if (!is.vector(object))  stop("object class should be MRF or a vector with names matching the areas in the polys")
+      if (!is.vector(object))  stop("object class should be GMRF or a vector with names matching the areas in the polys")
       else
       { 
         y.y <- object
@@ -218,7 +218,7 @@ CheckSmoList <- function(termList)
 CheckSmoWithPlot <- function(termList)
 {
   #gamlss.Smo.plot.list <- c( "tr", "ga")
-  gamlss.Smo.plot.list1 <- c( "tr(", "ga(", "nn(", "pvc(", "mrf(", "mrfa(", "ri(",
+ gamlss.Smo.plot.list1 <- c( "tr(", "ga(", "nn(", "pvc(", "gmrf(", "mrfa(", "ri(",
                              "own(" , "re(", "lo(", "pcat(",  "ba(")# "ma(",
   lgamsmol  <- length(gamlss.Smo.plot.list1)
   lsm  <- length(termList)
@@ -538,6 +538,7 @@ whichValueSmo <- CheckSmoList(nmt)
           # } 
           if (attr(whichValueSmo, "whichSmo")[i]=="re")
           {
+            
             plotLME(getSmo(object, what, which=whichValueSmo[i])) 
           } 
           if (attr(whichValueSmo, "whichSmo")[i]=="mrf"||attr(whichValueSmo, "whichSmo")[i]=="mrfa") 
@@ -604,7 +605,6 @@ whichValueSmo <- CheckSmoList(nmt)
 #   if (any(class(mf)%in%"try-error")){ mf <-  get_all_vars(parform, data)}
 #   mf
 # }
-
 
 
 # THIS FUNCTION IS MORE GENERAL THAN THE EXISTING ONE
