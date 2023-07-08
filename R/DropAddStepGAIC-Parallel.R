@@ -1,40 +1,43 @@
 # This is an attempt make parallel the computation in dropterm(),
 # addterm() and stepGAIC()
-# Mikis Stasinopoulos  wrote the original with some help from Fernanda de Bastiani
-# Aendment by Daniil Kosie to avoid the failure of the funcion 
+# Mikis Stasinopoulos  wrote the original with some help from 
+# Fernanda de Bastiani
+# Amendment by Daniil Kosie to avoid the failure of the function  
 # This file contains
 # i)   dropterm.gamlss()
 # ii)  addterm.gamlss()
 # iii) stepGAIC()
-# 
-#-------------------------------------------------------------------------------
-# this refers to how the function histrorically was developled and can be ingnore now 
+##################################################################
+##################################################################
+##################################################################
+# this refers to how the function historically was developed and 
+# can be ignore now 
 # The approach is as follows
 #  i) STEP 1: trying to rewrite the dropterm.gamlss() function having 
-#      instead of the loop 
-#      for (i in seq(ns)) 
-#      a function fn() which is call with lapply() to produce the updated fitted
-#      gamlss objects. 
+#      instead of the loop for (i in seq(ns)) 
+#      a function fn() which is call with lapply() to produce 
+#      the updated fitted gamlss objects. 
 #      the function dropterm1()  is doing just that
 #  ii) STEP 2 Take now the new function and add the parallel stuff from bootT
 #      this is function dropterm2() 
 # iii) Fernanda will try to do the same with addterm - it is done
-#      it is omplemented in addterm2()  
-#  iv) After that the idea is to imlement this in stepGAIC 
+#      it is implemented in addterm2()  
+#  iv) After that the idea is to implement this in stepGAIC 
 #       stepGAIC1(): uses the functions dropterm2() and addterm2() 
 #                    without any modification (not faster than stepGAIC)
 #       stepGAIC2(): uses the functions local droptermP() and addtermP() but with 
 #                    parallel called every time the fuctions are called 
 #                   (not faster than stepGAIC)
-#       stepGAIC.P(): uses modified local droptermP() and addtermP() but the creation #   #         of parallel is done in the begining it looks that that is the best  in that 
+#       stepGAIC.P(): uses modified local droptermP() and addtermP() but the creation       
+#        of parallel is done in the begining it looks that that is the best in that 
 #                   with snow reduce the time    
 #     v) we have to implement stepGAICAll A and B now 
 #            stepGAICAll.Bp is ready 
 # 
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
+###################################################################
+###################################################################
+###################################################################
+###################################################################
 dropterm.gamlss <- function (object, 
                      scope, 
                      what = c("mu", "sigma", "nu", "tau"),
@@ -49,28 +52,28 @@ dropterm.gamlss <- function (object,
                        cl = NULL, # An optional parallel or snow cluster for use if parallel = "snow". If not supplied, a cluster on the local machine is created for the duration of the boot call.
                      ...) 
 {
-  #-----------------------------------------------------------------------------
-  #-----------------------------------------------------------------------------
-  drop1.scope<-function (terms1, terms2, what = c("mu", "sigma", "nu", "tau"), parameter= NULL) 
+####################################################################
+####################################################################
+drop1.scope<-function (terms1, terms2, what = c("mu", "sigma", "nu", "tau"), 
+                       parameter= NULL) 
   {
-     what <- if (!is.null(parameter))  {
-    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
+      what <- if (!is.null(parameter))  {
+  match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
     terms1 <- terms(terms1, what)
-    f2 <- if (missing(terms2)) 
-      numeric(0)
-    else attr(terms(terms2, what), "factor")
+        f2 <- if (missing(terms2)) numeric(0)
+              else attr(terms(terms2, what), "factor")
     factor.scope(attr(terms1, "factor"), list(drop = f2))$drop
   }
-  #-----------------------------------------------------------------------------
-  #-----------------------------------------------------------------------------
+####################################################################
+####################################################################
   safe_pchisq <- function (q, df, ...) 
   {
     df[df <= 0] <- NA
     pchisq(q = q, df = df, ...)
   }
-#-------------------------------------------------------------------------------
+####################################################################
 #   main functions starts here 
-#-------------------------------------------------------------------------------
+####################################################################
   what <- if (!is.null(parameter))  {
     match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
   if (!what %in% object$par) 
@@ -90,8 +93,8 @@ dropterm.gamlss <- function (object,
   ans <- matrix(nrow = ns + 1, ncol = 2, dimnames = list(c("<none>", scope),
             c("df", "AIC")))
   ans[1, ] <- extractAIC(object, scale, k = k,   ...)
-#--------------- PARALLEL-------------------------------------------------------
-#----------------SET UP PART----------------------------------------------------
+################## PARALLEL ########################################
+################## SET UP PART #####################################
 if (missing(parallel)) 
        parallel <- "no"
        parallel <- match.arg(parallel)
@@ -106,8 +109,8 @@ if (missing(parallel))
           ncpus <- 1L
   loadNamespace("parallel")
   }
-# -------------- finish parallel------------------------------------------------
-#------------------------------------------------------------------------------- 
+################## finish parallel ################################
+################################################################### 
 #  function for parallel apply
   fn <- function(term)
   {
@@ -132,9 +135,9 @@ if (missing(parallel))
         {gaic}
     }
   }
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-# --------  parallel -----------------------------------------------------------
+####################################################################
+####################################################################
+############  parallel #############################################3
 ans[-1,] <- if (ncpus > 1L && (have_mc || have_snow)) 
 {
   if (have_mc) 
@@ -158,7 +161,7 @@ ans[-1,] <- if (ncpus > 1L && (have_mc || have_snow))
     }
     else t(parallel::parSapply(cl, scope, fn))
   }
-} # end parallel ---------------------------------------------------------------
+} # end parallel #################################################
 else t(sapply(scope, fn)) 
   dfs <- ans[1, 1] - ans[, 1]
   dfs[1] <- NA
@@ -167,34 +170,37 @@ else t(sapply(scope, fn))
     order(aod$AIC)
   else seq(along = aod$AIC)
   test <- match.arg(test)
-  if (test == "Chisq") 
+if (test == "Chisq") 
   {
     dev <- ans[, 2] - k * ans[, 1]
     dev <- dev - dev[1]
-    dev[1] <- NA
+ dev[1] <- NA
     nas <- !is.na(dev)
-    P <- dev
-    P[nas] <- safe_pchisq(dev[nas], dfs[nas], lower.tail = FALSE)
-    aod[, c("LRT", "Pr(Chi)")] <- list(dev, P)
+      P <- dev
+ P[nas] <- safe_pchisq(dev[nas], dfs[nas], lower.tail = FALSE)
+aod[, c("LRT", "Pr(Chi)")] <- list(dev, P)
   }
-  aod <- aod[o, ]
-  head <- c("Single term deletions for", what, "\nModel:", deparse(as.vector(formula(object, what))))
+    aod <- aod[o, ]
+   head <- c("Single term deletions for", what, "\nModel:", deparse(as.vector(formula(object, what))))
   if (scale > 0) 
-    head <- c(head, paste("\nscale: ", format(scale), "\n"))
-  class(aod) <- c("anova", "data.frame")
+   head <- c(head, paste("\nscale: ", format(scale), "\n"))
+class(aod) <- c("anova", "data.frame")
   attr(aod, "heading") <- head
   aod
 }
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
+###################################################################
+###################################################################
+###################################################################
+###################################################################
 #  addterm
-#-------------------------------------------------------------------------------
+###################################################################
+###################################################################
+###################################################################
+###################################################################
 addterm.gamlss <- function (object, 
                      scope,
                      what = c("mu", "sigma", "nu", "tau"), 
-                     parameter= NULL,
+                parameter = NULL,
                     scale = 0, 
                      test = c("none", "Chisq"), 
                         k = 2, 
@@ -205,7 +211,7 @@ addterm.gamlss <- function (object,
                        cl = NULL, 
                        ...) 
 {
-  #-----------------------------------------------------------------------------
+###################################################################
   add.scope <- function (terms1, terms2, what = c("mu", "sigma", "nu", "tau"), parameter= NULL ) 
   {
     what <- if (!is.null(parameter))  {
@@ -215,13 +221,13 @@ addterm.gamlss <- function (object,
     factor.scope(attr(terms1, "factor"), list(add = attr(terms2, 
                                                          "factor")))$add  
   }
-  #-----------------------------------------------------------------------------
+###################################################################
   safe_pchisq <- function (q, df, ...) 
   {
     df[df <= 0] <- NA
     pchisq(q = q, df = df, ...)
   }
-  #-----------------------------------------------------------------------------
+###################################################################
   what <- if (!is.null(parameter))  {
     match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
   if (!what %in% object$par) 
@@ -236,8 +242,8 @@ addterm.gamlss <- function (object,
   ans <- matrix(nrow = ns + 1, ncol = 2, dimnames = list(c("<none>", scope), 
                 c("df", "AIC")))
   ans[1, ] <- extractAIC(object, scale, k = k,   ...)
-  #--------------- PARALLEL-------------------------------------------------------
-  #----------------PART-----------------------------------------------------------
+############## PARALLEL ##########################################
+##################################################################
   if (missing(parallel)) 
     parallel <- "no"
   parallel <- match.arg(parallel)
@@ -252,8 +258,8 @@ addterm.gamlss <- function (object,
       ncpus <- 1L
     loadNamespace("parallel")
   }
-# -------------- finish parallel------------------------------------------------
-#-------------------------------------------------------------------------------
+################# finish parallel ##################################
+####################################################################
 #  function for parallel apply
 fn <- function(term)
 {
@@ -278,9 +284,9 @@ fn <- function(term)
       {gaic}
   }
 }
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-# --------  parallel ----------------------------------------------------------- 
+###################################################################
+###################################################################
+######### parallel ################################################
 ans[-1,] <- if (ncpus > 1L && (have_mc || have_snow)) 
 {
   if (have_mc) 
@@ -304,25 +310,9 @@ ans[-1,] <- if (ncpus > 1L && (have_mc || have_snow))
     }
     else t(parallel::parSapply(cl, scope, fn))
   }
-} # end parallel ---------------------------------------------------------------
+} # end parallel ###################################################
 else t(sapply(scope, fn)) 
-
-#   for (i in seq(ns)) 
-#   {
-#     tt <- scope[i]
-#     if (trace) 
-#       cat("trying +", tt, "\n")
-#     nfit <- update(object, as.formula(paste("~ . +", tt)), what = what, trace=FALSE, 
-#                    evaluate = FALSE)
-#     nfit <- try(eval.parent(nfit), silent=TRUE)
-#     if (any(class(nfit)%in%"try-error"))
-#     { 
-#       cat("Model with term ", tt, "has failed \n")       
-#       ans[i + 1, ] <- NA# extractAIC(object, scale, k = k, ...)          
-#     }
-#     else ans[i + 1, ] <- extractAIC(nfit, scale, k = k,  ...)
-#   }
-#-------------------------------------------------------------------------------
+###################################################################
   dfs <- ans[, 1] - ans[1, 1]
   dfs[1] <- NA
   aod <- data.frame(Df = dfs, AIC = ans[, 2])
@@ -348,32 +338,31 @@ else t(sapply(scope, fn))
   attr(aod, "heading") <- head
   aod
 }
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
+###################################################################
+###################################################################
+###################################################################
+###################################################################
 # modification of Venable and Ripley stepAIC() function
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
+###################################################################
+###################################################################
+###################################################################
+###################################################################
 stepGAIC <-function(object, 
                      scope, 
-                     direction = c("both", "backward", "forward"), 
-                     trace = T, 
-                     keep = NULL, 
+                 direction = c("both", "backward", "forward"), 
+                     trace = TRUE, 
+                      keep = NULL, 
                      steps = 1000,
                      scale = 0,
-                     what = c("mu", "sigma", "nu", "tau"),
-                     parameter= NULL,
-                     k = 2,
-                     parallel = c("no", "multicore", "snow"), 
+                      what = c("mu", "sigma", "nu", "tau"),
+                 parameter = NULL,
+                         k = 2,
+                  parallel = c("no", "multicore", "snow"), 
                      ncpus = 1L, 
-                     cl = NULL, 
+                        cl = NULL, 
                      ...)                    
-
 {
-#-----------------------------------------------------------------------------
+###################################################################
 # local functions 
 #  1)    mydevianc()
 #  2)    cut.string()
@@ -381,9 +370,9 @@ stepGAIC <-function(object,
 #  4)    step.results() 
 #  5)    droptermP()
 #  6)    addtermP()
-#------------------------------------------------------------------------------
-#------------------------------------------------------------------------------
-#  1 
+###################################################################
+###################################################################
+###################################################################
 mydeviance <- function(x, ...) 
   {
     dev <- deviance(x)
@@ -391,97 +380,100 @@ mydeviance <- function(x, ...)
       dev
     else extractAIC(x, k = 0)[2]
   }
-#-----------------------------------------------------------------------------
-#-----------------------------------------------------------------------------
+###################################################################
+###################################################################
+###################################################################
 # 2 
-  cut.string <- function(string) 
+cut.string <- function(string) 
   {
     if (length(string) > 1) 
       string[-1] <- paste("\n", string[-1], sep = "")
     string
   }
-#-----------------------------------------------------------------------------
-#-----------------------------------------------------------------------------
+###################################################################
+###################################################################
+###################################################################
 # 3 
- re.arrange <- function(keep) 
+re.arrange <- function(keep) 
   {
     namr <- names(k1 <- keep[[1]])
     namc <- names(keep)
-    nc <- length(keep)
-    nr <- length(k1)
+      nc <- length(keep)
+      nr <- length(k1)
     array(unlist(keep, recursive = FALSE), c(nr, nc), list(namr, 
                                                            namc))
   }
-#-----------------------------------------------------------------------------
-#-----------------------------------------------------------------------------
+###################################################################
+###################################################################
+###################################################################
 # 4 
-  step.results <- function(models, fit, object, usingCp = FALSE) #
+step.results <- function(models, fit, object, usingCp = FALSE) #
   {
     change <- sapply(models, "[[", "change")
-    rd <- sapply(models, "[[", "deviance")
-    dd <- c(NA, abs(diff(rd)))
-    rdf <- sapply(models, "[[", "df.resid")
-    ddf <- c(NA, abs(diff(rdf)))
-    AIC <- sapply(models, "[[", "AIC")
-    heading <- c("Stepwise Model Path \nAnalysis of Deviance Table", 
+        rd <- sapply(models, "[[", "deviance")
+        dd <- c(NA, abs(diff(rd)))
+       rdf <- sapply(models, "[[", "df.resid")
+       ddf <- c(NA, abs(diff(rdf)))
+       AIC <- sapply(models, "[[", "AIC")
+   heading <- c("Stepwise Model Path \nAnalysis of Deviance Table", 
                  "\nInitial", what," Model:", deparse(as.vector(formula(object, what=what))), 
                  "\nFinal", what, " Model:", deparse(as.vector(formula(fit, what=what))), 
                  "\n")
-    aod <- if (usingCp) 
-      data.frame(Step = change, Df = ddf, Deviance = dd, 
+       aod <- if (usingCp) 
+               data.frame(Step = change, Df = ddf, Deviance = dd, 
                  "Resid. Df" = rdf, "Resid. Dev" = rd, Cp = AIC, 
                  check.names = FALSE)
-    else data.frame(Step = change, Df = ddf, Deviance = dd, 
+             else data.frame(Step = change, Df = ddf, Deviance = dd, 
                     "Resid. Df" = rdf, "Resid. Dev" = rd, AIC = AIC, 
                     check.names = FALSE)
     attr(aod, "heading") <- heading
-    class(aod) <- c("Anova", "data.frame")
+   class(aod) <- c("Anova", "data.frame")
     fit$anova <- aod
     fit
   }
-#------------------------------------------------------------------------------
-#------------------------------------------------------------------------------
+###################################################################
+###################################################################
+###################################################################
 # 5
 droptermP <- function (object, 
                        scope, 
                        what = c("mu", "sigma", "nu", "tau"),
-                       parameter= NULL,
-                       scale = 0, 
+                  parameter = NULL,
+                      scale = 0, 
                        test = c("none", "Chisq"), 
-                       k = 2, 
-                       sorted = FALSE, 
-                       trace = FALSE, 
-                       parallel = c("no", "multicore", "snow"), #The type of parallel operation to be used (if any). If missing, the default is taken from the option "boot.parallel" (and if that is not set, "no")
-                       ncpus = 1L, #nteger: number of processes to be used in parallel operation: typically one would chose this to the number of available CPUs
+                          k = 2, 
+                     sorted = FALSE, 
+                      trace = FALSE, 
+                   parallel = c("no", "multicore", "snow"), #The type of parallel operation to be used (if any). If missing, the default is taken from the option "boot.parallel" (and if that is not set, "no")
+                      ncpus = 1L, #nteger: number of processes to be used in parallel operation: typically one would chose this to the number of available CPUs
                        cl = NULL, # An optional parallel or snow cluster for use if parallel = "snow". If not supplied, a cluster on the local machine is created for the duration of the boot call.
                        ...) 
 {
-#-----------------------------------------------------------------------------
-    drop1.scope<-function (terms1, terms2, what = c("mu", "sigma", "nu", "tau"), parameter= NULL) 
+###################################################################
+drop1.scope<-function (terms1, terms2, what = c("mu", "sigma", "nu", "tau"), parameter= NULL) 
     {
       what <- if (!is.null(parameter))  {
     match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
       terms1 <- terms(terms1, what)
-      f2 <- if (missing(terms2)) 
-        numeric(0)
-      else attr(terms(terms2, what), "factor")
+          f2 <- if (missing(terms2)) numeric(0)
+                else attr(terms(terms2, what), "factor")
       factor.scope(attr(terms1, "factor"), list(drop = f2))$drop
     }
- #-----------------------------------------------------------------------------
-    safe_pchisq <- function (q, df, ...) 
+###################################################################
+safe_pchisq <- function (q, df, ...) 
     {
       df[df <= 0] <- NA
       pchisq(q = q, df = df, ...)
     }
-#-----------------------------------------------------------------------------
+##################################################################
 #  droptermP  starts here 
-#----------------------------------------------------------------------------
+##################################################################
     what <- if (!is.null(parameter))  {
-    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
-    if (!what %in% object$par) 
-      stop(paste(what, "is not a parameter in the object", "\n"))
-    tl <- attr(terms(object, what ), "term.labels")
-    if (missing(scope)) 
+match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
+if (!what %in% object$par) 
+     stop(paste(what, "is not a parameter in the object", "\n"))
+     tl <- attr(terms(object, what ), "term.labels")
+if (missing(scope)) 
       scope <- drop1.scope(object, what = what)
     else 
     {
@@ -491,12 +483,13 @@ droptermP <- function (object,
       if (!all(match(scope, tl, FALSE))) 
         stop("scope is not a subset of term labels")
     }
-    ns <- length(scope)
-    ans <- matrix(nrow = ns + 1, ncol = 2, dimnames = list(c("<none>", scope),
+      ns <- length(scope)
+     ans <- matrix(nrow = ns + 1, ncol = 2, dimnames = list(c("<none>", scope),
                                                            c("df", "AIC")))
-    ans[1, ] <- extractAIC(object, scale, k = k,   ...)
-    #  function for parallel apply
-    fn <- function(term)
+  ans[1, ] <- extractAIC(object, scale, k = k,   ...)
+##################################################################
+#  function for parallel apply
+fn <- function(term)
     {
       if (trace) 
         cat("trying -", term, "\n")
@@ -519,8 +512,9 @@ droptermP <- function (object,
           {gaic}
       }
     }
-#-------------------------------------------------------------------------------
-# --------  parallel -----------------------------------------------------------
+###################################################################
+# --------  parallel ----------------------------------------------
+################################################################### 
     ans[-1,] <- if (ncpus > 1L && (have_mc || have_snow)) 
     {
       if (have_mc) 
@@ -544,53 +538,54 @@ droptermP <- function (object,
         }
         else t(parallel::parSapply(cl, scope, fn))
       }
-    } # end parallel ----------------------------------------------------------
+    }# end parallel ###############################################
     else t(sapply(scope, fn)) 
-    dfs <- ans[1, 1] - ans[, 1]
+       dfs <- ans[1, 1] - ans[, 1]
     dfs[1] <- NA
-    aod <- data.frame(Df = dfs, AIC = ans[, 2])
-    o <- if (sorted) 
-      order(aod$AIC)
+       aod <- data.frame(Df = dfs, AIC = ans[, 2])
+         o <- if (sorted) 
+    order(aod$AIC)
     else seq(along = aod$AIC)
-    test <- match.arg(test)
-    if (test == "Chisq") 
+      test <- match.arg(test)
+if (test == "Chisq") 
     {
       dev <- ans[, 2] - k * ans[, 1]
       dev <- dev - dev[1]
-      dev[1] <- NA
+   dev[1] <- NA
       nas <- !is.na(dev)
-      P <- dev
-      P[nas] <- safe_pchisq(dev[nas], dfs[nas], lower.tail = FALSE)
+        P <- dev
+   P[nas] <- safe_pchisq(dev[nas], dfs[nas], lower.tail = FALSE)
       aod[, c("LRT", "Pr(Chi)")] <- list(dev, P)
     }
-    aod <- aod[o, ]
-    head <- c("Single term deletions for", what, "\nModel:", deparse(as.vector(formula(object, what))))
-    if (scale > 0) 
+      aod <- aod[o, ]
+     head <- c("Single term deletions for", what, "\nModel:", deparse(as.vector(formula(object, what))))
+  if (scale > 0) 
       head <- c(head, paste("\nscale: ", format(scale), "\n"))
-    class(aod) <- c("anova", "data.frame")
+   class(aod) <- c("anova", "data.frame")
     attr(aod, "heading") <- head
     aod
   }
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
+###################################################################
+###################################################################
+###################################################################
 #  6 
 #  addterm
 addtermP<- function (object, 
                      scope,
-                     what = c("mu", "sigma", "nu", "tau"), 
-                     parameter= NULL,
-                     scale = 0, 
-                     test = c("none", "Chisq"), 
-                     k = 2, 
-                     sorted = FALSE, 
-                     trace = FALSE, 
-                     parallel = c("no", "multicore", "snow"), 
-                     ncpus = 1L, 
+                   what = c("mu", "sigma", "nu", "tau"), 
+              parameter = NULL,
+                  scale = 0, 
+                   test = c("none", "Chisq"), 
+                      k = 2, 
+                 sorted = FALSE, 
+                  trace = FALSE, 
+               parallel = c("no", "multicore", "snow"), 
+                  ncpus = 1L, 
                      cl = NULL, 
                      ...) 
 {
-  #-----------------------------------------------------------------------------
-  add.scope <- function (terms1, terms2, what = c("mu", "sigma", "nu", "tau"), parameter= NULL ) 
+####################################################################
+add.scope <- function (terms1, terms2, what = c("mu", "sigma", "nu", "tau"), parameter= NULL ) 
   {
     what <- if (!is.null(parameter))  {
     match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
@@ -599,30 +594,32 @@ addtermP<- function (object,
     factor.scope(attr(terms1, "factor"), list(add = attr(terms2, 
                                                          "factor")))$add  
   }
-  #-----------------------------------------------------------------------------
-  safe_pchisq <- function (q, df, ...) 
+#####################################################################
+safe_pchisq <- function (q, df, ...) 
   {
     df[df <= 0] <- NA
     pchisq(q = q, df = df, ...)
   }
-  #-----------------------------------------------------------------------------
-  #-----------------------------------------------------------------------------
-  what <- if (!is.null(parameter))  {
-  match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)  
-    if (!what %in% object$par) 
+#####################################################################
+#####################################################################
+# starts here
+    what <- if (!is.null(parameter))  {
+match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)  
+if (!what %in% object$par) 
     stop(paste(what, "is not a parameter in the object", "\n"))
-  if (missing(scope) || is.null(scope)) 
+if (missing(scope) || is.null(scope)) 
     stop("no terms in scope")
-  if (!is.character(scope)) 
+if (!is.character(scope)) 
     scope <- add.scope(object, terms(update.formula(formula(object, what=what), scope)), what = what)
-  if (!length(scope)) 
+if (!length(scope)) 
     stop("no terms in scope for adding to object")
-  ns <- length(scope)
-  ans <- matrix(nrow = ns + 1, ncol = 2, dimnames = list(c("<none>", scope), 
+      ns <- length(scope)
+     ans <- matrix(nrow = ns + 1, ncol = 2, dimnames = list(c("<none>", scope), 
                                                          c("df", "AIC")))
-  ans[1, ] <- extractAIC(object, scale, k = k,   ...)
-  #  function for parallel apply------------------------------------------------
-  fn <- function(term)
+ans[1, ] <- extractAIC(object, scale, k = k,   ...)
+#  function for parallel apply
+###################################################################
+fn <- function(term)
   {
     if (trace) 
       cat("trying -", term, "\n")
@@ -645,9 +642,9 @@ addtermP<- function (object,
         {gaic}
     }
   }
-#-------------------------------------------------------------------------------
-# --------  parallel ----------------------------------------------------------- 
-  ans[-1,] <- if (ncpus > 1L && (have_mc || have_snow)) 
+###################################################################
+##########  parallel ############################################## 
+ans[-1,] <- if (ncpus > 1L && (have_mc || have_snow)) 
   {
     if (have_mc) 
     {# sapply(scope, fn)
@@ -659,8 +656,8 @@ addtermP<- function (object,
       list(...)
       if (is.null(cl)) 
       {
-        # make the cluster
-        # cl <- parallel::makePSOCKcluster(rep("localhost", ncpus))
+# make the cluster
+# cl <- parallel::makePSOCKcluster(rep("localhost", ncpus))
 #        cl <- parallel::makeForkCluster(ncpus)
 #        if (RNGkind()[1L] == "L'Ecuyer-CMRG") 
 #          parallel::clusterSetRNGStream(cl)
@@ -670,24 +667,23 @@ addtermP<- function (object,
       }
       else t(parallel::parSapply(cl, scope, fn))
     }
-  } # end parallel -------------------------------------------------------------
+  } # end parallel ################################################
   else t(sapply(scope, fn)) 
-#-----------------------------------------------------------------------------
-  dfs <- ans[, 1] - ans[1, 1]
+###################################################################
+     dfs <- ans[, 1] - ans[1, 1]
   dfs[1] <- NA
-  aod <- data.frame(Df = dfs, AIC = ans[, 2])
-  o <- if (sorted) 
-    order(aod$AIC)
-  else seq(along = aod$AIC)
-  test <- match.arg(test)
-  if (test == "Chisq") 
+     aod <- data.frame(Df = dfs, AIC = ans[, 2])
+       o <- if (sorted)  order(aod$AIC)
+            else seq(along = aod$AIC)
+    test <- match.arg(test)
+if (test == "Chisq") 
   {
-    dev <- ans[, 2] - k * ans[, 1]
-    dev <- dev[1] - dev
-    dev[1] <- NA
-    nas <- !is.na(dev)
-    P <- dev
-    P[nas] <- safe_pchisq(dev[nas], dfs[nas], lower.tail = FALSE)
+     dev <- ans[, 2] - k * ans[, 1]
+     dev <- dev[1] - dev
+  dev[1] <- NA
+     nas <- !is.na(dev)
+       P <- dev
+  P[nas] <- safe_pchisq(dev[nas], dfs[nas], lower.tail = FALSE)
     aod[, c("LRT", "Pr(Chi)")] <- list(dev, P)
   }
   aod <- aod[o, ]
@@ -698,12 +694,12 @@ addtermP<- function (object,
   attr(aod, "heading") <- head
   aod
 }
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
+###################################################################
+###################################################################
 # main stepGAIC function starts here
-#-------------------------------------------------------------------------------
-#--------------- PARALLEL-------------------------------------------------------
-#----------------SET UP PART---------------------------------------------------
+###################################################################
+################ PARALLEL #########################################
+################ SET UP PART ######################################
 if (missing(parallel)) 
     parallel <- "no"
     parallel <- match.arg(parallel)
@@ -725,8 +721,8 @@ if (have_snow)
     parallel::clusterSetRNGStream(cl)
       on.exit(parallel::stopCluster(cl))
 }         
-# -------------- finish parallel------------------------------------------------
-#-------------------------------------------------------------------------------
+################# finish parallel ##################################
+#################################################################### 
       what <- if (!is.null(parameter))  {
     match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
      Terms <- terms(object, what)
@@ -746,14 +742,14 @@ else
    names(object$call)[length(names(object$call))]<-paste(what,"formula",sep=".")
   }
 }     
-md <- missing(direction)
+       md <- missing(direction)
 direction <- match.arg(direction)
-backward <- direction == "both" | direction == "backward"
-forward <- direction == "both" | direction == "forward"
+ backward <- direction == "both" | direction == "backward"
+  forward <- direction == "both" | direction == "forward"
 if (missing(scope)) 
 {
   fdrop <- numeric(0)
-  fadd <- attr(Terms, "factors")
+   fadd <- attr(Terms, "factors")
   if (md) 
     forward <- FALSE
 }
@@ -801,23 +797,23 @@ usingCp <- FALSE
 while (steps > 0) 
 {
   steps <- steps - 1
-  AIC <- bAIC
-  ffac <- attr(Terms, "factors")
-  if (!is.null(sp <- attr(Terms, "specials")) && !is.null(st <- sp$strata)) 
-    ffac <- ffac[-st, ]
+    AIC <- bAIC
+   ffac <- attr(Terms, "factors")
+if (!is.null(sp <- attr(Terms, "specials")) && !is.null(st <- sp$strata)) 
+   ffac <- ffac[-st, ]
   scope <- factor.scope(ffac, list(add = fadd, drop = fdrop))
-  aod <- NULL
-  change <- NULL
-  if (backward && length(scope$drop)) 
+    aod <- NULL
+ change <- NULL
+if (backward && length(scope$drop)) 
   {
     aod <- droptermP(fit, scope$drop, what = what, scale = scale, 
                      trace = max(0,trace - 1), k = k, parallel = parallel, 
                      ncpus = ncpus, cl = cl)
-    rn <- row.names(aod)
+     rn <- row.names(aod)
     row.names(aod) <- c(rn[1], paste("-", rn[-1], sep = " "))
     if (any(aod$Df == 0, na.rm = TRUE)) 
     {
-      zdf <- aod$Df == 0 & !is.na(aod$Df)
+     zdf <- aod$Df == 0 & !is.na(aod$Df)
       nc <- match(c("Cp", "AIC"), names(aod))
       nc <- nc[!is.na(nc)][1]
       ch <- abs(aod[zdf, nc] - aod[1, nc]) > 0.01
@@ -890,7 +886,7 @@ if (!is.null(keep))
   fit$keep <- re.arrange(keep.list[seq(nm)])
 step.results(models = models[seq(nm)], fit, object, usingCp)
 }
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
+###################################################################
+###################################################################
+###################################################################
+###################################################################

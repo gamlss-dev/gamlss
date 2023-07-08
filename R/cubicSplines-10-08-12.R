@@ -96,9 +96,10 @@ warning("the value of penalty supplied is negative the default value of 1 was us
 # fitting cubic splines
 gamlss.cs <-function(x, y, w, df = NULL, spar = NULL, xeval = NULL, ...)
 {      
-             x <- signif(x, 6)
+             x <- signif(x, 5)#  Mikis I have change this from 6 to 5 23-06-19
            pox <- order(x)
           freq <- table(x)
+         # sum(freq); length(pox); length(y)
             df <- if (!is.null(df))  df+2
        control <- as.list(attr(x, "control")) 
     if (is.null(df)&&is.null(spar))

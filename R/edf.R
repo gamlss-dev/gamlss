@@ -6,10 +6,15 @@ what <- if (!is.null(parameter))  {
  x <- obj[[paste(what,"coefSmo",sep=".")]]
  s <- obj[[paste(what,"s",sep=".")]]
  P <- length(x)
- edf  <- rep(0, length=P)
- for (i in 1:P)
- edf[i] <- x[[i]]$edf
-  names(edf) <- colnames(s)
+ if (P > 0)
+ {
+   edf  <- rep(0, length=P)
+   for (i in 1:P) edf[i] <- x[[i]]["edf"]
+   names(edf) <- colnames(s)  
+ } else
+ {
+  edf <- 0  
+ }
  if (print) cat("Effective df for", what, "model", "\n")
    edf
  } 
