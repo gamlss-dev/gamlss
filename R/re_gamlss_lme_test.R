@@ -6,6 +6,8 @@
 #-------------------------------------------------------------------------------
 # Authors Mikis Stasinopoulos, Marco Enea
 # created  3-6-14 
+# ammentded on the 10-06-2019
+# ammentded on the 02-09-2019 adding level argument for predicting the marginal
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 # TO DO 
@@ -22,8 +24,9 @@
 # formula, random = NULL, correlation = NULL,
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
-re <-function(fixed=~1, random = NULL, correlation = NULL, method = "ML", ...) 
-{ 
+re <-function(fixed=~1, random = NULL, correlation = NULL, method = "ML", 
+              level = NULL, ...) 
+{
 #------------------------------------------
 # function starts here
 #------------------------------------------
@@ -76,6 +79,7 @@ else data.frame(eval(substitute(Data)))
    attr(xvar,"random")      <- random
    attr(xvar,"method")      <- method  
    attr(xvar,"correlation") <- correlation
+   attr(xvar,"level")       <- level
    attr(xvar,"control")     <- control
    attr(xvar, "gamlss.env") <- gamlss.env
    if (any(attributes(Data)$class=="groupedData")) {
@@ -118,6 +122,7 @@ gamlss.re <-function(x, y, w, xeval = NULL, ...)
      random <- attr(x,"random")
 correlation <- attr(x,"correlation")
      method <- attr(x,"method")
+      level <- attr(x,"level")
 fix.formula <- as.formula(paste("Y.var", deparse(fixed, width.cutoff = 500L), sep=""))
     control <- as.list(attr(x, "control"))  
 #gamlss.env <- as.environment(attr(x, "gamlss.env"))
@@ -150,15 +155,20 @@ fix.formula <- as.formula(paste("Y.var", deparse(fixed, width.cutoff = 500L), se
   if (is.null(xeval))
     {
    list(fitted.values=fv, residuals=residuals,
-     nl.df = df, lambda=fit$sigma, #
+     nl.df = df-1, lambda=fit$sigma, # Mikis 10-6-19 df should be df-1 not df
      coefSmo = fit, var=NA)    # var=fv has to fixed
     }
 else 
     {
-   ll<-dim(OData)[1]
-   pred <- predict(fit,newdata = OData[seq(length(y)+1,ll),])
-    }         
-
-}
+   # ll<-dim(OData)[1]
+   # assign("fix.formula",fix.formula,envir=globalenv())
+   # on.exit(rm(fix.formula,envir=globalenv()))
+   # pred <- eval(expression(predict(fit,newdata = OData[seq(length(y)+1,ll),])),envir=environment() )
+   fit$call$fixed <- substitute(fix.formula)
+   ll <- dim(OData)[1]
+   pred <-  if (is.null(level)) predict(fit,newdata = OData[seq(length(y)+1,ll),])
+             else predict(fit,newdata = OData[seq(length(y)+1,ll),], level=level)
+    }
+}        
 #-------------------------------------------------------------------------------
 
