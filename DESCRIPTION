@@ -1,20 +1,30 @@
 Package: gamlss
-Description: Functions for fitting Generalized Additive Models for Location Scale and Shape.
-Version: 5.0-3
-Date: 2017-09-22
+Description: Functions for fitting the Generalized Additive Models for Location Scale and Shape introduced by Rigby and Stasinopoulos (2005), <doi:10.1111/j.1467-9876.2005.00510.x>. The models use a distributional regression approach where all the parameters of the conditional distribution of the response variable are modelled using explanatory variables.
+Version: 5.4-12
+Date: 2023-01-26
 Authors@R: c(person("Mikis", "Stasinopoulos", role = c("aut", "cre", "cph"), 
-             email = "mikis.stasinopoulos@gamlss.org"),
+             email = "d.stasinopoulos@londonmet.ac.uk"),
            person("Bob", "Rigby", role = c("aut")), 
-           person("Vlasios", "Voudouris", role = "ctb",  
-           email= "vlasios.voudouris@abm-analytics.com"),
+           person("Vlasios", "Voudouris", role = "ctb"),  
            person("Calliope", "Akantziliotou", role = "ctb"),
            person("Marco", "Enea", role = "ctb"),
            person("Daniil", "Kiose", role = "ctb") 
            )
 Title: Generalised Additive Models for Location Scale and Shape
-Maintainer: Mikis Stasinopoulos <mikis.stasinopoulos@gamlss.org>
-Depends: R (>= 3.3.0), graphics, stats, splines, utils, grDevices, gamlss.data (>= 5.0-0), gamlss.dist (>= 4.3.1), nlme, parallel 
+Maintainer: Mikis Stasinopoulos <d.stasinopoulos@londonmet.ac.uk>
+Depends: R (>= 3.3.0), graphics, stats, splines, utils, grDevices,
+        gamlss.data (>= 5.0-0), gamlss.dist (>= 4.3.1), nlme, parallel
 LazyLoad: yes
 Imports: MASS, survival, methods
-License: GPL-2 | GPL-3 
-URL: http://www.gamlss.org/
+License: GPL-2 | GPL-3
+URL: https://www.gamlss.com/
+NeedsCompilation: yes
+Packaged: 2020-09-10 11:45:48 UTC; dimitriosstasinopoulos
+Author: Mikis Stasinopoulos [aut, cre, cph],
+  Bob Rigby [aut],
+  Vlasios Voudouris [ctb],
+  Calliope Akantziliotou [ctb],
+  Marco Enea [ctb],
+  Daniil Kiose [ctb]
+Repository: CRAN
+Date/Publication: 2020-09-12 06:40:02 UTC

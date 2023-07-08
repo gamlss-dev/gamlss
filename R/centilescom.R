@@ -2,7 +2,7 @@
 # different models. MS Tuesday, February 17, 2004 at 10:28
 centiles.com  <- function( obj, 
                        ...,
-                       xvar = NULL,  
+                       xvar,  
                        cent = c(.4,10,50,90,99.6), 
                      legend = TRUE, 
                        ylab = "y", 
@@ -23,7 +23,24 @@ if (length(list(...)))   # more than one fitted model
         nobj <- length(object)
     isgamlss <- unlist(lapply(object, is.gamlss))
       if (!any(isgamlss)) stop("some of the objects are not gamlss")
-      if(is.null(xvar)) stop(paste("The xvar argument is not specified", "\n", ""))
+# new 2-10-19
+if (missing(xvar))
+    { 
+      xvar <-  all.vars(obj$call$formula)[[2]]
+      if (any(grepl("data", names(obj$call))))
+      {
+        DaTa <-  eval(obj$call[["data"]])#get(as.character(obj$call["data"])) 
+        xvar <- get(xvar, envir=as.environment(DaTa))
+      } 
+    } 
+    xvarO <- deparse(substitute(xvar))  # get the name 
+    xvar <- try(xvar, silent = TRUE)    # get the vector
+    if  (any(class(xvar)%in%"try-error"))# if vector in DaTa not in the global Env 
+    { # will fail therefore get it from DaTa
+      DaTa <- eval(obj$call[["data"]])# get(as.character(obj$call["data"])) 
+      xvar <- get(xvarO, envir=as.environment(DaTa))
+    }
+# end of new 
      #   type <- unlist(lapply(object, function(x) x$type=="Continuous"))
      # if (!any(type)) stop("The centiles are working only with continuous distributions")# ms Sunday, April 2, 2006 
        fname <- lapply(object, function(x) x$family[1])      

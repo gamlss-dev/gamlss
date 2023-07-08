@@ -6,8 +6,8 @@ prof.dev<- function ( object,
                      length = 7, 
                startlastfit = TRUE, 
                        plot = TRUE,
-                       perc = 95, 
-                      ...) 
+                       perc = 95,
+                        col = "darkgreen") 
 {
     cat("******************************************************************", "\n")
    if (is.null(object$y) ) 
@@ -115,7 +115,7 @@ if (plot)
       xlab <- xlabel
       ylab <- "Global Deviances"
       main <- "Profile Global Deviance"
-     curve(prof.fun, min, max, xlab=xlab, ylab=ylab, main=main, col="darkgreen", frame.plot = TRUE)
+     curve(prof.fun, min, max, xlab=xlab, ylab=ylab, main=main, col=col, frame.plot = TRUE)
      plims <- par("usr")  
      segments(PML, plims[3], PML, Gmin, lty = 3)
         la <- xl[mx]

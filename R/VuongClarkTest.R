@@ -34,10 +34,10 @@ binomial2 <- fname2%in%.gamlss.bi.list
 if (binomial1)
 {
   linc1 <- switch( nopar1, 
-                   eval(call( pdfName1, pobj1$y, bd=obj1$bd, ,mu=pobj1$mu, log=TRUE)),
+                   eval(call( pdfName1, pobj1$y, bd=obj1$bd, mu=pobj1$mu, log=TRUE)),
                    eval(call( pdfName1, pobj1$y, bd=obj1$bd, mu=pobj1$mu, sigma=pobj1$sigma, log=TRUE )),
-                   eval(call( pdfName1, pobj1$y, bd=obj1$bd,mu=pobj1$mu, sigma=pobj1$sigma, nu=pobj1$nu, log=TRUE )),
-                   eval(call( pdfName1, pobj1$y, bd=obj1$bd,mu=pobj1$mu, sigma=pobj1$sigma,  nu=pobj1$nu, tau=pobj1$tau,log=TRUE))
+                   eval(call( pdfName1, pobj1$y, bd=obj1$bd, mu=pobj1$mu, sigma=pobj1$sigma, nu=pobj1$nu, log=TRUE )),
+                   eval(call( pdfName1, pobj1$y, bd=obj1$bd, mu=pobj1$mu, sigma=pobj1$sigma,  nu=pobj1$nu, tau=pobj1$tau,log=TRUE))
   ) 
 } else
 {  
@@ -51,10 +51,10 @@ linc1 <- switch( nopar1,
 if (binomial2)
 {
   linc2 <- switch( nopar1, 
-                   eval(call( pdfName2, pobj2$y, bd=obj2$bd, ,mu=pobj2$mu, log=TRUE)),
+                   eval(call( pdfName2, pobj2$y, bd=obj2$bd, mu=pobj2$mu, log=TRUE)),
                    eval(call( pdfName2, pobj2$y, bd=obj2$bd, mu=pobj2$mu, sigma=pobj2$sigma, log=TRUE )),
-                   eval(call( pdfName2, pobj2$y, bd=obj2$bd,mu=pobj2$mu, sigma=pobj2$sigma, nu=pobj2$nu, log=TRUE )),
-                   eval(call( pdfName2, pobj2$y, bd=obj2$bd,mu=pobj2$mu, sigma=pobj2$sigma,  nu=pobj2$nu, tau=pobj2$tau,log=TRUE))
+                   eval(call( pdfName2, pobj2$y, bd=obj2$bd, mu=pobj2$mu, sigma=pobj2$sigma, nu=pobj2$nu, log=TRUE )),
+                   eval(call( pdfName2, pobj2$y, bd=obj2$bd, mu=pobj2$mu, sigma=pobj2$sigma,  nu=pobj2$nu, tau=pobj2$tau,log=TRUE))
   )   
 } else
 {

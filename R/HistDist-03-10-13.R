@@ -15,9 +15,15 @@ histDist <- function(y,
                     xlab = NULL, 
                     ylab = NULL, 
                     data = NULL,
+                col.hist = "gray",
+             border.hist = "blue",
+                 fg.hist = rainbow(12)[9],
                  line.wd = 2,
-                 line.ty = 1, 
-                line.col = "red",
+                 line.ty = c(1,2), 
+                line.col = c(2,3),
+                col.main = "blue4", 
+                 col.lab = "blue4", 
+                col.axis = "blue",
                       ... )
 {
              FA <- as.gamlss.family(family)    
@@ -27,8 +33,13 @@ histDist <- function(y,
        typeDist <- FA$type
     #if (!is.null(data)) {attach(data); on.exit(detach(data))}
          subsY <- substitute(y)
-             y <- if (!is.null(data)) get(deparse(substitute(y)), envir=as.environment(data)) else y
-          freq <- if (!is.null(data)&&!is.null(freq)) get(deparse(substitute(freq)), envir=as.environment(data)) else freq  
+         if (!is.null(data))
+         {
+           y <- get(deparse(substitute(y)), envir=as.environment(data))
+           if ( deparse(substitute(freq))!="NULL") freq <-  get(deparse(substitute(freq)), envir=as.environment(data))
+         }
+        #    y <- if (!is.null(data)) get(deparse(substitute(y)), envir=as.environment(data)) else y
+        #  freq <- if (!is.null(data)&&is.null(freq)) get(deparse(substitute(freq)), envir=as.environment(data)) else freq  
   switch(typeDist, 
      "Continuous"=
            {
@@ -77,8 +88,8 @@ histDist <- function(y,
            {
               stop("Mixed distributions are not implemented yet")
            })          
-           # fit the model  
-            if (is.null(freq)) 
+# fit the model  
+if (is.null(freq)) 
             {  # no frequencies
                  # if (is.null(data)) 
                     {
@@ -87,21 +98,10 @@ histDist <- function(y,
                                 { # if gamlssML fails use gamlss
                                   mod <-  try( gamlss(y~1, family=fname,  ...))
                                 }
-                   
                     }
-                  #else
-                  #  {
-                   #  mod <- try(gamlssML(y,family=fname, data=data), silent=TRUE)
-                  #          if (any(class(mod)%in%"try-error")) 
-                  #              { # if gamlssML fails use gamlss
-                  #                mod <-  try( gamlss(y~1, family=fname, data=data, ...))
-                  #              }
-                  #  }
              }
             else
              { # with frequencies
-                 # .freq <-freq
-                  # if (is.null(data)) 
                      {
                        mod <- try(gamlssML(y, weights=freq, family=fname, ...), silent=TRUE)
                             if (any(class(mod)%in%"try-error")) 
@@ -109,73 +109,63 @@ histDist <- function(y,
                                   mod <-  try( gamlss(y~1, weights=freq, family=fname,  ...))
                                 }
                      }
-                   #else 
-                  #   {
-                   #    mod <- try(gamlssML(y, weights=freq, family=fname, data=data, ...), silent=TRUE)
-                    #        if (any(class(mod)%in%"try-error")) 
-                    #            { # if gamlssML fails use gamlss
-                    #              mod <-  try( gamlss(y~1, weights=freq, family=fname, data=data,  ...))
-                     #           }
-                    # }
              } 
-             
-             
-             
-                         mod$call$family <- eval(as.expression(fname)) 
-                   if (mod$method=="BFGS"||mod$method=="nlminb") 
-                    {
-                     mod$call$formula <-  subsY
-                    }   
-                 else  
-                   {
-                     mod$call$formula[[2]] <-  subsY
-                   }   
-       if (!is.null(data)) mod$call$data <- substitute(data)
+mod$call$family <- eval(as.expression(fname)) 
+if (mod$method=="BFGS"||mod$method=="nlminb") 
+        {
+        mod$call$formula <-  subsY
+        }   
+else  
+        {
+        mod$call$formula[[2]] <-  subsY
+        }   
+if (!is.null(data)) mod$call$data <- substitute(data)
            # get the pdf
-     switch(lpar, 
-          "1" =  {
-             newcall <- if ((fname %in% .gamlss.bi.list)) 
-                               call(dfun,x1, mu = fitted(mod)[1], bd=bd[1] )
-                        else   call(dfun,x1, mu = fitted(mod)[1])
+switch(lpar, 
+    "1" =  {
+      newcall <- if ((fname %in% .gamlss.bi.list)) 
+                    call(dfun,x1, mu = fitted(mod)[1], bd=bd[1] )
+                  else   call(dfun,x1, mu = fitted(mod)[1])
+           },
+    "2" =  {
+      newcall <- if ((fname %in% .gamlss.bi.list))
+                  {  
+      call(dfun,x1, mu = fitted(mod)[1],sigma = fitted(mod,"sigma")[1], bd=bd[1])
+                  }  
+                  else                            
+                  {
+      call(dfun,x1, mu = fitted(mod)[1], sigma = fitted(mod,"sigma")[1])  
+                  }
                  },
-          "2" =  {
-             newcall <- if ((fname %in% .gamlss.bi.list))
-                         {  
-  call(dfun,x1, mu = fitted(mod)[1],sigma = fitted(mod,"sigma")[1], bd=bd[1])
-
-                         }  
-                       else                            
-                         {
-                            call(dfun,x1, mu = fitted(mod)[1], sigma = fitted(mod,"sigma")[1])  
-                         }
-                 },
-          "3" = {      
-            newcall <- if ((fname %in% .gamlss.bi.list))
-                         {  
-                         call(dfun,x1, mu = fitted(mod)[1],sigma = fitted(mod,"sigma")[1],
-                                        nu = fitted(mod,"nu")[1], bd=bd[1])
-
-                         }  
-                 else    {call(dfun,x1, mu = fitted(mod)[1], 
+    "3" = {      
+      newcall <- if ((fname %in% .gamlss.bi.list))
+                  {  
+      call(dfun,x1, mu = fitted(mod)[1],sigma = fitted(mod,"sigma")[1],
+                                  nu = fitted(mod,"nu")[1], bd=bd[1])
+                  }  
+                 else 
+                  {
+                    call(dfun,x1, mu = fitted(mod)[1], 
                                   sigma = fitted(mod,"sigma")[1], 
                                      nu = fitted(mod,"nu")[1])
-                         }
+                  }
                  },
-          "4" =
-                {
-               newcall <- if ((fname %in% .gamlss.bi.list))
-                         {  
-                         call(dfun,x1, mu = fitted(mod)[1],
-                                    sigma = fitted(mod,"sigma")[1],
-                                       nu = fitted(mod,"nu")[1],
-                                      tau = fitted(mod,"tau")[1],
-                                       bd = bd[1])
+    "4" =  {
+      newcall <- if ((fname %in% .gamlss.bi.list))
+                  {  
+      call(dfun,x1, mu = fitted(mod)[1],
+              sigma = fitted(mod,"sigma")[1],
+                 nu = fitted(mod,"nu")[1],
+                tau = fitted(mod,"tau")[1],
+                  bd = bd[1])
 
-                         }  
-                 else    {call(dfun, x1, mu = fitted(mod)[1], 
-                                      sigma = fitted(mod,"sigma")[1],
-                                         nu = fitted(mod,"nu")[1],
-                                        tau = fitted(mod,"tau")[1])
+                   }  
+                 else    
+                  {
+        call(dfun, x1, mu = fitted(mod)[1], 
+                    sigma = fitted(mod,"sigma")[1],
+                       nu = fitted(mod,"nu")[1],
+                      tau = fitted(mod,"tau")[1])
                          } 
                 })
 switch(typeDist,  
@@ -183,123 +173,104 @@ switch(typeDist,
               { 
                 y1 <- eval(newcall)
                 xlim <- c(xmin,xmax)
+#===================================================================
+#MIKIS functions in version of histDist (incl. the discrete case) 
+#truehist(y, xlim = mm, main=main, ...)   #MIKIS OLD function
+#lines(x1,y1, col="blue3") #MIKIS OLD function
            #===================================================================
-           #MIKIS functions in version of histDist (incl. the discrete case) 
-           #truehist(y, xlim = mm, main=main, ...)   #MIKIS OLD function
-           #lines(x1,y1, col="blue3") #MIKIS OLD function
-           #===================================================================
-           #Poppy's Function -  Date: Friday 21, 2006 at 13:46
-           #main1 <- paste("Histogram of y-variable and ", sep = "") #main <- paste("Histogram of y and a fitted (GAMLSS family), ", family," distribution to y", sep = "")
-           #main2 <- paste("the fitted ", FA$family[2]," distribution to y-variable", sep = "") #main <- paste("Histogram of y and a fitted (GAMLSS family), ", family," distribution to y", sep = "")
-           # main <- c(main1, main2) 
-              main <-  if (is.null(main))  
+#Poppy's Function -  Date: Friday 21, 2006 at 13:46
+#main1 <- paste("Histogram of y-variable and ", sep = "") #main <- paste("Histogram of y and a fitted (GAMLSS family), ", family," distribution to y", sep = "")
+#main2 <- paste("the fitted ", FA$family[2]," distribution to y-variable", sep = "") #main <- paste("Histogram of y and a fitted (GAMLSS family), ", family," distribution to y", sep = "")
+# main <- c(main1, main2) 
+        main <-  if (is.null(main))  
                       paste("The ", deparse(subsY), " and the fitted ", FA$family[1]," distribution", sep = "")
-                      else main
-              if (!is.null(freq)) y <- rep(y,freq) # in case frequencies are used
-              xlab <- if (is.null(xlab)) deparse(subsY) else xlab
-              ylab <- if (is.null(ylab)) paste("f()") else ylab
-            truehist(y, xlim = xlim, ylim = ylim, xlab=xlab, ylab=ylab, nbins=nbins, main = main, col="gray", lty=3, 
-                     border="blue", fg=rainbow(12)[9], col.main = "blue4", col.lab = "blue4", col.axis = "blue")
-                     #Poppy's Function
-            lines(x1, y1, col = line.col, col.axis = "blue", col.main = "blue4", col.lab = "blue4", 
-                       lwd=line.wd, lty=line.ty, fg = gray(0.7))
-            if (density==TRUE) 
-                 { dens<-density(y)
-                  lines(dens$x, dens$y, col="blue",lwd=line.wd,lty=line.ty) 
+                 else main
+if (!is.null(freq)) y <- rep(y,freq) # in case frequencies are used
+                 xlab <- if (is.null(xlab)) deparse(subsY) else xlab
+                 ylab <- if (is.null(ylab)) paste("f()") else ylab
+           truehist(y, xlim = xlim, ylim = ylim, xlab=xlab, ylab=ylab, nbins=nbins,
+                main = main, col=col.hist,  lty=3, 
+                border= border.hist, fg=fg.hist, col.main = col.main, 
+                col.lab = col.lab, col.axis = col.axis)
+#Poppy's Function
+            lines(x1, y1, col = line.col[1], lwd=line.wd, lty=line.ty[1], 
+                  fg = gray(0.7))
+if (density==TRUE) 
+                 { dens <- density(y)
+                  lines(dens$x, dens$y, col=line.col[2], lwd=line.wd, lty=line.ty[2]) 
                  }
-           #===================================================================
-              },
+#===================================================================
+      },
       "Discrete"=
-              {  
-               if (fname %in% .gamlss.bi.list) # if binomial 
-                  {                  
-                      if (all(bd==bd[1]))     # binary + equal bd
-                        { 
-                        y1 <- eval(newcall) # find the fitted values 
-                        tabley <- if (NCOL(y) == 1) table(y) else  table(y[,1])
-                        dft <- data.frame(tabley)# get the table  
-                        r<-barplot(tabley/sum(tabley), fg = "blue", col="gray", axis.lty=1, 
-                                     border="blue", col.axis = "blue4", col.main = "blue4", 
-                                     col.lab = "blue4", ylim=ylim, xlim=xlim, ylab=ylab, 
-                                     xlab=xlab, main=main)
-                        yy1 <- y1[ x1%in%dft[[1]]] # this is to make sure that we have as many points as in the bar plot
-                        lines(r, yy1, type='h', col = line.col,  lwd=line.wd, col.axis = "blue", 
-                                    col.main = "blue4", col.lab = "blue4", lty=line.ty,
-                                    fg = gray(0.7))  
-                        points(r, yy1,  col=line.col, pch=21, lwd=2, col.axis = "blue") # extra points  
-                        }
-                      else  
-                        {
-                        xlim <- c(xmin, xmax)
-                        main <- paste("proportions of ", deparse(subsY), sepp = "")
-                        
-                        main <-  if (is.null(main))  paste("proportions of ", deparse(subsY), sepp = "")
-                                 else main
-                        xlab <- if (is.null(xlab)) deparse(subsY) else xlab
-                        ylab <- if (is.null(ylab)) paste("f()") else ylab
-                        truehist(y1/bd, xlim = xlim, xlab="proportions", ylab=ylab, ylim=ylim, 
-                                nbins=nbins, col="gray", 
-                                lty=3, border="blue", col.axis = "blue",col.main = "blue4", 
-                                col.lab = "blue4", main=main, fg=rainbow(12)[9])#P
-                        #plot(y1/bd~I(y1/bd), type="h", xlim=mm, main=main)
-                        #points(y1/bd, y1/bd,  cex= bd/mean(bd))
-                        lines( fitted(mod), rep(1,length(fitted(mod))), type="h", 
-                               col = line.col, lwd=line.wd,  lty=line.ty  )
-                        # lwd=line.wd   col = line.col  lty=line.ty  
-                        points(fitted(mod), rep(0, length(fitted(mod))), col = line.col, pch=25)
-                        points(fitted(mod),rep(1,length(fitted(mod))),   col=line.col, pch=24)
-                        }
-
-                }  
-             else
-                {
-                 y1 <- eval(newcall) # find the fitted values 
-                 fy <- if (is.null(freq)) factor(y,levels=x1) else factor(rep(y,freq),levels=x1)
-            notresy <- if (is.null(freq)) factor(y) else factor(rep(y,freq))# RR DS Friday, February 12, 2010 at 17:41
-                dft <-data.frame(tabley<- xtabs(~fy))# get the table    
-               #===================================================================
-               #MIKIS functions in version of histDist (incl. the discrete case)
-               #r <- barplot(tabley/sum(tabley), col="lightblue",  ...)## rainbow(20))#rainbow(20
-               #yy1<- y1[ x1%in%dft[[1]]] # this is to make sure that we have as many points as in the bar plot
-               #lines(r,  yy1, type='h', col="red", lwd=3) # fitted lines 
-               #points(r, yy1,  col="red", pch=21, lwd=3) # extra points
-               #===================================================================
-               #Poppy's Function -  Date: Thursday 20, 2006 at 13:46
-            # main1 <- paste("Histogram of y-variable and ", sep = "") #main <- paste("Histogram of y and a fitted (GAMLSS family), ", family," distribution to y", sep = "")
-            # main2 <- paste("the fitted ", FA$family[2]," distribution to y-variable", sep = "") #main <- paste("Histogram of y and a fitted (GAMLSS family), ", family," distribution to y", sep = "")
-            #  main <- c(main1, main2)
-               main <-  if (is.null(main))  
-                      paste("Barplot of the ", deparse(subsY), " and the fitted ", FA$family[2]," distribution", sep = "")
-                      else main 
-                 r <-  barplot(tabley/ sum(xtabs(~notresy)),  # Friday, February 12, 2010 at 17:41
-                                    fg = "blue", col="gray", axis.lty=1, 
-                                    border="blue", col.axis = "blue4",col.main = "blue4", 
-                                    col.lab = "blue4", main=main, ylim=ylim, ylab=ylab, xlab=xlab ) 
-                      #if (is.null(freq)) 
-                      #    { barplot(tabley/sum(tabley), 
-                      #              fg = "blue", col="gray", axis.lty=1, 
-                      #              border="blue", col.axis = "blue4",col.main = "blue4", 
-                      #              col.lab = "blue4", main=main, ...)
-                      #    }
-                      #  else
-                      #    {
-                      #      barplot(freq/sum(freq),  names.arg = y, 
-                      #              fg = "blue", col="gray", axis.lty=1, 
-                      #              border="blue", col.axis = "blue4",col.main = "blue4", 
-                      #              col.lab = "blue4", main=main, ...)
-                      #    }        
-                            yy1<- y1[ x1%in%dft[[1]]] # this is to make sure that we have as many points as in the bar plot
-                            lines(r, yy1, type='h',col = line.col, lwd=line.wd, 
-                                  col.axis = "blue", lty=line.ty,
-                                  col.main = "blue4", col.lab = "blue4", fg = gray(0.7))  
-                            points(r, yy1,  col=line.col, pch=21, lwd=2,col.axis = "blue") # extra points  
+      {  
+    if (fname %in% .gamlss.bi.list) # if binomial 
+     {                  
+      if (all(bd==bd[1]))     # binary + equal bd
+          { 
+            y1 <- eval(newcall) # find the fitted values 
+        tabley <- if (NCOL(y) == 1) table(y) else  table(y[,1])
+           dft <- data.frame(tabley)# get the table  
+          if (!is.null(freq)) dft[,2] <- freq # replace with frequency
+            r <- barplot(dft[,2]/sum(dft[,2]), fg = fg.hist, col=col.hist, axis.lty=1, 
+                          border= border.hist, col.axis = col.axis, col.main = col.main, 
+                          col.lab = col.lab, ylim=ylim, xlim=xlim, ylab=ylab, 
+                          xlab=xlab, main=main)
+          yy1 <- y1[ x1%in%dft[[1]]] # this is to make sure that we have as many points as in the bar plot
+                        lines(r, yy1, type='h', col = line.col[1],  lwd=line.wd, lty=line.ty[1])  
+                        points(r, yy1,  col=line.col[1], pch=21, lwd=2) # extra points  
+          }
+      else  
+          {
+          xlim <- c(xmin, xmax)
+          main <- paste("proportions of ", deparse(subsY), sepp = "")
+          main <-  if (is.null(main))  paste("proportions of ", deparse(subsY), sepp = "")
+                    else main
+          xlab <- if (is.null(xlab)) deparse(subsY) else xlab
+                      ylab <- if (is.null(ylab)) paste("f()") else ylab
+                  truehist(y1/bd, xlim = xlim, xlab="proportions", ylab=ylab, ylim=ylim, 
+                      nbins=nbins, col="gray", 
+                      lty=3, border=border.hist, col.axis = col.axis,col.main = col.main, 
+                      col.lab = col.lab, main=main, fg=fg.hist)#P
+                      lines( fitted(mod), rep(1,length(fitted(mod))), type="h", 
+                               col = line.col, lwd=line.wd,  lty=line.ty[1]  )
+                      points(fitted(mod), rep(0, length(fitted(mod))), col = line.col, pch=25)
+                      points(fitted(mod),rep(1,length(fitted(mod))),   col=line.col, pch=24)
+        }
+       }  
+  else # count data
+      {
+            y1 <- eval(newcall) # find the fitted values 
+            fy <- if (is.null(freq)) factor(y,levels=x1) else factor(rep(y,freq),levels=x1)
+       notresy <- if (is.null(freq)) factor(y) else factor(rep(y,freq))# RR DS Friday, February 12, 2010 at 17:41
+           dft <- data.frame(tabley<- xtabs(~fy))# get the table    
+#===================================================================
+#MIKIS functions in version of histDist (incl. the discrete case)
+#r <- barplot(tabley/sum(tabley), col="lightblue",  ...)## rainbow(20))#rainbow(20
+#yy1<- y1[ x1%in%dft[[1]]] # this is to make sure that we have as many points as in the bar plot
+#lines(r,  yy1, type='h', col="red", lwd=3) # fitted lines 
+#points(r, yy1,  col="red", pch=21, lwd=3) # extra points
+#===================================================================
+#Poppy's Function -  Date: Thursday 20, 2006 at 13:46
+# main1 <- paste("Histogram of y-variable and ", sep = "") #main <- paste("Histogram of y and a fitted (GAMLSS family), ", family," distribution to y", sep = "")
+# main2 <- paste("the fitted ", FA$family[2]," distribution to y-variable", sep = "") #main <- paste("Histogram of y and a fitted (GAMLSS family), ", family," distribution to y", sep = "")
+#  main <- c(main1, main2)
+          main <- if (is.null(main))  
+                  paste("Barplot of the ", deparse(subsY), " and the fitted ", FA$family[2]," distribution", sep = "")
+                  else main 
+             r <-  barplot(tabley/ sum(xtabs(~notresy)),  # Friday, February 12, 2010 at 17:41
+                                    fg =  fg.hist, col=col.hist, axis.lty=1, 
+                                    border=border.hist, col.axis = col.axis,col.main = col.main, 
+                                    col.lab = col.lab, main=main, ylim=ylim, ylab=ylab, xlab=xlab ) 
+            yy1 <- y1[ x1%in%dft[[1]]] # this is to make sure that we have as many points as in the bar plot
+                            lines(r, yy1, type='h', col = line.col[1], lwd=line.wd, 
+                                   lty=line.ty[1])  
+              points(r, yy1,  col=line.col[1], pch=21, lwd=2) # extra points  
                  }  
               },
         "Mixed"=
               {
               stop("Mixed distributions are not implemented yet")
               }) 
-         #on.exit(if (!is.null(freq)) rm(.freq,pos=1))          
             mod
 }
                  

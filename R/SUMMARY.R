@@ -31,7 +31,6 @@ summary.gamlss<- function (object,
     coef.table <- cbind(coef, se, tvalue, pvalue)
     dimnames(coef.table) <- list(names(coef), c("Estimate" , "Std. Error" ,"t value","Pr(>|t|)"))  
     #now the table contains all informatio I need 
-    #browser()
     #printCoefmat(coef.table, digits = digits, signif.stars = TRUE)
     # to print use   coef.table[1:3,] 
     cat("******************************************************************")

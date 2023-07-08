@@ -3,7 +3,7 @@
 # a new argument is added 
 #------------------------------------------------------------------------------------------
 centiles.fan<-function (obj, 
-                    xvar = NULL, 
+                    xvar, 
                     cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6),
                     ylab = "y", 
                     xlab = "x", 
@@ -22,7 +22,25 @@ centiles.fan<-function (obj,
                            ...)        
 {
    if (!is.gamlss(obj))  stop(paste("This is not an gamlss object", "\n", ""))
-   if(is.null(xvar)) stop(paste("The xvar argument is not specified", "\n", ""))
+  
+  # new 2-10-19
+  if (missing(xvar))
+  { 
+    xvar <-  all.vars(obj$call$formula)[[2]]
+    if (any(grepl("data", names(obj$call))))
+    {
+      DaTa <-  eval(obj$call[["data"]])# get(as.character(obj$call["data"])) 
+      xvar <- get(xvar, envir=as.environment(DaTa))
+    } 
+  } 
+  xvarO <- deparse(substitute(xvar))  # get the name 
+  xvar <- try(xvar, silent = TRUE)    # get the vector
+  if  (any(class(xvar)%in%"try-error"))# if vector in DaTa not in the global Env 
+  { # will fail therefore get it from DaTa
+    DaTa <-  eval(obj$call[["data"]])#get(as.character(obj$call["data"])) 
+    xvar <- get(xvarO, envir=as.environment(DaTa))
+  }
+  # end of new 
       colors <- match.arg(colors) 
        fname <- obj$family[1]
         qfun <- paste("q",fname,sep="")
