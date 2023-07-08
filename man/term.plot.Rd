@@ -36,8 +36,8 @@ term.plot(object, what = c("mu", "sigma", "nu", "tau"),
   \item{ylim}{there are two options here a) "common" and b) "free". 
        The "common" option plots all figures with the same \code{ylim} 
        range and therefore allows the viewer to check the relative 
-       contribution of each terms compate to the rest.  
-       In the`free' option the limits are computed for each plot seperatly.}
+       contribution of each terms compare to the rest.  
+       In the`free' option the limits are computed for each plot separately.}
   \item{scheme}{whether the se's should appear shaded or as lines}
   \item{xlabs}{vector of labels for the x axes }
   \item{ylabs}{vector of labels for the y axes }
@@ -45,7 +45,7 @@ term.plot(object, what = c("mu", "sigma", "nu", "tau"),
           call is taken as main title, 'NULL' or 'FALSE' mean no
           titles.}
    \item{pages}{in how many pages the plot should appear. The default 
-            is 0 which allows differnt page for each plot}
+            is 0 which allows different page for each plot}
   \item{col.term}{the colour of the term line}
   \item{col.se}{the colour of the se's lines}
   \item{col.shaded}{the colour of the shaded area}
@@ -54,15 +54,15 @@ term.plot(object, what = c("mu", "sigma", "nu", "tau"),
   \item{lwd.term}{line width of the fitted terms}
   \item{lty.se}{line ype for standard errors}
   \item{lwd.se}{line width for the stadard errors}
-  \item{cex.res}{ plotting character expansion for the parsial residuals}
-  \item{pch.res}{characters for points in the parsial residuals}
+  \item{cex.res}{ plotting character expansion for the partial residuals}
+  \item{pch.res}{characters for points in the partial residuals}
   \item{ask}{logical; if 'TRUE', the user is asked before each plot, see
           'par(ask=.)'.}        
   \item{use.factor.levels}{Should x-axis ticks use factor levels or numbers for
           factor terms? }
   \item{surface.gam}{whether to use surface plot if a \code{ga()} term is fitted}
-  \item{polys}{The polygone nformation filr for MRF models}
-   \item{polys.scheme}{Color scheme for polygones for RMF models}
+  \item{polys}{The polygon information file for MRF models}
+   \item{polys.scheme}{Color scheme for polygons for RMF models}
   \item{\dots}{other graphical parameters}
 }
 \details{
@@ -78,12 +78,16 @@ term.plot(object, what = c("mu", "sigma", "nu", "tau"),
 \references{ Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
+
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
-\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{https://www.gamlss.com/}).
 }
 \author{Mikis Stasinopoulos based on the existing termplot() function}
 
