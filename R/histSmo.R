@@ -1,7 +1,10 @@
-# needs this to read the data reading the data 
 # Paul Eilers' density estimation
-#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
+# Mikis: dx is added into the output so we can reconstruct the 
+# probabilities at mids
+#########################################################################
+#########################################################################
+#########################################################################
+#########################################################################
 histSmo <- function(y, 
                 lambda = NULL, 
                     df = NULL, 
@@ -30,8 +33,10 @@ m1 <- histSmoC(y=y, df=df, lower=lower, upper=upper, type=type, plot=plot, break
  m1$call <- histSmocall
 invisible(m1)
 }
-#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
+#########################################################################
+#########################################################################
+#########################################################################
+#########################################################################
 # the original Paul's function
 # it works with fixed lambda
 # The Poisson smoother
@@ -45,8 +50,9 @@ histSmoO <- function(y,
                   discrete = FALSE,
                      ...)
 {
+##############################################
 # local functions	
-  histsm <- function(y, lambda = 10, d = 2)
+histsm <- function(y, lambda = 10, d = 2)
  {
   # Penalty stuff
   m <- length(y)
@@ -62,14 +68,14 @@ histSmoO <- function(y,
      mu <- exp(eta)
     dmu <- max(abs(mu - mu0))
     mu0 <- mu
-     W <- diag(mu)
-    eta  <- solve(W + G, y - mu + mu * eta)
+      W <- diag(mu)
+   eta  <- solve(W + G, y - mu + mu * eta)
     if (dmu < 1e-5) break
     }
   return(mu)
  }
-#--------------------------------
-# this function is for descrete variable smooting
+##############################################
+# this function is for discrete variable smoothing
 # it take a discrete variable and creates values and frequencies 	
 getTabs <- function(y, freq=NULL, lower=min(y), upper=max(y))
 {
@@ -80,40 +86,41 @@ getTabs <- function(y, freq=NULL, lower=min(y), upper=max(y))
        out <- data.frame(x=x1, freq=as.numeric(tabley))# get the table    
 out
 }  
-#--------------------------------
+##############################################
+##############################################
 # main function starts here 	
-   histSmocall <- match.call() 
-          type <- match.arg(type)
-            Ry <- range(y) #ok
-            ly <- length(y) # ok
-            Ey <- (Ry[2]-Ry[1])*.10 #ok
-     lower.lim <- if (is.null(lower)) (Ry[1]-Ey) else lower #ok
-     upper.lim <- if (is.null(upper))  (Ry[2]+Ey) else upper #ok
-        breaks <- if (is.null(breaks)) floor(length(y)/10) else breaks#ok
+    histSmocall <- match.call() 
+           type <- match.arg(type)
+             Ry <- range(y) #ok
+             ly <- length(y) # ok
+             Ey <- (Ry[2]-Ry[1])*.10 #ok
+      lower.lim <- if (is.null(lower)) (Ry[1]-Ey) else lower #ok
+      upper.lim <- if (is.null(upper))  (Ry[2]+Ey) else upper #ok
+         breaks <- if (is.null(breaks)) floor(length(y)/10) else breaks#ok
   if (discrete)
         {
         	lower <- if (is.null(lower)) min(y) else lower
         	upper <- if (is.null(upper)) max(y)+1 else upper
-              hst <- getTabs(y, lower=lower, upper=upper)
-                x <- as.numeric(hst$x)
-                Y <- hst$freq    
+            hst <- getTabs(y, lower=lower, upper=upper)
+              x <- as.numeric(hst$x)
+              Y <- hst$freq    
         }
         else
         {
-              hst <- hist(y, breaks = seq(lower.lim,upper.lim , length = breaks), plot=FALSE)
-                x <- hst$mids
-               dx <- (x[2] - x[1])
-                Y <- hst$counts
+            hst <- hist(y, breaks = seq(lower.lim,upper.lim , length = breaks), plot=FALSE)
+              x <- hst$mids
+             dx <- (x[2] - x[1])
+              Y <- hst$counts
         }  
           # hst <- hist(y, breaks = seq(lower.lim,upper.lim , length = breaks), plot=FALSE)
            #  x <- hst$mids
             #dx <- (x[2] - x[1])
             # Y <- hst$counts
-            mu <- histsm(Y, lambda, order)
-       ncounts <- sum(Y)
-         cdf <- cumsum(mu) / sum(mu)
-      cdfFun <- stepfun(x, c(0,cdf))
-        invcdfFun <- if (discrete) stepfun(cdf, c(x, max(x)))  else splinefun(cdf,x)
+             mu <- histsm(Y, lambda, order)
+        ncounts <- sum(Y)
+            cdf <- cumsum(mu) / sum(mu)
+         cdfFun <- stepfun(x, c(0,cdf))
+      invcdfFun <- if (discrete) stepfun(cdf, c(x, max(x)))  else splinefun(cdf,x)
 if (plot)
  {
   if (discrete)
@@ -143,15 +150,16 @@ if (plot)
  }
 
          density <- if (discrete) (mu/sum(mu)) else (mu/sum(mu))/dx	
-             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, invcdf=invcdfFun, call= histSmocall, discrete=discrete)
+             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, 
+                         invcdf=invcdfFun, call= histSmocall, discrete=discrete, dx=dx)
       class(out) <- "histSmo"
   invisible(out) 
 
 }    
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
+#########################################################################
+#########################################################################
+#########################################################################
+#########################################################################
 # The Poisson smoother using cubic splines and GAMLSS
 # it works but it needs df's'
 #histSmoC <- function(y, df=10, lower=NULL, upper=NULL, type=c("freq", "prob"),  save=FALSE, plot=TRUE, breaks=NULL)
@@ -239,17 +247,21 @@ if (plot)
  }
   {
          density <- if (discrete) (mu/sum(mu)) else (mu/sum(mu))/dx	
-             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, invcdf=invcdfFun, model=m1, call= histSmocall, discrete=discrete)
+             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, 
+                         invcdf=invcdfFun, model=m1, call= histSmocall, 
+                         discrete=discrete, dx=dx)
       class(out) <- "histSmo"
       invisible(out) 
   }       
 }
-#---------------------------------------------------------------#--------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------
+#########################################################################
+#########################################################################
+#########################################################################
+#########################################################################
 # The Poisson smoother using P-splines and GAMLSS
 # it works but breaks need to be more that 100 otherwise the knots=10 of the pb() ia take off
 # one solution is to change the pb( function condition from length(Y)<100 to <99)
-# this is a new version of histSmpoP() allowing descete variable    
+# this is a new version of histSmpoP() allowing descrete variable    
 # 3-Dec-2011 Mikis  
 #-------------------------------------------------------------  
 histSmoP <- function(y, 
@@ -340,13 +352,17 @@ if (plot)
  }
  
          density <- if (discrete) (mu/sum(mu)) else (mu/sum(mu))/dx	
-             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, invcdf=invcdfFun, model=m1, call= histSmocall, discrete=discrete)
+             out <- list(x=x, counts=Y, density=density, hist=hst, cdf=cdfFun, 
+                         invcdf=invcdfFun, model=m1, call= histSmocall, 
+                         discrete=discrete, dx=dx)
       class(out) <- "histSmo"
       invisible(out) 
          
 }
-#---------------------------------------------------------------
-#---------------------------------------------------------------
+#########################################################################
+#########################################################################
+#########################################################################
+#########################################################################
 plot.histSmo <- function(x, type=c("hist", "cdf", "invcdf"), ...) 
 {
 	     type <- match.arg(type)
@@ -369,8 +385,10 @@ plot.histSmo <- function(x, type=c("hist", "cdf", "invcdf"), ...)
 	        )   
     } 	 
 }
-#-----------------------------------------------------------------------------
-#------------------------------------------------------------------------------
+#########################################################################
+#########################################################################
+#########################################################################
+#########################################################################
 lines.histSmo <- function(x, type=c("hist", "cdf", "invcdf"), ...) 
 {
   type <- match.arg(type)
@@ -392,7 +410,10 @@ lines.histSmo <- function(x, type=c("hist", "cdf", "invcdf"), ...)
   } 	 
 }
 
-#-------------------------------------------------------------------------------
+#########################################################################
+#########################################################################
+#########################################################################
+#########################################################################
 print.histSmo <- function (x, digits = NULL, ...) 
 {
   cat("\nCall:\n\t", deparse(x$call), "\n\n", sep = "")
@@ -403,8 +424,7 @@ print.histSmo <- function (x, digits = NULL, ...)
  #       ...)
   invisible(x)
 }
-#-------------------------------------------------------------------------------
-#Data = read.csv(path1,header = T)   
-#x11()
-
-#for (j in 1:nrow(Data))  out[j] <-np.pdf(j)
+#########################################################################
+#########################################################################
+#########################################################################
+#########################################################################

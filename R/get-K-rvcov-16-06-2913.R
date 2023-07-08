@@ -133,7 +133,10 @@ rvcov <- function(object, type = c("vcov", "cor", "se", "coef", "all"),  hessian
   if (!("gamlss" %in% class(object))) 
     stop("the null model is not a gamlss model")
         V <- vcov(object, hessian.fun= hessian.fun)
+# mikis 29-6-22        
+       cc <- unlist(coefAll(object))
         K <- get.K(object)
+        K <- K[!is.na(cc), !is.na(cc)]
    varCov <- V%*%K%*%V
       se <- sqrt(diag(varCov))
     corr <- cov2cor(varCov)
