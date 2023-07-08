@@ -11,10 +11,12 @@ lpred <-function (obj,
                 se.fit = FALSE, 
                   ... ) 
 {
- ## internal function 1
- ## calculates the s.e.'s for a given parameters mu, sigma, nu or tau 
- ## based on predict.lm() function 
- # --------cal.se  start here --------------------------------------------------
+## internal function 1
+## calculates the s.e.'s for a given parameters mu, sigma, nu or tau 
+## based on predict.lm() function 
+########################################################################
+######################################################################## 
+# --------cal.se  start here -------------------------------------------
  cal.se <- function(obj, what ) 
   {   
   # for some additive terms the X contains zero columns 
@@ -31,106 +33,106 @@ smo.var <- obj[[paste(what,"var",sep=".")]]
     {     vl <- vl +  rowSums(smo.var) }  
   sqrt(vl)             
   }
- #---------cal.se ends here ----------------------------------------------------
- #------------------------------------------------------------------------------
- ## internal function 2
- ## calculates the terms for a given parameters mu, sigma, nu or tau 
- ## based on predict.lm() function 
- #--------cal.terms starts here 
+#---------cal.se ends here ----------------------------------------------
+#########################################################################
+## internal function 2
+## calculates the terms for a given parameters mu, sigma, nu or tau 
+## based on predict.lm() function 
+#--------cal.terms starts here 
  cal.terms <- function(obj, what, se.fit, terms)
   {
-     tt <- obj[[paste(what,"terms",sep=".")]]
-      n <- obj$N
-      p <- obj[[paste(what,"qr",sep=".")]]$rank 
-     p1 <- seq(len = p)
-    piv <- obj[[paste(what,"qr",sep=".")]]$pivot[p1] 
-     mm <- obj[[paste(what,"x",sep=".")]]
-      X <- obj[[paste(what,"x",sep=".")]]
-      w <- obj[[paste(what,"wt",sep=".")]]
-   beta <- obj[[paste(what,"coefficients",sep=".")]]
-smo.mat <- obj[[paste(what,"s",sep=".")]]
-smo.var <- obj[[paste(what,"var",sep=".")]]      
-     aa <- attr(mm, "assign")
-     ll <- attr(tt, "term.labels")
-   if (attr(tt, "intercept") > 0) 
-     ll <- c("(Intercept)", ll)
-    aaa <- factor(aa, labels = ll)
-   asgn <- split(order(aa), aaa)
+     tt <- obj[[paste(what,"terms",sep=".")]]  # get the `par.terms'
+      n <- obj$N                               # no of observations
+      p <- obj[[paste(what,"qr",sep=".")]]$rank# no of fitted terms 
+     p1 <- seq(len = p)                        #
+    piv <- obj[[paste(what,"qr",sep=".")]]$pivot[p1] # 1,2,...,p
+     mm <- obj[[paste(what,"x",sep=".")]]      # design matrix
+      X <- obj[[paste(what,"x",sep=".")]]      # again the design matrix
+      w <- obj[[paste(what,"wt",sep=".")]]     # param iterative weights
+   beta <- obj[[paste(what,"coefficients",sep=".")]]# param.coef
+smo.mat <- obj[[paste(what,"s",sep=".")]]      # param smoothers
+smo.var <- obj[[paste(what,"var",sep=".")]]    # param var   
+     aa <- attr(mm, "assign")                  # attributes of the design matrix
+     ll <- attr(tt, "term.labels")             # attributes of the param terms
+   if (attr(tt, "intercept") > 0)              # if intercepts  
+     ll <- c("(Intercept)", ll) 
+    aaa <- factor(aa, labels = ll)             # factor conttaining the names  
+   asgn <- split(order(aa), aaa)               # split position of terms according to names
   hasintercept <- attr(tt, "intercept") > 0
-   if (hasintercept) 
-        {
+if (hasintercept)                           # if there is intercept evaluate the terms constant
+  {
        asgn$"(Intercept)" <- NULL
                       avx <- colMeans(mm)
                termsconst <- sum(avx[piv] * beta[piv])
-        }
- nterms <- length(asgn)
-        if (nterms > 0) 
-        {
+  }
+ nterms <- length(asgn)                       # number of terms 
+if (nterms > 0) 
+  {
            predictor <- matrix(ncol = nterms, nrow = NROW(X))
            dimnames(predictor) <- list(rownames(mm), names(asgn))
-            if (se.fit ) 
-            {
+   if (se.fit ) 
+      {
                 ip <- matrix(ncol = nterms, nrow = NROW(X))
-                dimnames(ip) <- list(rownames(X), names(asgn))
-                Rinv <- qr.solve(qr.R(obj[[paste(what,"qr",sep=".")]])[p1, p1])
-            }
-            if (hasintercept) 
-                X <- sweep(X, 2, avx)
-            unpiv <- rep.int(0, NCOL(X))
-            unpiv[piv] <- p1
-            for (i in seq(1, nterms, length = nterms)) 
-            {
-                iipiv <- asgn[[i]]
-                ii <- unpiv[iipiv]
-                iipiv[ii == 0] <- 0
-                predictor[, i] <- if (any(iipiv > 0)) # ms Thursday, May 1, 2008 at 10:13
-                  X[, iipiv, drop = FALSE] %*% beta[iipiv]
-                else 0
-                if (se.fit ) 
-                  ip[, i] <- if (any(iipiv > 0))  # ms Thursday, May 1, 2008 at 10:13
-                    as.matrix(X[, iipiv, drop = FALSE] %*% Rinv[ii, 
-                      , drop = FALSE])^2 %*% rep.int(1,p)
+      dimnames(ip) <- list(rownames(X), names(asgn))
+              Rinv <- qr.solve(qr.R(obj[[paste(what,"qr",sep=".")]])[p1, p1])
+      }
+   if (hasintercept) 
+                 X <- sweep(X, 2, avx)          # design
+#     matrix(X) - average(X)
+             unpiv <- rep.int(0, NCOL(X))
+        unpiv[piv] <- p1                   # position              
+    for (i in seq(1, nterms, length = nterms)) 
+      {
+           iipiv <- asgn[[i]]
+              ii <- unpiv[iipiv]
+  iipiv[ii == 0] <- 0
+  predictor[, i] <- if (any(iipiv > 0)) # ms Thursday, May 1, 2008 at 10:13
+                     X[, iipiv, drop = FALSE] %*% beta[iipiv]
+                    else 0
+                   if (se.fit ) 
+                    ip[, i] <- if (any(iipiv > 0))  # ms Thursday, May 1, 2008 at 10:13
+                    as.matrix(X[, iipiv, drop = FALSE] %*% Rinv[ii, , drop = FALSE])^2 %*% rep.int(1,p)
                   else 0
-            }
-            # if smoothing 
-             if (!is.null(smo.mat)) 
-                  {
-                       colnameS <- colnames(smo.mat)
-                   nofsmoothers <- length(colnameS)
-                   for (iN in seq(1,nofsmoothers, length = nofsmoothers))
-                     {
-                     predictor[,colnameS[iN]] <- predictor[,colnameS[iN]]+smo.mat[,colnameS[iN]]
-                      if (se.fit ) 
-                       {
-                        ip[,colnameS[iN]] <- ip[,colnameS[iN]]+smo.var[,colnameS[iN]]
-                       }
-                     }  
-                  }
+      }
+    if (!is.null(smo.mat)) 
+      {
+             colnameS <- colnames(smo.mat)
+         nofsmoothers <- length(colnameS)
+          for (iN in seq(1,nofsmoothers, length = nofsmoothers))
+              {
+       predictor[,colnameS[iN]] <- predictor[,colnameS[iN]]+smo.mat[,colnameS[iN]]
+              if (se.fit ) 
+                {
+              ip[,colnameS[iN]] <- ip[,colnameS[iN]]+smo.var[,colnameS[iN]]
+                }
+             }  
+      }
             if (!is.null(terms)) 
             {   
                 predictor <- predictor[, terms, drop = FALSE]
                 if (se.fit) 
                   ip <- ip[, terms, drop = FALSE]
             }
-        }
-        else 
-        {
-            predictor <- ip <- matrix(0, n, 0)
-        }
-        attr(predictor, "constant") <- if (hasintercept)  termsconst
-                                       else 0
-   if (se.fit) 
-        list(fit = predictor, se.fit = sqrt(ip) )
-   else predictor
   }
-#----------- cal.terms stops here  ---------------------------------------------
-#-------------------------------------------------------------------------------
+        else 
+  {
+            predictor <- ip <- matrix(0, n, 0)
+  }
+attr(predictor, "constant") <- if (hasintercept)  termsconst
+                                   else 0
+if (se.fit) 
+        list(fit = predictor, se.fit = sqrt(ip) )
+     else predictor
+  }
+#----------- cal.terms stops here  --------------------------------------
+#########################################################################
+#########################################################################
 ## the proper function lp starts here 
-#-------------------------------------------------------------------------------
+#########################################################################
+#########################################################################
     if (!is.gamlss(obj))  stop(paste("This is not an gamlss object", "\n", "")) 
-#what <-  as.character(what) ##problems when lpred() is calling other functions
-     what <- if (!is.null(parameter))  {
-    match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
+    what <- if (!is.null(parameter))  {
+            match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
     type <- match.arg(type)
 if (!se.fit)
   {

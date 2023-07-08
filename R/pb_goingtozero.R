@@ -45,6 +45,7 @@ pbz <- function(x, df = NULL, lambda = NULL, control=pbz.control(...), ...)
 # the main function starts here
             scall <- deparse(sys.call())
       no.dist.val <-  length(table(x))
+      if (is.matrix(x)) stop("x is a matric declare it as a vector")
                lx <- length(x)
     control.inter <- if (lx<99) 10 else control$inter # this is to prevent singularities when length(x) is small:change to 99 30-11-11 MS
     control$inter <- if (no.dist.val<=control$inter)  no.dist.val else control.inter 
@@ -210,7 +211,7 @@ if (is.null(xeval)) # if no prediction
     {    
               X <-  if (is.null(xeval)) as.matrix(attr(x,"X")) #the trick is for prediction
                     else  as.matrix(attr(x,"X"))[seq(1,length(y)),]
-           xvar <- as.matrix(attr(x,"x")) # main penalty
+           xvar <- as.matrix(attr(x,"x")) # x variable
               D <- as.matrix(attr(x,"D")) # main penalty
              D1 <- as.matrix(attr(x,"D1")) # order 1 penalty   
          lambda <- as.vector(attr(x,"lambda")) # lambda 
@@ -331,7 +332,7 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
 #-end -----------------------------------------------------------    
          lev <- (lev-.hat.WX(w,x)) # subtract  the linear since is already fitted 
          var <- lev/w              # the variance of the smoother
-         Fun <- splinefun(xvar, fv, method="natural")
+         suppressWarnings(Fun <- splinefun(xvar, fv, method="natural"))
 coefSmo <- list(   coef = fit$beta,
                      fv = fv, 
                  lambda = lambda, 
@@ -360,7 +361,7 @@ else # for prediction
         position <- i 
         if (rexpr[i]==1) break
         }
-cat("New way of prediction in pbz()  (starting from GAMLSS version 5.0-3)", "\n") 
+#cat("New way of prediction in pbz()  (starting from GAMLSS version 5.0-3)", "\n") 
 gamlss.environment <- sys.frame(position)
              param <- get("what", envir=gamlss.environment)
             object <- get("object", envir=gamlss.environment)
@@ -369,8 +370,9 @@ gamlss.environment <- sys.frame(position)
      smooth.labels <- get("smooth.labels", envir=gamlss.environment)
                 ll <- dim(as.matrix(attr(x,"X")))[1]
            newxval <- as.vector(attr(x,"x"))[seq(length(y)+1,ll)]
-              pred <- getSmo(object, parameter= param, which=which(TT%in%smooth.labels))$fun(newxval)
-             # pred <- getSmo(object, parameter= param, which=which(TT%in%smooth.labels))$fun(xeval)
+              pred <- getSmo(object, parameter= param, which=which(smooth.labels==TT))$fun(newxval)
+            # pred <- getSmo(object, parameter= param, which=which(TT%in%smooth.labels))$fun(newxval)
+            # pred <- getSmo(object, parameter= param, which=which(TT%in%smooth.labels))$fun(xeval)
    pred
     }    
 }

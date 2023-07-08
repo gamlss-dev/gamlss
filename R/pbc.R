@@ -1,8 +1,9 @@
 ## this is a  cycle Penalized Beta  regression splines smoother
 ## Paul Eilers, Mikis Stasinopoulos and Bob Rigby
 ## last modified Saturday, August 28, 2009 
+## add max.df  July 24, 2018 
 #----------------------------------------------------------------------------------------
-pbc<-function(x, df = NULL, lambda = NULL, control=pbc.control(...), ...) 
+pbc<-function(x, df = NULL, lambda = NULL,  max.df = NULL, control=pbc.control(...), ...) 
 {
 ## this function is based on Paul Eilers' penalised beta regression splines function
 ## lambda : is the smoothing parameter
@@ -28,7 +29,8 @@ bbase <- function(x, xl = min(x), xr = max(x), nseg = 10, deg = 3)
   n <- dim(P)[2]
   D <- diff(diag(n), diff = deg + 1) / (gamma(deg + 1) * dx ^ deg)
   B <- (-1) ^ (deg + 1) * P %*% t(D)
-  B
+  attr(B, "knots") <- knots[-c(1:(deg-1), (n-(deg-2)):n)]
+  B 
 }
 #-------------------------------------------------------------------------------
 ## Paul Eilers' function
@@ -37,19 +39,20 @@ cbase <- function(x, xl, xr, ndx, deg)
   # Construct circular B-spline basis
   # Domain: xl to xr, number of segmants on domain: ndx,  degree: deg
   # Wrap around to cyclic basis
-  B0 = bbase(x, xl = xl, xr = xr, nseg = ndx, deg = deg)
-  n = ncol(B0) - deg # 13-3=10
-  cc = (1:deg) + n   # 11 12 13
-  B = B0[, 1:n]      # B is 100 X 10 
-  B[, 1:deg] = B[, 1:deg] + B0[, cc] 
+        B0 <- bbase(x, xl = xl, xr = xr, nseg = ndx, deg = deg)
+         n <- ncol(B0) - deg # 13-3=10
+        cc <- (1:deg) + n   # 11 12 13
+         B <- B0[, 1:n]      # B is 100 X 10 
+B[, 1:deg] <- B[, 1:deg] + B0[, cc] 
   # B[,c(1,2,3)] = B[,c(1,2,3)] + B[,c(13,12,11)] Friday, BR and MS October 9, 2009 
-  B
+  attr(B, "knots") <- attr(B0, "knots")
+  B 
 }
 #------------------------------------------------------------------------------
 ## Paul Eilers' function
 ## Modified by Mikis
-## the Cdiff function allows for order= 1 and 2 2
-## for order 2 allows ti have sinoide behaviour 
+## the Cdiff function allows for order= 1 and 2 
+## for order 2 allows to have sinoide behaviour 
 ## 2* cos(2 * pi / n or not
 Cdiff <- function(n, order=2, sin=TRUE)
 {
@@ -76,6 +79,7 @@ Cdiff <- function(n, order=2, sin=TRUE)
 #--------------------------------------------------------------------------------
 # the main function starts here
          scall <- deparse(sys.call())
+if (is.matrix(x)) stop("x is a matric declare it as a vector or factor")
             lx <- length(x)
 if (is(x,"factor")) # ||control$ts==TRUE
  {
@@ -97,18 +101,25 @@ else
           xmin <- xl #- 0.01 * (xr - xl)
              X <- cbase(x, xl, xr, control$inter, control$degree)  # create the basis
  }
-          # Cyclic penalty
+# Cyclic penalty
             nb <- ncol(X)
              D <- Cdiff(nb, order=control$order, sin=control$sin)
-            # D <- diff(D)  # not know yt if
-             if(!is.null(df)) # degrees of freedom
-             {
-             if (df>(dim(X)[2]-2)) 
-              {df <- 3;  
-              warning("The df's exceed the number of columns of the design matrix", "\n",  "   they are set to 3") }
-              df <- if (df < 1)  1  else  df+1
-              if (df < 1)  warning("the df are set to 1")    
-             }
+# D <- diff(D)  # not know yt if
+if(!is.null(df)) # degrees of freedom
+  {
+    if (df>(dim(X)[2]-2)) 
+    {df <- 3;  
+    warning("The df's exceed the number of columns of the design matrix", "\n",  "   they are set to 3") }
+    df <- if (df < 1)  1  else  df+1
+    if (df < 1)  warning("the df are set to 1")    
+  }
+## -------- check max.df   (new 7-2018 MS)  
+if (is.null(max.df)) max.df <- dim(X)[2]-2
+if (max.df>(dim(X)[2]-2)) 
+ {
+  max.df <- dim(X)[2]-2
+  warning("The max.df's are set to",  dim(X)[2]-2,  "\n")
+ }                
 ## here we get the gamlss environment and a random name to save
 ## the starting values for lambda within gamlss()
 ## get gamlss environment
@@ -121,7 +132,7 @@ gamlss.environment <- sys.frame(position)
 #--------
 ## get a random name to use it in the gamlss() environment
 #--------
-               sl <-sample(letters, 4)
+               sl <- sample(letters, 4)
       fourLetters <- paste(paste(paste(sl[1], sl[2], sep=""), sl[3], sep=""),sl[4], sep="")
   startLambdaName <- paste("start.Lambda",fourLetters, sep=".")
 ## put the starting values in the gamlss()environment
@@ -133,10 +144,13 @@ gamlss.environment <- sys.frame(position)
       attr(xvar, "D")             <- D
       attr(xvar, "X")             <- X
       attr(xvar, "df")            <- df 
+      attr(xvar, "max.df")        <- max.df
       attr(xvar, "call")          <- substitute(gamlss.pbc(data[[scall]], z, w)) 
       attr(xvar, "lambda")        <- lambda
       attr(xvar, "gamlss.env")    <- gamlss.environment
       attr(xvar, "NameForLambda") <- startLambdaName
+      attr(xvar, "Name")          <- deparse(substitute(x))
+      attr(xvar, "x")             <- x
       attr(xvar, "class")         <- "smooth"
       xvar
 }
@@ -178,44 +192,29 @@ method <- match.arg(method)
 gamlss.pbc <- function(x, y, w, xeval = NULL, ...)
 {
 # -------------------------------------------------- 
-# functions within
-# a siple penalized regression
-regpen <- function(y, X, w, lambda, D)
-  {
-             G <- lambda * t(D) %*% D
-            XW <- w * X
-           XWX <- t(XW) %*% X
-          beta <- solve(XWX + G, t(XW) %*% y)
-            fv <- X %*%beta
-             H <- solve(XWX + G, XWX)
-         #  edf <- sum(diag(H))
-           fit <- list(beta = beta, edf = sum(diag(H)))
-  return(fit)  
-  }
 #-------------------------------------------------------------------------------
 regpen <- function(y, X, w, lambda, D)# original
 {
   #         p <- dim(X)[2]
   #       qrX <- qr(sqrt(w)*X, tol=.Machine$double.eps^.8)  
   #         R <- qr.R(qrX)
-  RD <- rbind(R,sqrt(lambda)*D) # 2p x p matrix 
+     RD <- rbind(R,sqrt(lambda)*D) # 2p x p matrix 
   svdRD <- svd(RD)                 # U 2pxp D pxp V pxp
   ##             take only the important values    
-  rank <- sum(svdRD$d>max(svdRD$d)*.Machine$double.eps^.8)
-  U1 <- svdRD$u[1:p,1:rank]     # U1 p x rank 
+   rank <- sum(svdRD$d>max(svdRD$d)*.Machine$double.eps^.8)
+     U1 <- svdRD$u[1:p,1:rank]     # U1 p x rank 
   # I am not sure what are consequances in introducing this ???
-  y1 <- t(U1)%*%Qy #  t(Q)%*%(sqrt(w)*y)        # rankxp pxn nx1 => rank x 1 vector 
+     y1 <- t(U1)%*%Qy #  t(Q)%*%(sqrt(w)*y)        # rankxp pxn nx1 => rank x 1 vector 
   #     beta <- svdRD$v[,1:rank] %*%diag(1/svdRD$d[1:rank])%*%y1 
-  beta <- svdRD$v[,1:rank] %*%(y1/svdRD$d[1:rank])
+   beta <- svdRD$v[,1:rank] %*%(y1/svdRD$d[1:rank])
   #        1/(svdRD$d^2)
   #print((svdRD$v)%*%t(svdRD$v), digits=1)
-  HH <- (svdRD$u)[1:p,1:rank]%*%t(svdRD$u[1:p,1:rank])
-  df <- sum(diag(HH))
-  fit <- list(beta = beta, edf = df)
+      HH <- (svdRD$u)[1:p,1:rank]%*%t(svdRD$u[1:p,1:rank])
+      df <- sum(diag(HH))
+     fit <- list(beta = beta, edf = df)
   return(fit)  
 }
-#-------------------------------------------------------------------------------
-#--------------------------------------------------
+#-----------------------------------------------------------------------
 ## function to find lambdas miimizing the local GAIC        
      fnGAIC <- function(lambda, k)
     {
@@ -225,43 +224,44 @@ regpen <- function(y, X, w, lambda, D)# original
     # cat("GAIC", GAIC, "\n")
       GAIC   
     }
-#-------------------------------------------------------------------------------
-# ## function to find lambdas miimizing the local GAIC        
-fnGAIC <- function(lambda, k)
-{
-  fit <- regpen(y=y, X=X, w=w, lambda=lambda, D)
-  fv <- X %*% fit$beta         
-  GAIC <- sum(w*(y-fv)^2)+k*fit$edf 
-  # cat("GAIC", GAIC, "\n")
-  GAIC   
-}
-# 
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
+#------------------------------------------------------------------------
 # ## function to find the lambdas which minimise the local GCV 
 fnGCV <- function(lambda, k)
 {
-  I.lambda.D <- (1+lambda*UDU$values)
-  edf <- sum(1/I.lambda.D)
-  y_Hy2 <- y.y-2*sum((yy^2)/I.lambda.D)+sum((yy^2)/((I.lambda.D)^2))
-  GCV <- (n*y_Hy2)/(n-k*edf)^2
-  GCV
+I.lambda.D <- (1+lambda*UDU$values)
+       edf <- sum(1/I.lambda.D)
+     y_Hy2 <- y.y-2*sum((yy^2)/I.lambda.D)+sum((yy^2)/((I.lambda.D)^2))
+       GCV <- (n*y_Hy2)/(n-k*edf)^2
+    GCV
 }  
-#------------------------------------------------------------------------------ 
+#----------------------------------------------------------------------- 
 ## local function to get df using eigen values
     edf1_df <- function(lambda)
            {
            edf <-  sum(1/(1+lambda*UDU$values))
            (edf-df)
-           }  
-#------------------------------------------------------------------
+    }
+    #------ new 22-7-18-------  to get max.df
+    edf2_df <- function(loglambda)
+    {
+        lambda <- exp(loglambda)
+    I.lambda.D <- (1+lambda*UDU$values)
+           edf <- sum(1/I.lambda.D)
+      (edf-max.df)
+    }  
+#------------------------------------------------------------------------
 # the main function starts here
 # get the attributes
+if (is.null(xeval)) # if no prediction 
+    {
          X <-  if (is.null(xeval)) as.matrix(attr(x,"X")) #the trick is for prediction
               else  as.matrix(attr(x,"X"))[seq(1,length(y)),]
+      xvar <- as.matrix(attr(x,"x")) # the x term
+      Name <- as.character(attr(x, "Name")) 
          D <- as.matrix(attr(x,"D")) # penalty
     lambda <- as.vector(attr(x,"lambda")) # lambda
         df <- as.vector(attr(x,"df")) # degrees of freedom
+    max.df <- as.vector(attr(x,"max.df")) # degrees of freedom 
    control <- as.list(attr(x, "control")) 
 gamlss.env <- as.environment(attr(x, "gamlss.env"))
 startLambdaName <- as.character(attr(x, "NameForLambda")) 
@@ -270,26 +270,26 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
          n <- nrow(X) # the no of observations
          p <- ncol(D) # the rows of the penalty matrix
        qrX <- qr(sqrt(w)*X, tol=.Machine$double.eps^.8)  
-        R <- qr.R(qrX)
-        Q <- qr.Q(qrX) 
-      Qy  <- t(Q)%*%(sqrt(w)*y)
-     tau2  <- sig2 <- NULL
+         R <- qr.R(qrX)
+         Q <- qr.Q(qrX) 
+        Qy <- t(Q)%*%(sqrt(w)*y)
+      tau2 <- sig2 <- NULL
 # now the action depends on the values of lambda and df
-#-------------------------------------------------------------------- 
+#----------------------------------------------------------------------- 
   lambdaS <-  get(startLambdaName, envir=gamlss.env) ## geting the starting value
  if (lambdaS>=1e+07) lambda <- 1e+07 # MS 19-4-12
  if (lambdaS<=1e-07) lambda <- 1e-07 # MS 19-4-12 
-# case 1: if lambda is known just fit
+# case 1: if lambda is known just fit ---------------------------------
  if (is.null(df)&&!is.null(lambda)||!is.null(df)&&!is.null(lambda))
  {
           fit <- regpen(y, X, w, lambda,  D)
            fv <- X %*% fit$beta        
- } # case 2: if lambda is estimated ------------------------------------------- 
+ } # case 2: if lambda is estimated ----------------------------------- 
  else if (is.null(df)&&is.null(lambda)) 
  { #   
   # cat("----------------------------","\n")
   lambda <- lambdaS  # MS 19-4-12## geting the starting value
-  # if ML ----------------------
+  # if ML -----------------------------------------------------------ML
 switch(control$method,
     "ML"={
       for (it in 1:50) 
@@ -298,27 +298,26 @@ switch(control$method,
             gamma. <- D %*% as.vector(fit$beta)  # get the gamma differences
                 fv <- X %*% fit$beta             # fitted values
               sig2 <- sum(w * (y - fv) ^ 2) / (N - fit$edf) # DS+FDB 3-2-14
-             tau2 <- sum(gamma. ^ 2) / (fit$edf-order)# see LNP page 279
-             if(tau2<1e-7) tau2 <- 1.0e-7 # MS 19-4-12
+              tau2 <- sum(gamma. ^ 2) / (fit$edf-order)# see LNP page 279
+         if(tau2<1e-7) tau2 <- 1.0e-7 # MS 19-4-12
         lambda.old <- lambda
             lambda <- sig2 / tau2 # maybe only 1/tau2 will do since it gives exactly the EM results see LM-1
-            if (lambda<1.0e-7) lambda<-1.0e-7 # DS Saturday, April 11, 2009 at 14:18
-            if (lambda>1.0e+7) lambda<-1.0e+7 # DS 29 3 2012
-             #    cat("iter tau2 sig2",it,tau2, sig2, '\n')
-            if (abs(lambda-lambda.old) < 1.0e-7||lambda>1.0e10) break
-            assign(startLambdaName, lambda, envir=gamlss.env)
+        if (lambda<1.0e-7) lambda<-1.0e-7 # DS Saturday, April 11, 2009 at 14:18
+        if (lambda>1.0e+7) lambda<-1.0e+7 # DS 29 3 2012
+            #    cat("iter tau2 sig2",it,tau2, sig2, '\n')
+        if (abs(lambda-lambda.old) < 1.0e-7||lambda>1.0e10) break
+          assign(startLambdaName, lambda, envir=gamlss.env)
              #cat("lambda",lambda, '\n')
            }
          },
-         "GAIC"=  #--------------------------------------------------------------- GAIC
+    "GAIC"= #-------------------------------------------------------- GAIC
    {
      lambda <- nlminb(lambda, fnGAIC,  lower = 1.0e-7, upper = 1.0e7, k=control$k)$par 
         fit <- regpen(y=y, X=X, w=w, lambda=lambda, D)
          fv <- X %*% fit$beta     
     assign(startLambdaName, lambda, envir=gamlss.env)
    },
-"GCV"={   #-------------------------------------------------------------- GCV
-  # 
+"GCV"={   #----------------------------------------------------------- GCV
      wy <- sqrt(w)*y
     y.y <- sum(wy^2)
    Rinv <- solve(R)
@@ -330,10 +329,31 @@ switch(control$method,
      fv <- X %*% fit$beta     
   assign(startLambdaName, lambda, envir=gamlss.env) 
 })
+# new 22-7-2018 MS ----------------------------------------- check max.df       
+# now we check whether the fitted df are greater that max.df
+if (fit$edf > max.df) 
+  {
+     Rinv <- try(solve(R), silent = TRUE)
+  if (any(class(Rinv) %in% "try-error"))
+      stop("The B-basis for ",Name," is singular, transforming the variable may help","\n")
+        S <- t(D)%*%D
+      UDU <- eigen(t(Rinv)%*%S%*%Rinv, symmetric=TRUE, only.values=TRUE) 
+loglambda <- if (sign(edf2_df(-30))==sign(edf2_df(30))) 30  
+    else  uniroot(edf2_df, c(-30,30))$root          
+   lambda <- exp(loglambda)
+      fit <- regpen(y, X, w, lambda, D)
+  if (abs(fit$edf-max.df)>0.1) warning("the target df's are not acheived, try to reduce the no. of knot intervals \n in pb(). eg. inter=10")
+       fv <- X %*% fit$beta 
+    assign(startLambdaName, lambda, envir=gamlss.env)
+}
+  #---------- the max.df is finished here--------------------------------  
  }
-  else # case 3 : if df are required---------------------------------
+  else # case 3 : if df are required-----------------------------------df
   { 
-    Rinv <- solve(R)
+    
+    Rinv <- try(solve(R), silent = TRUE)
+    if (any(class(Rinv) %in% "try-error"))
+      stop("The B-basis for ",Name," is singular, transforming the variable may help","\n")
      S   <- t(D)%*%D
      UDU <- eigen(t(Rinv)%*%S%*%Rinv)           
   lambda <- if (sign(edf1_df(0))==sign(edf1_df(100000))) 100000  # in case they have the some sign
@@ -342,14 +362,15 @@ switch(control$method,
     fit <- regpen(y, X, w, lambda, D)
     fv <- X %*% fit$beta
   }#--------------------------------------------------------------------------end of case 3
-  
   #  but this is working
 #Version 4 -------------------------------------------------- 
    waug <- as.vector(c(w, rep(1,nrow(D))))
    xaug <- as.matrix(rbind(X,sqrt(lambda)*D))
     lev <- hat(sqrt(waug)*xaug,intercept=FALSE)[1:n] # get the hat matrix
-# the variance of the smootherz
-     # se <-  sqrt(diag(solve(XWX + lambda * t(D) %*% D)))
+    var <- lev/w 
+# the variance of the smoother
+     # se <-  sqrt(diag(solve(XWX + lambda * t(D) %*% D)))Q
+    suppressWarnings(Fun <- splinefun(xvar, fv, method="periodic"))
 coefSmo <- list(   coef = fit$beta,
                      fv = fv, 
                  lambda = lambda, 
@@ -358,25 +379,44 @@ coefSmo <- list(   coef = fit$beta,
                   sige2 = sig2,
                    sigb = if (is.null(tau2)) NA else sqrt(tau2),
                    sige = if (is.null(sig2)) NA else sqrt(sig2),
-                 method = control$method)
+                 method = control$method,
+                   name = Name,
+                 knots = attr(X,"knots"),
+                   fun = Fun)
 class(coefSmo) <- c("pbc", "pb") 
-if (is.null(xeval)) # if no prediction 
-    {
-     list(fitted.values=fv, residuals=y-fv, var=lev, nl.df =fit$edf-1,
+  list(fitted.values=fv, residuals=y-fv, var=var, nl.df = fit$edf-1,
           lambda=lambda, coefSmo=coefSmo)
     }                            
 else # for prediction 
     {
-     ll <- dim(as.matrix(attr(x,"X")))[1]
-     nx <- as.matrix(attr(x,"X"))[seq(length(y)+1,ll),]
-   pred <- drop(nx %*% fit$beta)
-   pred
+  position <- 0
+     rexpr <- regexpr("predict.gamlss",sys.calls())
+for (i in 1:length(rexpr)){ 
+  position <- i 
+  if (rexpr[i]==1) break}
+#cat("New way of prediction in pbc()  (starting from GAMLSS version 5.0-3)", "\n")    
+gamlss.environment <- sys.frame(position)
+        param <- get("what", envir=gamlss.environment)
+       object <- get("object", envir=gamlss.environment)
+           TT <- get("TT", envir=gamlss.environment)
+smooth.labels <- get("smooth.labels", envir=gamlss.environment)
+           ll <- dim(as.matrix(attr(x,"X")))[1]
+      newxval <- as.vector(attr(x,"x"))[seq(length(y)+1,ll)]
+      oldxval <- as.vector(attr(x,"x"))[seq(1,length(y))]
+      if (any(newxval < min(oldxval) | newxval > max(oldxval)))
+        warning("extrapolation in pbc() is not reliable")
+         pred <- getSmo(object, parameter= param, which=which(smooth.labels==TT))$fun(newxval)
+      #   pred <- getSmo(object, parameter= param, which=which(TT%in%smooth.labels))$fun(xeval)
+      #   ll <- dim(as.matrix(attr(x,"X")))[1]
+      #   nx <- as.matrix(attr(x,"X"))[seq(length(y)+1,ll),]
+      # pred <- drop(nx %*% fit$beta) 
+      pred
     }    
 }
 #----------------------------------------------------------------------------------------
 print.pbc  <- function (x, digits = max(3, getOption("digits") - 3), ...) 
 {   
-  cat("Cycle P-spline fit using the gamlss function cy() \n")
+  cat("Cycle P-spline fit using the gamlss function pbc() \n")
   cat("Degrees of Freedom for the fit :", x$edf, "\n")
   cat("Random effect parameter sigma_b:", format(signif(x$sigb)), "\n")  
   cat("Smoothing parameter lambda     :", format(signif(x$lambda)), "\n") 

@@ -34,7 +34,7 @@ lms <- function(y, x,
         families = LMS,
             data = NULL, 
                k = 2, # for the AIC
-            cent = 100*pnorm((-4:4)*2/3),
+            cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6), #100*pnorm((-4:4)*2/3)
      calibration = TRUE,
          trans.x = FALSE,
        fix.power = NULL,
@@ -172,9 +172,18 @@ m0$call$mu.start <- NULL # this works OK
     m0$call$data <- substitute(data) # this is OK
   m0$call$family <- if(whichdist==0) "NO" else FAM[whichdist] # this is OK
   if (is.null(mu.df))    m0$call$formula <- formula(y~pb(x))
+  #m0$call$formula[[2]]  <- ylab
+  #m0$call$formula[[3]][[2]] <- xlab
   if (is.null(sigma.df)) m0$call$sigma.formula <- formula(~pb(x))
+  
   if (is.null(nu.df))    m0$call$nu.formula <- formula(~pb(x))
   if (is.null(tau.df))   m0$call$tau.formula <- formula(~pb(x))
+# convert to string
+  stringCall <- toString(deparse(m0$call))
+  stringCall <- gsub("x", xlab, stringCall)
+  stringCall <- gsub("y", ylab, stringCall)
+# convert bact to call  
+     m0$call <- str2lang(stringCall)   
 # I am stack here
 #m0$call$formula[3] 
 #if (is.null(mu.df)) 
@@ -234,6 +243,13 @@ if ("tau"%in%m0$par)
   m0$tauFun <- tauFun
 }
  #------------------------------------------------------------------------------
+#   deparse((m0$call))   
+#  toString(m0$call)  
+#  toString(format(m0$call))
+# toString(sprintf(format(m0$call)))   
+#     toString(deparse((m1$call))) 
+#  gsub("x", xlab, toString(deparse((m1$call))))    
+# str2lang(gsub("x", xlab, toString(deparse((m0$call)))))    
 class(m0) <- c("lms", class(m0))
   m0  # save the last model
 }
@@ -255,7 +271,7 @@ predict.lms <- function(object,
  # other if vector use it 
   if (!is.null(newdata))
   {
-  if (class(newdata)=="data.frame")
+  if (is(newdata,"data.frame"))
     {
     if (!object$xlab%in%names(newdata)) stop("the name in the data.frame do not much the x-variable in the model")
     x <- newdata[[object$xlab]]
@@ -309,18 +325,21 @@ out
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 # this function is appropriate to used when fitted model fails to c
-calibration <- function(object, xvar, cent=100*pnorm((-4:4)*2/3), legend=FALSE, fan=FALSE,  ...)
+calibration <- function(object, xvar, cent=c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6),#100*pnorm((-4:4)*2/3), 
+              legend=FALSE, fan=FALSE,  ...)
 {
  z   <-  quantile(resid(object), probs = cent/100)
  p   <-  pNO(z, mu=0, sigma=1)
  percent <- 100*p
  if (fan)
  {
-   centiles.fan(object, xvar=xvar, cent=percent,   ...)  
+   centiles.fan(object,  cent=percent,   ...)  
  }
  else
  {
-   centiles(object, xvar=xvar, cent=percent, legend=legend,  ...)
+  cc <- centiles(object,  cent=percent, legend=legend, save=TRUE, ...)
+  cpp<-cbind(target=cent, calib.=cc[,1], sample=cc[,2])
+  print(cpp, digits=3)
  }
 }
 #-------------------------------------------------------------------------------
