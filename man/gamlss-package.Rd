@@ -1,9 +1,7 @@
 \name{gamlss-package}
 \alias{gamlss-package}
 \docType{package}
-\title{
-\packageTitle{gamlss}
-}
+\title{\packageTitle{gamlss}}
 \description{
 \packageDescription{gamlss}
 }

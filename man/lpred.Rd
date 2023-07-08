@@ -4,13 +4,15 @@
 
 \title{Extract Linear Predictor Values and Standard Errors For A GAMLSS Model }
 \description{
-\code{lpred} is the GAMLSS specific method which extracts the linear predictor and its (approximate) standard errors 
-for a specified parameter from a GAMLSS objects.  
-The \code{lpred} can be also used to extract the fitted values (with its approximate standard errors) or specific  terms in the model  
-(with its approximate standard errors) in the same way that the \code{predict.lm()} and \code{predict.glm()} functions can be used for 
+The function \code{lpred()} is the GAMLSS specific method which extracts the linear predictor and its (approximate) standard errors 
+for a specified model parameter from a GAMLSS objects.  
+The \code{lpred()} can be used to extract the predictor fitted values (and its approximate standard errors) or the contribution of specific terms in the model  
+(with their approximate standard errors) in the same way that the \code{predict.lm()} and \code{predict.glm()} functions can be used for 
 \code{lm} or \code{glm} objects. 
-The function \code{lp} extract only the linear predictor. If prediction is required for new data values then use the 
-function \code{predict.gamlss()}.
+Note that \code{lpred()} extract information for the predictors of \code{mu},\code{sigma}, \code{nu} and \code{tau} at the training data values.  If predictions are  required for new data then use the 
+functions \code{predict.gamlss()} or \code{predictAll()}.
+
+The function \code{lp} extract only the linear predictor at the training data values. 
 }
 \usage{
 lpred(obj, what = c("mu", "sigma", "nu", "tau"), parameter= NULL,
@@ -38,12 +40,16 @@ If \code{se.fit=TRUE} a list containing  the appropriate \code{type}, \code{fit}
 \references{Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
+
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
-\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{https://www.gamlss.com/}).
 }
 
 

@@ -9,9 +9,10 @@
 
 \usage{
 pdf.plot(obj = NULL, obs = c(1), family = NO(), mu = NULL, 
-         sigma = NULL, nu = NULL, tau = NULL, min = NULL, 
-         max = NULL, step = NULL, allinone = FALSE, 
-         no.title = FALSE, ...)
+         sigma = NULL, nu = NULL, tau = NULL, from = 0, 
+         to = 10, min = NULL, max = NULL, no.points = 201, 
+         no.title = FALSE, col = gray(0.4), y.axis.lim = 1.1, 
+         frame.plot = TRUE, ...)         
 }
 
 \arguments{
@@ -22,12 +23,16 @@ pdf.plot(obj = NULL, obs = c(1), family = NO(), mu = NULL,
   \item{sigma}{The value(s) the scale parameter sigma for which the distribution has to be evaluated e.g \code{sigma=c(3,7)}}
   \item{nu}{The value(s) the parameter nu for which the distribution has to be evaluated e.g. \code{nu=3}}
   \item{tau}{The value(s) the parameter tau for which the distribution has be evaluated e.g. \code{tau=5}}
+   \item{from}{Minimum value of the random variable y (identical to \code{min})}
+   \item{to}{Maximum value of the random variable y(identical to \code{max})}
   \item{min}{Minimum value of the random variable y e.g. \code{min=0}}
   \item{max}{Maximum value of y e.g. \code{max=10}}
-  \item{step}{Steps for the evaluation of y e.g. \code{step=0.5}}
-  \item{allinone}{This will go}
+  \item{no.points}{the number fo point in which the function will be evaluated}
   \item{no.title}{Whether you need title in the plot, default is  \code{no.title=FALSE}}
-  \item{...}{for extra arguments}
+  \item{col}{the colot of the lines}
+  \item{y.axis.lim }{the limits for the y-axis}
+  \item{frame.plot}{whether to frame the individual plots} 
+  \item{...}{for extra arguments, Note that a  useful argument can be \code{col.axis}, \code{col.lab}, \code{cex.axis}, \code{cex.lab} etc.}
   }
 
 \details{
@@ -46,24 +51,30 @@ pdf.plot(obj = NULL, obs = c(1), family = NO(), mu = NULL,
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
+
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
-\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{https://www.gamlss.com/}).
 }
-\author{Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org} and Calliope Akantziliotou}
+\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk} and Calliope Akantziliotou}
 \note{The range of the y values given by min, max and step are very important in the plot}
 
 \section{Warning}{The range of some distributions depends on the fitted parameters} 
 \seealso{ \code{\link[gamlss]{gamlss}} }
 \examples{
-pdf.plot(family=BCT, min=1, max=20, step=.05, mu=10, sigma=0.15, nu=-1, tau=c(4,10,20,40) )
+pdf.plot(family=BCT, min=1, max=20, mu=10, sigma=0.15, nu=-1, tau=c(4,10,20,40) )
+\dontrun{
 # now using an gamlss object
-# library(gamlss)
-#data(abdom)
-#h<-gamlss(y~pb(x), sigma.formula=~pb(x), family=BCT, data=abdom) # fits 
-#pdf.plot(obj=h , obs=c(23,67), min=50, max=150, step=.5)
+data(abdom)
+h<-gamlss(y~pb(x), sigma.formula=~pb(x), family=BCT, data=abdom) # fits 
+pdf.plot(obj=h , obs=c(23,67), min=50, max=150)
+}
+
 }
 \keyword{regression}% 

@@ -8,7 +8,7 @@ It is  applicable when only "one" explanatory variable is available (usually age
 }
 \usage{
 lms(y, x, families = LMS, data = NULL, k = 2, 
-        cent = 100 * pnorm((-4:4) * 2/3), 
+        cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6),
         calibration = TRUE, trans.x = FALSE, 
         fix.power = NULL, lim.trans = c(0, 1.5), 
         prof = FALSE, step = 0.1, legend = FALSE, 
@@ -28,14 +28,14 @@ lms(y, x, families = LMS, data = NULL, k = 2,
  \item{trans.x}{whether to check for transformation in x with default \code{FALSE}}
   \item{fix.power}{if set it fix the power of the transformation for x}
  \item{lim.trans}{the limits for the search of the power parameter for x}
-  \item{prof}{whether to use the profile GAIC of the power tranformation}
+  \item{prof}{whether to use the profile GAIC of the power transformation}
   \item{step}{if code{prof=TRUE} is used this determine the step for the profile GAIC }
  \item{legend}{whether a legend is required in the plot with default \code{FALSE}}
  \item{mu.df}{\code{mu} effective degrees of freedom if required otherwise are estimated}
   \item{sigma.df}{\code{sigma} effective degrees of freedom if required otherwise are estimated}
   \item{nu.df}{\code{nu} effective degrees of freedom if required otherwise are estimated}
   \item{tau.df}{\code{tau} effective degrees of freedom if required otherwise are estimated}
-   \item{c.crit}{the convergence critetion to be pass to \code{gamlss()} }
+   \item{c.crit}{the convergence criterion to be pass to \code{gamlss()} }
   \item{method.pb}{the method used in the \code{pb()} for estimating the smoothing 
   parameters. The default is local maximum likelihood \code{"ML"}. \code{"GAIC"} is also permitted where \code{k} is taken from the \code{k} argument of the function.}
   \item{\dots}{extra argument which can be passed to \code{gamlss()}}
@@ -65,16 +65,20 @@ Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for lo
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
 
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
+
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
-\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{https://www.gamlss.com/}).
 }
 \author{
-Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby and Vlasios Voudouris \email{vlasios.voudouris@abm-analytics.com}
-}
+Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby and Vlasios Voudouris}
+
 \note{The function is fitting several models and for large data can be slow}
 
 \seealso{\code{\link{gamlss}}, \code{\link{centiles}}, \code{\link{calibration}}}
