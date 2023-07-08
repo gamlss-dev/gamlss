@@ -367,7 +367,6 @@ startLambdaName <- as.character(attr(x, "NameForLambda"))
 #-end -----------------------------------------------------------    
          lev <- (lev-.hat.WX(w,x)) # subtract  the linear since is already fitted 
          var <- lev/w              # the variance of the smootherz
-#         browser()
 #      # se <-  sqrt(diag(solve(XWX + lambda * t(D) %*% D)))
 
 

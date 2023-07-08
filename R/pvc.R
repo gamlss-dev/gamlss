@@ -514,7 +514,6 @@ if (!is.Factor)  # not a factor
      }
      else
      {
-       #  browser()  lm(by.var~X) ; 
        # plot(fitted(lm(x.orig~X))~x.orig)  x in the space of X 
        #  plot(fitted(lm(by.var~X))~by.var) by not 
      	coefSmo <- list(coef = fit$beta, 
@@ -655,7 +654,6 @@ else  # here is if.Factor==TRUE     -----------------------------FACTOR---FACTOR
    { 
              #--------------------------------------------------
      ## local function to get df using eigen values
-   #  browser()
      lambda <- if (is.null(lambda))  rep(0, nlev)     
      for (i in 1:nlev)
        {      	
@@ -820,8 +818,8 @@ nlevs <- nlevels(x$by)
     if (factor.plots)
     {
       plot(fv[order(x$x)]~x$x[order(x$x)], type="n", ylim=ran,
-           ylab="f(x)", xlab="x" , main="var. coef.",  col = col.term, 
-           lwd = lwd.term)   
+           ylab="f(x)", xlab="x" , main=i,  col = col.term, 
+           lwd = lwd.term)   # ds 5-1-18
     }
     fvi <- fv[x$by==i]
     xi <-  x$x[x$by==i]

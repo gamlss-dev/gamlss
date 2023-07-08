@@ -42,7 +42,6 @@ vcov.gamlss <- function (object,
          Hessian = (Hess + t(Hess)))
   }  
 ## end of local ---------------------------------------------------------------- 
-
        type <- match.arg(type)
 hessian.fun <- match.arg(hessian.fun)
   if (!is.gamlss(object)) 
@@ -94,8 +93,11 @@ names(fixvalue) <- paste("fixed",i, sep=" ")
    coefBeta <- unlist(coefBeta)
   #names(coefBeta) <- attr(a$se, "names")
     if (robust)
-    {
+    {  
+      # mikis 29-6-22
+          cc <- unlist(coefAll(object))
            K <- get.K(object)
+           K <- K[!is.na(cc), !is.na(cc)]
       varCov <- varCov%*%K%*%varCov
           se <- sqrt(diag(varCov))
         corr <- cov2cor(varCov)

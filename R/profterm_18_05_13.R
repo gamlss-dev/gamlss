@@ -19,8 +19,9 @@ prof.term <- function (model = NULL,
                       xlabel = NULL,
                         plot = TRUE,
                         perc = 95,
-                  start.prev = TRUE, 
-                        ...) 
+                  start.prev = TRUE,
+                        col = "darkgreen"
+                        ) 
 {
 if(is.null(model)) stop("you have not defined the model")
 if(is.null(min)) stop("you have not defined the minimum")
@@ -45,7 +46,7 @@ criterion  <- match.arg(criterion)
        call <- mod.1$call
     if (start.prev)
     {
-      if (   "mu"%in%mod.1$parameters)  call$mu.start<-fitted(mod.1,"mu")
+      if (   "mu"%in%mod.1$parameters)  call$mu.start    <- fitted(mod.1,"mu")
       if ("sigma"%in%mod.1$parameters)  call$sigma.start <- fitted(mod.1,"sigma")
       if (   "nu"%in%mod.1$parameters)  call$nu.start    <- fitted(mod.1,"nu")
       if (  "tau"%in%mod.1$parameters)  call$tau.start   <- fitted(mod.1,"tau")
@@ -69,7 +70,7 @@ if (plot)
    {
   # start plotting
   # first the curve
-  curve(prof.fun, min, max, xlab=xlab, ylab=ylab, main=main, col="darkgreen", frame.plot = TRUE)
+  curve(prof.fun, min, max, xlab=xlab, ylab=ylab, main=main, col=col, frame.plot = TRUE)
   plims <- par("usr")
   # then the minimum
   segments(PML, plims[3], PML, Gmin, lty = 3)

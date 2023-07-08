@@ -30,12 +30,12 @@ quantSheets <- function(y, x,
   bbase <- function(x, xl = min(x), xr = max(x), ndx = 10, deg = 3){
     # Construct B-spline basis
     dx <- (xr - xl) / ndx
-    kts <- seq(xl - deg * dx, xr + deg * dx, by = dx)
-    P <- outer(x, kts, FUN = tpower, deg)
-    n <- dim(P)[2]
-    D <- diff(diag(n), diff = deg + 1) / (gamma(deg + 1) * dx ^ deg)
-    B <- (-1) ^ (deg + 1) * P %*% t(D)
-    B 
+   kts <- seq(xl - deg * dx, xr + deg * dx, by = dx)
+     P <- outer(x, kts, FUN = tpower, deg)
+     n <- dim(P)[2]
+     D <- diff(diag(n), diff = deg + 1) / (gamma(deg + 1) * dx ^ deg)
+     B <- (-1) ^ (deg + 1) * P %*% t(D)
+     B 
   } 
 #-------------------------------------------------------------------------------
   rowtens = function(X){
@@ -261,7 +261,7 @@ predict.quantSheets <- function(object,
   # other if vector use it 
   if (!is.null(newdata))
   {
-    if (class(newdata)=="data.frame")
+    if (is(newdata,"data.frame"))
     {
       if (!object$xlab%in%names(newdata)) stop("the name in the data.frame do not much the x-variable in the model")
       x <- newdata[[object$xlab]]
@@ -298,7 +298,7 @@ residuals.quantSheets <- function(object, inter=100, all=FALSE, ...)
     Ires <- rep(0, length(object$y))
     for (i in 1:inter)
     {
-      #  if (i==4) browser()
+      #  if (i==4) 
       FDIST <- flexDist(quantiles=list(values=predMat[i,], prob=(object$cent/100)), 
                         plot=FALSE, lower=minboth[i]-tol[i], upper=maxboth[i]+tol[i])
       Ires[fx==i] <- FDIST$pFun(object$y[fx==i])  
@@ -345,7 +345,6 @@ findPower <- function(y, x, data = NULL,  lim.trans = c(0, 1.5), prof=FALSE, k=2
     #    fn <- function(p) GAIC(gamlss(y~pb(ptrans(x,p)),sigma.fo=~pb(ptrans(x,p)), data=data, c.crit = c.crit, trace=FALSE), k=k)
     fn <- function(p) GAIC(gamlss(y~pb(ptrans(x,p)),  c.crit = c.crit, trace=FALSE), k=k)
     par <- optimise(fn, lower=lim.trans[1], upper=lim.trans[2])$minimum
-    # browser()
     #  par <- optim(.5, fn, lower=lim.trans[1], upper=lim.trans[2], method="L-BFGS-B")$par
     cat('*** power parameters ', par,"***"," \n") 
   }  
@@ -368,7 +367,7 @@ z.scoresQS <- function(object, y, x, plot=FALSE, tol = NULL )
   for (i in 1:length(x))
   {
     #  cat(i, "\n")
-    # if (i==267) browser()
+    # 
     FDIST <- flexDist(quantiles=list(values=pred[i,], prob=(object$cent/100)), 
                       plot=plot) 
     if (plot) abline(v=y[i], col="blue")

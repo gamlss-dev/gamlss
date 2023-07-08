@@ -24,17 +24,19 @@ switch(type,
        aval <- ifelse(y==ymin,0,aval)          # set to zero if y=0
        bval <- cdf(q=y,...)                      # upper quantile
        uval <- runif(length(y),aval,bval) #    gen rand. value
-       uval <- ifelse(uval>0.99999,uval-0.1e-10,uval)# 
+       uval <- ifelse(uval>0.999999,uval-0.1e-15,uval)# 
+       uval <- ifelse(uval<0.000001,uval+0.1e-15,uval)# mikis+bob+fernanda 12-3-18
       rqres <- qnorm(uval)
          }
-        else # censured discrete 
+        else # censored discrete 
          {
         qq <- ifelse(y[,1]==ymin,y[,1], y[,1]-1)    
       aval <- cdf(Surv(qq,y[,2]), ...) # lower quantile
-      aval <- ifelse(y[,1]==ymin,0,aval)          # set to zero if y=0
+      aval <- ifelse(y[,1]==ymin,0,aval)        # set to zero if y=0
       bval <- cdf(q=y,...)                      # upper quantile
       uval <- runif(length(y[,1]),min=aval,max=bval) #    gen rand. value
-      uval <- ifelse(uval>0.99999,uval-0.1e-10,uval)# 
+      uval <- ifelse(uval>0.999999,uval-0.1e-15,uval)# 
+      uval <- ifelse(uval<0.000001,uval+0.1e-15,uval)# mikis+bob+fernanda 12-3-18
      rqres <- qnorm(ifelse(y[,"status"]==1, uval, bval))
          }
        }, 
@@ -54,7 +56,6 @@ switch(type,
                 # case 1
                 if(mass.p==0)
                 { 
-                 # browser()
                   uval <- ifelse(y==mass.p, runif(length(y),0,prob.mp),cdf(q=y,...))  
                 } # if length  1 
                   #  and the mass point is at 2    
@@ -80,6 +81,7 @@ rqres
 }
 #----------------------------------------------------------------------------------------
 # last change Tuesday, May 22, 2015 MS
+# this allows to set the seeds
 rqres1 <- function (obj = NULL, setseed=NULL, save.resid=FALSE, ...)
 {
   rqres <- function (pfun = "pNO", 

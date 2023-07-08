@@ -1,37 +1,285 @@
 -------------- GAMLSS NEWS-------------------------------------------
-GAMLSS is a R package implementing the Generalised Additive Models for
-location scale shape of Rigby and Stasinopoulos (2005),  Appl. Statist.,
-54,  pp. 507-554.
+gamlss is a R package implementing the Generalised Additive Models for
+Location Scale ans Shape (GAMLSS) of Rigby and Stasinopoulos (2005),  
+Appl. Statist., 54,  pp. 507-554.
 
-The book "Flexible Regression and Smoothing: Using GAMLSS in R" explains 
-how the models can be used in R.
+book 1 
+"Flexible Regression and Smoothing: Using GAMLSS in R" 
+explains how the models can be used in R.
 
+book 2 
+"Distributions for modeling location, scale and shape: Using GAMLSS in R" 
+explains the explicit and generated distributions available in the 
+package gamlss.dist  
+
+book 3 
+"Generized Additive Models for Location Scale and Shape: A distributional 
+regression  approach with applications" explains the different method for fitting GAMLSS i.e. penalised Likelihood, Bayesian and Boosting.  (expected publication data summer 2023)
+ 
 More more information about books and papers related to GAMLSS can be found in
 
-http://www.gamlss.org/
+http://www.gamlss.com/
 
 Question or suggestions about GAMLSS can be send to
 
-   mikis.stasinopoulos@gamlss.org
-or
+   d.stasinopoulos@londonmet.ac.uk
+   or
    r.rigby@londonmet.ac.uk
---------------------------------------------------------------------------------
-Version 5.0-3
+_______________________________________________________________
+_______________________________________________________________
+Version 5.5-12
+
+1. gamlss 5.5-11 
+      i) The warning "New way of prediction in pb() " in pb() is taken out
+      ii) a bug in getTGD() which did not allowed binary resposnse has been 
+          corrected
+      iii) hatvalue.gamlss has been rewtitten 
+      
+2. gamlss.dist
+      i) all d and p fuctions allow now arguments out of the range of the 
+      distribution but produce the correct value i.e. dGA(-1) = pGA(-1) = 0   
+      This is done to conform with all R distributions.
+
+Version 5.4-8
+
+1. gamlss  5.4-8
+       i) confint() : did not work when NA were present in the coefficients, for    example, if random effects were used. The bug was reported  by Julia Wood.  Now it is fixed together with the  robust=T option which did  not worked before.
+       
+        ii) The help file for lpred() is amended 
+        
+       iii) predictAll() now should work with survival models plus the `output` option has been extended  
+       
+2. gamlss.dist 6.0-5: Problems with  KaTeX are resolved. All formulae have been checked or refer to Book 2. 
+
+3. gamlss.foreach 1.1-6: NonParametricBoot() did not work if the data frame of the fitted model had one column. Now it should work.   
+       
+----------------------------------------------------------------
+Version 5.3-3
+
+1. gamlss 
+       i) the lrs() has been added as a new additive term for lasso regression
+       ii) the argument ylim and xlim  have n=been added to centiles.pred()
+
+
+Version 5.3-2
+
+1. gamlss 
+       i)  predictAll is modified to allow binomial fits
+       ii) fitDist() and fitDistpred() a txtProgressBar() is added to both functions
+       iii) .realAll and real0to1 added to NAMESPACE
+       
+2. gamlss.dist new version 5.3-2 was sent to CRAN 
+       i) qNET abd rNET were added to NAMESPACE
+       
+3. gamlss.foreach was sent to CRAN
+       i) choose_dist() was added since
+
+Version 5.2
+
+ 1. gamlss 
+       i) the argument "data = sys.parent()"" in gamlss() and gamlssML()  
+         has been replaced with just "data", to comply with new R protocol.
+       ii) A bug in the  functions centiles(), centiles.com(), centiles.fan(), centile.spit()
+           has been amended, thanks to Prof. Tim Cole who pointed out.     
+         
+Version 5.1-9
+   1. gamlss 
+      i)  the plotting in GAIC.scaled() have changed. Now bars are plotted. 
+      ii)  centile.predict has a new argument "calibration"
+      iii) calibration() has different output now has the "target", "calibrated" and               "sample" 
+      iv) the argument cent for lms() and calibrartion have changed from 
+      cent= 100*pnorm((-4:4)*2/3) to 
+      cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6) 
+      to be consistent with centiles()
+      
+
+Version 5.1-7
+   1. gamlss 
+        i) predict.gamlssML() with the option `newdata' was coming back with a vectors of length 1. This is corrected now. The length now is the number of rows in newdata. 
+        ii) the GAIC.scaled() function is added.
+       iii) a bug in VC.test() function when the two models were binomial type is corrected now (thanks to Dave Armstrong) 
+        
+   2. gamlss.dist 
+        i)  a correction for pSEP2 so the cdf is never bigger that .9999         
+        ii) ST1 in the help file the argument "..."" was deleted since did not exist the function
+        iii) the argument "weights" (for prior weights) is added to most of the skewness and          kurtosis functions, i.e. checkMomentSK() 
+   
+   3. gamlss.foreach A new package is created for parallel computations. 
+   At the moment it has the following functions:
+   
+          i)  centile.boost() for centiles confident interval
+          
+          ii)  pc() for principal component regression and 
+          
+          iii) fitRolling() for time series rolling fitting        
+
+Version 5.1-5
+
+   1. gamlss i) the code in the example for the centiles.pred() function has been changed
+   
+           ii) the function random() allows now prediction.
+           
+           iii) the argument "level"" has been added to the function re(). 
+           It allows uses to get the marginal contribution of the random effect              factor when use predict().
+           
+           vi) suppressWarnings(Fun <- splinefun(x, fv, method="natural"))
+              was added in gamlss.pb() gamlss.pbc(), gamlss.pbm() and gamlss.pbz()                to avoid warnings when the values of x-variable are not unique 
+              
+            v) The argument 'xvar' in functions centiles(), centiles.fan()
+             centiles.split(), and centiles.com() is not needed any more provided 
+             that the function can find it from the fitted model 
+             (As suggested by Tim Cole).
+             
+            vi) The lms() function has been modified to so the "call" represent                                closer the real call of the fitting. For example, while before was shown 
+                  y~pb(x) now the real names will be shown i.e. head~pb(age) 
+            
+ 2. gamlss.dist i) the PIG2 distribution is added            
+
+Version 5.1-4
+  1. gamlss i) logSurv0() is added 
+            ii) new arguments in the histDist() were added to help the figures in                   book 2 (dittributions)
+           iii) the function pdf.plot() is updated
+  
+  2. gamlss.dist i) PARETO1o is added to help to estimated the power parameter of the tail of the data
+                 ii) some options for the plotting distribution function (used for the second book of GAMLSS are updated)
+                 
+  3. gamlss.data i) the InfMort data set is added 
+
+Version 5.1-3
+
+ 1. gamlss i) ri() has a new argument x.xars which should be used if prediction                    is to used later on. 
+           ii) The functions logSurv(), loglogSurv(), loglogSurv1(), loglogSurv2() and  loglogSurv3() are rewriten and new extra argument "title",`'lcol' and `ltype'  have  been added
+           iii) the function ECDF() and loglogplot() have been added.
+ 
+ 2, gamlss.dist i) a mistake in the formula of the sigma for BE distribution in the help file is corrected thanks to Stephen Cromie  
+       ii) some new functions for skewness and kurtosis (related to the new distrinution  book of GAMLSS) have been added. The functions are   
+                  a) momentSK() 
+                  b) centileSK()
+                  c) centileSkew()
+                  d) centileKurt()
+                  e) theoCentileSK()
+                  f) plotCentileSK()
+                  g) checkMomentSK()
+                  j) checkCentileSK()
+    [Comment by Mikis Stasinopoulos: I would like (no) to thank the two                         contributors who answer my question in r-help-request@r-project.org 
+        on the 16-2-2019.  
+       Both answer were completely useless and one on the border of rudeness]   
+
+
+Version 5.1-2
+
+ 1. gamlss  i) The function getQuantile() is added 
+            ii) the function pb() includes now the argument `max.df' for                               setting a fix maximum number for the degrees of freedom in                             order to avoid overfitting.
+          iii) pbc() has now `max.df' and the prediction is done similar to 
+                 pb() by using a generated cubic spline approximation function.
+                 Extrapolated prediction values are not a good idea for pbc()
+                 since are are using natural splines. A warning is given when 
+                 this happens
+          iv) GAIC.table() now produce a table of different models against different                 penalties       
+          v) the function make.link.gamlss() has two new link function "(0,2]" and 
+              "[-1,1]"       
+ 2. gamlss.dist 
+           i) the Discrete Burr type XII distribution, DBUR12(), is added.
+           ii) Stanislaus Stadlmann and Lens Lichter have added mean() a
+           and variance()  functions to the following distributions:
+               BE(), BEo(), EGB2(), exGAUS(), EXP(), GA(),GEOM(), GEOMo(),
+               GG(), GU(), GT(), IG(), IGAMMA(), JSU(), JSUo(), LG(),LO(),
+               LOGNO(), NO(), NO2(), PARETO(), PARETO2(), PE(), PE2(), PO(),
+               RG(), SN1(), SN2(), SST(), TF(), TF2(), WEI(), WEI2(), WEI3(),
+               YULE(), ZAGA(), ZAIG()
+               
+ 3. gamlss.data
+           i) the data set aircond (used in the second book) is added   
+           
+ 4. gamlss.tr 
+           i) the trun.r() is ammended so for discrete distributions the randomised                data are always in a< y <b.
+
+Version 5.0-9
+
+1. gamlss.dist  i)  NET(): the NET distribution was revised: 
+            a) The pNET(), qNET() and rNET functions were rewritten. 
+            b) The NET() functions was ammended so that gamlssML() will work                   with it
+             ii) The function qZAGA has benn corrected by Almond Stocker.
+             iii) The distribution SIMPLEX is added
+
+1 gamlss   pvc(): the plot of object created  by pvc(x, by=f) when f is factor             now prints the levels of the factor in the title i.e. 
+           plot(getSmo(model), factor.plots = TRUE)  
+         
+      wp(): worm plot  did not work if for example histDist(parzen$snowfall) is        used  instead of  histDist(snowfall, data=parzen). This is corrected now.
+          
+      pbm(): the non-linear degrees of freedom  exported by the function have           been  corrected. 
+         
+      histDist(): the `freq' argument did not work if the `data' argument was        used. This is corrected now.
+        
+      gamlssML(): small ammendement so can work with fixed parameters distributions like NET(). Also the predict.gamlssML() is added
+        
+      VGD() and TGD(): now print the colunm name as "pred.GD"
+        
+      Three new functions are introduced 
+      
+              (a) gamlssMLpred() and 
+              
+              (b) fitDistPred()
+              
+              (c) chooseDist()
+              
+         gamlssMLpred() and fitDistPred() are using useing `newdata'. For example the          gamlssMLpred() fits the training data and uses the newdata to evaluate the           prediction global deviance. fitDistPred() choose the model with best 
+         prediction global deviance. 
+         chooseDist() is using the function update.gamlss() to fit all relevant
+         parametric gamlss.family distributions to a fitted gamlss model. It can be           slow but its parallel version should be resonable.
+        
+       model.frame.gamlss() has been amended after suggestions on stackoverflow by
+        RolandASc and Hedgehog
+        
+       rqres() was amended for the discrete distributions so to produce a finite            quantile residuals if the probability integral transform function produced            values close to zero.
+      
+       predictAll() is amended to cope with the NET distribution (where some of the parameters are fixed)  
+
+-------------------------------------------------------------------------------
+Version 5.0-6
+
+1 gamlss Correcting a problem reported in R Under development (unstable) (2017-09-12 r73242)
+
+
+Version 5.0-5
+
+1.  i) gamlss pb(), pbm(), pbz(), and pbc() now stop if x is a matrix, it gives an  informative error.
+    ii)  The predict() function  of the re(ramdom=~1|f) is working now (Note that random() still do not allow prediction) 
+    iii) A bug in pb(), pbm() and pbz() is corrected. The bug effected the prediction. Thanks to Lisa Schlosser for reporting it. 
+
+
+2. gamlss.dist
+     i) the link of nu in NBF() have changed to "log"
+
+
+Version 5.0-4
 
 1. gamlss
      i) the function devianceIncr() is introduced to calculate the global deviance increment. 
-     ii) An argument for changing the size of the axis is added in wp()
-     iii) The method of caclulating the average of rqres.plot() has changes   
+     ii)  An argument for changing the size of the axis is added in wp()
+     iii) The method of calculating the average of rqres.plot() has changed 
+          In fact now the plot.type has two new arguments "few" and "all".
+          "few" plots different wp's or QQ's while "all" plots all the wp or QQ              plots on the same graph.
+      iv) The function get.object() within the gamlss() function have changed.
+          The reason is that in a model like 
+          
+          u1 <- gamlss(y~pb(x1)+pbc(x4)+pb(x5)+ga(~s(x2,x6)), data=usair)
+          
+           changed the order of smoothing terms in the formula resulting to     an incorrect term.plot().
+           
 
 2. gamlss.dist
      i) Double binomial distribution is introduced
+     ii) rechecking of the discrete distributions resulted to some minor changes
+         to several distributions. 
+     iii) An "if" "else" statment was replaced in PE and PE2 distributions with ifelse because it was causing problems with gen.Family (thanks to Francimário who report it)      
       
 
 Version 5.0-2
 1. gamlss  
        i) The function lms() has been changed. Now the different fittings do not start from the previous values of the normal model. This was found to fail in cases where the number of observations was relative small (thanks Tanmay Nath for point  out to us).
       ii) ri() is amended so it can be used when the number of variables are larger than the number of observations. In such case we found that maybe the starting value for lambda (argument start) may have to change from 10 to a bigger value say 1000?.   
-      iii) gamlssML() accepts both Y or formula Y~1 (and some bug which had to do with not using the foruma when used within another function is corrected)
+      iii) gamlssML() accepts both Y or formula Y~1 (and some bug which had to do with not using the formula when used within another function is corrected)
 
 2. gamlss.add 
         i) Marco Enea have done some adjustments on the way data is dealt by  ga() and ba()
