@@ -9,7 +9,7 @@ This functions plots the profile deviance for a chosen parameter included in the
 prof.term(model = NULL, criterion = c("GD", "GAIC"), penalty = 2.5, 
           other = NULL, min = NULL, max = NULL, step = NULL, 
           length = 7, xlabel = NULL, plot = TRUE, perc = 95, 
-          start.prev = TRUE, ...)
+          start.prev = TRUE, col="darkgreen")
 }
 
 \arguments{
@@ -26,7 +26,7 @@ prof.term(model = NULL, criterion = c("GD", "GAIC"), penalty = 2.5,
   \item{plot}{whether to plot, \code{plot=TRUE} the resulting profile deviance (or GAIC)}
   \item{perc}{what \% confidence interval is required}
   \item{start.prev}{whether to start from the previous fitted model parameters values or not (default is TRUE)}
-  \item{\dots}{for extra arguments}
+  \item{col}{the color of the profile line}
 }
 \details{
  This function can be use to provide likelihood based confidence intervals for a parameter involved in terms in the linear predictor(s). 
@@ -48,15 +48,18 @@ prof.term(model = NULL, criterion = c("GD", "GAIC"), penalty = 2.5,
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
 
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
-\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{https://www.gamlss.com/}).
 }
-\author{ Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org} and Bob Rigby}
+\author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk} and Bob Rigby}
 \section{Warning }{A dense grid (i.e. small step) evaluation of the global deviance can take a long time, so start with a sparse grid (i.e. large step) 
 and decrease  gradually the step length for more accuracy. }  
 \seealso{\code{\link{gamlss}},  \code{\link{prof.dev}} }

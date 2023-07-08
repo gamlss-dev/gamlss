@@ -95,9 +95,16 @@ Schnabel, S. K and Eilers, P. H. C.(2013) Simultaneous estimation of quantile cu
 Schnabel, S. K and Eilers, P. H. (2013) A location-scale model for non-crossing 
 expectile curves, \emph{Stat}, \bold{2}, 1, pp 171-183.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
 
-(see also \url{http://www.gamlss.org/}).
+Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
+
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
+
+(see also \url{https://www.gamlss.com/}).
  }
 
 \author{Mikis Stasinopoulos based on function provided by Paul Eiler and Sabine

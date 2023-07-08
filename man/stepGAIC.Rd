@@ -14,7 +14,7 @@
 
 The function \code{stepGAIC()} performs stepwise model selection using a Generalized Akaike Information Criterion (GAIC). It is based on the function \code{stepAIC()} given in the library MASS of Venables and Ripley (2002). The function has been changed recently to allow parallel computation.  The parallel computations are similar to the ones performed in the function \code{boot()} of the \pkg{boot} package. Note that since version 4.3-5 of \pkg{gamlss} the  \code{stepGAIC()} do not have the option of using the function \code{stepGAIC.CH} through the argument \code{additive}. 
 
-Note that \code{stepGAIC()}  is relying to the \code{dropterm()} and \code{addterm()} methods applyied to gamlss objects.    \code{drop1()} and \code{add1()} are equivalent methods  to the  \code{dropterm()} and \code{addterm()} respectivelly but with different default arguments (see the examples). 
+Note that \code{stepGAIC()}  is relying to the \code{dropterm()} and \code{addterm()} methods applied to gamlss objects.    \code{drop1()} and \code{add1()} are equivalent methods  to the  \code{dropterm()} and \code{addterm()} respectively but with different default arguments (see the examples). 
 
 The function \code{stepGAIC.VR()} is the old version  of \code{stepGAIC()} with no parallel computations.    
 
@@ -52,36 +52,34 @@ Note for this strategy to work the \code{scope} argument should be set appropria
 
 
 \code{stepGAICAll.B()} uses the same procedure as the function  \code{stepGAIC()} but each term in the scope is fitted  to all the parameters of the distribution, rather than the one specified  by the argument \code{what} of \code{stepGAIC()}. 
-The \code{stepGAICAll.B()} relies on the \code{add1All()} and \code{drop1All()} functions for the selection of variabes.
+The \code{stepGAICAll.B()} relies on the \code{add1All()} and \code{drop1All()} functions for the selection of variables.
  
 
 }
 \usage{
 
 stepGAIC(object, scope, direction = c("both", "backward", "forward"), 
-          trace = T, keep = NULL, steps = 1000, scale = 0, 
+          trace = TRUE, keep = NULL, steps = 1000, scale = 0, 
           what = c("mu", "sigma", "nu", "tau"), parameter= NULL, k = 2, 
           parallel = c("no", "multicore", "snow"), ncpus = 1L, cl = NULL, 
           ...)
 
 stepGAIC.VR(object, scope, direction = c("both", "backward", "forward"), 
-         trace = T, keep = NULL, steps = 1000, scale = 0, 
+         trace = TRUE, keep = NULL, steps = 1000, scale = 0, 
          what = c("mu", "sigma", "nu", "tau"), parameter= NULL, k = 2, 
          ...)
 
 stepGAIC.CH(object, scope = gamlss.scope(model.frame(object)), 
-            direction = c("both", "backward", "forward"), trace = T, 
+            direction = c("both", "backward", "forward"), trace = TRUE, 
             keep = NULL, steps = 1000, what = c("mu", "sigma", "nu", "tau"),
             parameter= NULL, k = 2, ...)
 
-
 stepGAICAll.A(object, scope = NULL, sigma.scope = NULL, nu.scope = NULL, 
               tau.scope = NULL, mu.try = TRUE, sigma.try = TRUE, 
-              nu.try = TRUE, tau.try = TRUE,  
+              nu.try = TRUE, tau.try = TRUE,  direction = NULL,  
               parallel = c("no", "multicore", "snow"), ncpus = 1L, 
               cl = NULL,  ...)
 
-               
 stepGAICAll.B(object, scope, direction = c("both", "backward", "forward"), 
               trace = T, keep = NULL, steps = 1000, scale = 0, k = 2, 
               parallel = c("no", "multicore", "snow"), ncpus = 1L, 
@@ -196,11 +194,16 @@ Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for lo
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
 
-Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
-\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
-(see also \url{http://www.gamlss.org/}).
+Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
+
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
+
+(see also \url{https://www.gamlss.com/}).
 
 Venables, W. N. and Ripley, B. D. (2002) \emph{Modern Applied
      Statistics with S}. Fourth edition.  Springer.

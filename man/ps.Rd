@@ -40,6 +40,8 @@ g) \code{ps()} the original P-splines with no facility of estimating the smoothi
 
 j) \code{pvc()} penalised varying coefficient models.
 
+k) \code{pvp()} older version of pb() where the prediction was different (it is here in case someone would like to compare the results).
+
 Theoretical explanation of the above P-splines can be found in Eilers \emph{et al.} (2016)
 
 The functions take a vector and return it with several attributes. The vector is used in the construction of the design matrix X used in the fitting. The functions do not do the  smoothing, but assign the attributes to the vector to aid gamlss in the smoothing. The functions doing the smoothing are   \code{\link{gamlss.pb}()}, \code{\link{gamlss.pbo}()}, \code{\link{gamlss.pbc}()}  \code{\link{gamlss.cy}()}  \code{\link{gamlss.pvc}()},  \code{\link{gamlss.pbm}()}, \code{\link{gamlss.pbz}} and \code{\link{gamlss.ps}()} which are used in the backfitting  function \code{\link{additive.fit}}.
@@ -59,7 +61,8 @@ The function \code{pvc()} fits  varying coefficient models see Hastie and Tibshi
 The function \code{getZmatrix()} creates a (random effect) design matrix \code{Z} which can be  used to fit a P-splines smoother using the \code{re())} function. (The \code{re()}  is an interface with the random effect function \code{lme} of the package \pkg{nlme}. 
 }
 \usage{
-pb(x, df = NULL, lambda = NULL, control = pb.control(...), ...)
+pb(x, df = NULL, lambda = NULL, max.df=NULL, 
+    control = pb.control(...), ...)
 pbo(x, df = NULL, lambda = NULL, control = pbo.control(...), ...)
 pbp(x, df = NULL, lambda = NULL, control = pbp.control(...), ...)
 pbo.control(inter = 20, degree = 3, order = 2, start = 10, quantiles = FALSE, 
@@ -68,7 +71,8 @@ pb.control(inter = 20, degree = 3, order = 2, start = 10, quantiles = FALSE,
           method = c("ML", "GAIC", "GCV"), k = 2, ...)
 pbp.control(inter = 20, degree = 3, order = 2, start = 10, quantiles = FALSE, 
           method = c("ML", "GAIC", "GCV"), k = 2, ...)
-pbc(x, df = NULL, lambda = NULL, control = pbc.control(...), ...)
+pbc(x,  df = NULL, lambda = NULL, max.df=NULL, 
+    control = pbc.control(...), ...)
 pbc.control(inter = 20, degree = 3, order = 2, start = 10, 
           method = c("ML", "GAIC", "GCV"), k = 2, sin = TRUE, ...)
 cy(x, df = NULL, lambda = NULL, control = cy.control(...), ...)
@@ -94,6 +98,7 @@ getZmatrix(x, xmin = NULL, xmax = NULL, inter = 20, degree = 3, order = 2)
   \item{x}{the univariate predictor}
   \item{df}{the desired equivalent number of degrees of freedom (trace of the smoother matrix minus two for the constant and linear fit)}
   \item{lambda}{the smoothing parameter}
+  \item{max.df}{the limit of how large the effective degrees of freedom should be allowed to be}
   \item{control}{setting the control parameters}
   \item{by}{a factor, for fitting different smoothing curves to each level of the factor or a continuous explanatory variable in which case  
              the coefficients of the \code{by} variable change smoothly according to \code{x} i.e. beta(x)*z where z is the \code{by} variable. }
@@ -158,14 +163,18 @@ Hastie, T. J. and Tibshirani, R. J. (1993), Varying coefficient models (with dis
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
+
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
-\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{https://www.gamlss.com/}).
 }
-\author{ Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby and Paul Eilers}
+\author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby and Paul Eilers}
 
 \section{Warning}{There are occasions where the automatic local methods do not work. One accusation which came to our attention is  when 
 the range of the response variable values is very large. Scaling the response variable will solve the problem.} 
@@ -305,7 +314,7 @@ par(op)
 m13<-gamlss(y~pbz(x, df=0))
 m23 <-gamlss(y~pb(x, df=0))
 AIC(m13,m23)
-# here the second penalty is not take effect therefore identcal results 
+# here the second penalty is not take effect therefore identical results 
 m14<-gamlss(y~pbz(x, df=1))
 m24 <-gamlss(y~pb(x, df=1))
 AIC(m14,m24)
