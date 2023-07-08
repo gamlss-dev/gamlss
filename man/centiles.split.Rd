@@ -10,7 +10,7 @@ The functions also tabulates the sample percentages below each centile curve for
 }
 
 \usage{
-centiles.split(obj, xvar = NULL, xcut.points = NULL, n.inter = 4, 
+centiles.split(obj, xvar, xcut.points = NULL, n.inter = 4, 
                cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6), 
                legend = FALSE, main = NULL, main.gsub = "@", 
                ylab = "y", xlab = "x", ylim = NULL, overlap = 0, 
@@ -21,7 +21,7 @@ centiles.split(obj, xvar = NULL, xcut.points = NULL, n.inter = 4,
   \item{obj}{a fitted gamlss object from fitting a gamlss continuous distribution}
   \item{xvar}{the unique explanatory variable}
   \item{xcut.points}{the x-axis cut off points e.g. \code{c(20,30)}. If \code{xcut.points=NULL} then the \code{n.inter} argument is activated }
-  \item{n.inter}{if \code{xcut.points=NULL} this argument gives the number of intervals in which the x-variable will be splited, with default 4 }
+  \item{n.inter}{if \code{xcut.points=NULL} this argument gives the number of intervals in which the x-variable will be split, with default 4 }
   \item{cent}{a vector with elements the \% centile values for which the centile curves are to be evaluated}
   \item{legend}{whether a legend is required in the plots or not, the default is \code{legent=FALSE}  }
   \item{main}{the main title as character. 
@@ -34,7 +34,7 @@ centiles.split(obj, xvar = NULL, xcut.points = NULL, n.inter = 4,
   \item{overlap}{how much overlapping in the \code{xvar} intervals. Default value is \code{overlap=0} for non overlapping intervals}
   \item{save}{whether to save the sample percentages or not with default equal to \code{TRUE}. 
             In this case the functions produce a matrix giving the sample percentages for each interval }
-  \item{plot}{whether to plot the centles. This option is usefull if the sample statistics only are to be used}
+  \item{plot}{whether to plot the centles. This option is useful if the sample statistics only are to be used}
   \item{\dots}{for extra arguments}
 }
 
@@ -45,14 +45,18 @@ centiles.split(obj, xvar = NULL, xcut.points = NULL, n.inter = 4,
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
+
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
-\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{https://www.gamlss.com/}).
 }
-\author{Mikis Stasinopoulos, \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby \email{r.rigby@londonmet.ac.uk}, with contributions from Elaine Borghie}
+\author{Mikis Stasinopoulos, \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk}, with contributions from Elaine Borghie}
 
 
 \section{Warning }{This function is appropriate when only one continuous explanatory variable is fitted in the model}

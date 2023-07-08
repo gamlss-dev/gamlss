@@ -8,7 +8,7 @@
   Returns an object of class "gamlss", which is a generalized additive model for location scale and shape (GAMLSS).
   The function \code{gamlss()} is very similar to the \code{gam()} function in S-plus (now also in R in package \code{gam}), but
   can fit more distributions (not only the ones belonging to the  exponential family) and can model all the parameters of the
- distribution as functions of the explanatory variables (e.g. using linear, non-linear, smoothing, loess and random effects terms).
+ distribution as functions of the explanatory variables (e.g. using linear, non-linear, smoothing, \code{loess} and random effects terms).
 
 This implementation of \code{gamlss()} allows modelling of up to four
 parameters in a distribution family, which are conventionally called \code{mu}, \code{sigma}, \code{nu} and \code{tau}.
@@ -19,7 +19,7 @@ The function \code{gamlssNews()} shows what is new in the current implementation
 \usage{
 gamlss(formula = formula(data), sigma.formula = ~1, 
         nu.formula = ~1, tau.formula = ~1, family = NO(), 
-        data = sys.parent(), weights = NULL, 
+        data, weights = NULL, 
         contrasts = NULL, method = RS(),  start.from = NULL,  
         mu.start = NULL,  sigma.start = NULL, 
         nu.start = NULL, tau.start = NULL, 
@@ -33,7 +33,7 @@ gamlssNews()
 
 \arguments{
   \item{formula}{a formula object, with the response on the left of an ~ operator, and the terms, separated by \eqn{+}{+} operators, on the right.
-  Nonparametric smoothing terms are indicated by \code{pb()} for penalised beta splines, \code{cs} for smoothing splines, \code{lo} for loess smooth terms and \code{random} or \code{ra}
+  Nonparametric smoothing terms are indicated by \code{pb()} for penalised beta splines, \code{cs} for smoothing splines, \code{lo} for \code{loess} smooth terms and \code{random} or \code{ra}
   for random terms, e.g. \code{y~cs(x,df=5)+x1+x2*x3}.  Additional smoothers can be added by creating the appropriate interface.
   Interactions with nonparametric smooth terms are not fully supported, but will not produce errors;
   they will simply produce the usual parametric interaction 
@@ -46,8 +46,7 @@ gamlssNews()
    The distribution families supported by \code{gamlss()} can be found in \code{\link[gamlss.dist]{gamlss.family}}.
    Functions such as BI() (binomial) produce a family object. Also can be given without the parentheses i.e. \code{BI}.
    Family functions can take arguments, as in \code{BI(mu.link=probit)}} 
-  \item{data}{a data frame containing the variables occurring in the formula. If this is missing, the variables should be on the search list.
-     e.g. \code{data=aids}}
+  \item{data}{a data frame containing the variables occurring in the formula, e.g. \code{data=aids}. If this is missing, the variables should be on the search list.}
   %\item{na.action}{a function which indicates what should happen when the data contain \code{NA}s.  The default is set by the \code{na.action} setting
   %        of \code{options}, and is \code{na.omit}. Other options are \code{na.fail} and \code{na.exclude}. \code{na.omit} omits all the 
   %        rows in the data frame with the \code{NA}s.  \code{na.fail} will give an error if there are \code{NA}s in the data. 
@@ -57,7 +56,7 @@ gamlssNews()
   Here weights can be used to weight out observations (like in \code{subset}) or for a weighted likelihood analysis where 
   the contribution of the observations to the likelihood differs according to \code{weights}. 
   The length of \code{weights} must be the same as the number of observations in the data. 
-  By default, the weight is set to one. To set  weights to vector w use \code{weights=w}}
+  By default, the weight is set to one. To set  weights to vector \code{w} use \code{weights=w}}
   \item{contrasts}{list of contrasts to be used for some or all of the factors appearing as variables in the model formula. 
   The names of the list should be the names of the corresponding variables. 
   The elements should either be contrast-type matrices (matrices with as many rows as levels of the factor and with columns 
@@ -120,7 +119,7 @@ in the model are fitted using a backfitting algorithm.
   \item{residuals}{the normalized (randomized) quantile residuals of the model}
  \item{mu.fv}{the fitted values of the mu model, also  sigma.fv, nu.fv, tau.fv for the other parameters if present}
  \item{mu.lp}{the linear predictor of the mu model, also  sigma.lp, nu.lp, tau.lp for the other parameters if present}
- \item{mu.wv}{the working variable of the mu model, also  sigma.wv, nu.wv, tau.wv for the other parameters if present}
+ \item{mu.wv}{the working variable of the mu model, also  \code{sigma.wv}, \code{nu.wv}, \code{tau.wv} for the other parameters if present}
  \item{mu.wt}{the working weights of the mu model, also  sigma.wt, nu.wt, tau.wt for the other parameters if present}
  \item{mu.link}{the link function for the mu model, also  sigma.link, nu.link, tau.link for the other parameters if present}
  \item{mu.terms}{the terms for the mu model, also  sigma.terms, nu.terms, tau.terms for the other parameters if present}
@@ -142,17 +141,21 @@ in the model are fitted using a backfitting algorithm.
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
+
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
-\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{https://www.gamlss.com/}).
 
 }
 
 
-\author{ Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby, Calliope Akantziliotou and Vlasios Voudouris \email{vlasios.voudouris@abm-analytics.com>}}
+\author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby, Calliope Akantziliotou and Vlasios Voudouris}
 
 \note{The following generic functions can be used with a GAMLSS object: \code{print}, \code{summary},  \code{fitted},  \code{coef},  
           \code{residuals}, \code{update},  \code{plot}, \code{deviance}, \code{formula}   }

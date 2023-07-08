@@ -27,7 +27,7 @@ pp(x, start = list(), shift = NULL, scale = NULL)
   \item{x}{the explanatory variable to be used in functions \code{bfp()} or \code{fp()}. Note that this is different from the argument \code{x} use in \code{gamlss.fp} (a function used in the backfitting but not by straight by the user) }
   \item{powers}{a vector containing as elements  the powers in which the x has to be raised }
   \item{shift}{a number for shifting the x-variable. The default values is  zero, if x is positive, or the minimum of the positive difference in x  minus the minimum of x}
-  \item{scale}{a positive number for scalling the x-variable. The default values is 
+  \item{scale}{a positive number for scaling the x-variable. The default values is 
                \eqn{10^(sign(log10(range)))*trunc(abs(log10(range)))}{10^(sign(log10(range)))*trunc(abs(log10(range)))}}
   \item{npoly}{a positive indicating how many fractional polynomials should be considered in the fit. Can take the values 1, 2 or 3 with 2 as default}
   \item{start}{a list containing the starting values for the non-linear maximization to find the powers. 
@@ -68,18 +68,22 @@ fractional polynomials to be fitted in the backfitting cycle of \code{gamlss}, a
 Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
+
 Royston,  P. and Altman, D. G., (1994). Regression using fractional polynomials of continuous covariates: parsimonious parametric modelling 
                    (with discussion), \emph{Appl. Statist.}, \bold{43}, 429-467.
-                   
+
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
-\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{https://www.gamlss.com/}).
 }
  
-\author{Mikis Stasinopoulos \email{mikis.stasinopoulos@gamlss.org}, Bob Rigby \email{b.rigby@londonmet.ac.uk} }
+\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{b.rigby@londonmet.ac.uk} }
 
 
 \section{Warning }{Since the model constant is included in both the design matrix X and in the backfitting part of fractional polynomials, its values is wrongly 

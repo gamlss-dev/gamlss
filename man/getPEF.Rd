@@ -5,7 +5,7 @@
 \description{
 This function can be used to calculate the partial effect and the elasticity of a continuous explanatory variable \code{x}.
 
-By `partial effect' function we mean how \code{x} is influence the parameter of interest given that the rest of explanatory terms for this paramerer are on (specified) fixed values.  
+By `partial effect' function we mean how \code{x} is influence the parameter of interest given that the rest of explanatory terms for this parameter are on (specified) fixed values.  
 
 The function takes a GAMLSS object and for the range of the continuous variable \code{x}, 
 (by fixing the rest of the explanatory terms at specified values), 
@@ -41,12 +41,16 @@ Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for lo
 
 Rigby, R. and Stasinopoulos, D. M (2013) Automatic smoothing parameter selection in GAMLSS with an application to centile estimation, \emph{Statistical methods in medical research}.
 
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
+
 Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
-\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
 
-(see also \url{http://www.gamlss.org/}).
+(see also \url{https://www.gamlss.com/}).
 
 }
 \author{Mikis Stasinopoulos, Vlasios Voudouris, Daniil Kiose}

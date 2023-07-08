@@ -20,11 +20,16 @@ Returns a vector of the global deviance increments for each observation.
 \references{
 Rigby, R. A. and Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), Appl. Statist., 54, part 3, 1-38.
 
-Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R. Journal of Statistical Software, Vol. 23, Issue 7, Dec 2007, \url{http://www.jstatsoft.org/v23/i07}.
+Rigby, R. A., Stasinopoulos, D. M.,  Heller, G. Z.,  and De Bastiani, F. (2019)
+	\emph{Distributions for modeling location, scale, and shape: Using GAMLSS in R}, Chapman and Hall/CRC. An older version can be found in \url{https://www.gamlss.com/}.
 
-Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017) \emph{Flexible Regression and Smoothing: Using GAMLSS in R}, Chapman and Hall/CRC. 
+Stasinopoulos D. M. Rigby R.A. (2007) Generalized additive models for location scale and shape (GAMLSS) in R.
+\emph{Journal of Statistical Software}, Vol. \bold{23}, Issue 7, Dec 2007, \url{https://www.jstatsoft.org/v23/i07/}.
 
-(see also \url{http://www.gamlss.org/}).
+Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2017)
+\emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
+
+(see also \url{https://www.gamlss.com/}).
 }
 \author{Mikis Stasinopoulos}
 
@@ -59,7 +64,7 @@ m1 <- gamlss(head~pb(age), data=db[1:6000,])
 p1<-devianceIncr(m1)
 m2 <- gamlss(head~pb(age), sigma.fo=~pb(age), nu.fo=~pb(age), 
       tau.fo=~pb(age), data=db[1:6000,], family=BCT)
-p2<-d.evianceIncr(m2)
+p2<-devianceIncr(m2)
 # comparing using summaries
 summary(p1); summary(p2)
 # comparing using boxplots
@@ -69,14 +74,11 @@ hist(p1, col=rgb(1,0,0,0.5), xlim=c(0,50), breaks=seq(0,50,2))
 hist(p2, col=rgb(0,0,1,0.5), add=T)
 # comparing using emphirical cdf
 plot(ecdf(p1))
-lines(ecdf(p2), col=2)}
+lines(ecdf(p2), col=2)
+}
 #----------------------------------------------------------------
-
-
-
-
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{regression}% use one of  RShowDoc("KEYWORDS")
+
