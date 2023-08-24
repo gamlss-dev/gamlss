@@ -86,7 +86,8 @@ for (j in 1:lobs)
                 paste0("d",fname,"(y.var,mu.var[j])"),
                 paste0("d",fname,"(y.var,mu.var[j],sigma.var[j])"),
                 paste0("d",fname,"(y.var,mu.var[j],sigma.var[j], nu.var[j])"),
-                paste0("d",fname,"(y.var,mu.var[j],sigma.var[j], nu.var[j], tau.var[j])")
+                paste0("d",fname,"(y.var,mu.var[j],sigma.var[j], nu.var[j], 
+                       tau.var[j])")
                 )
       fy11 <- eval(parse(text=pdf11))
 pdfArr[,j] <- fy11
@@ -97,8 +98,9 @@ if (!is.null(fam$parameters$mu))
 #paste0(" mu = ",  sprintf("%.2f",mu.var[j]),    ifelse(!is.null(fam$parameters$sigma),",", " "))
 if (!is.null(fam$parameters$sigma)) 
   {
-  m.title <- bquote(paste(.(fname),"(",paste(mu," = ",   .(sprintf("%.2f",   mu.var[j])),","),
-                          paste(sigma," = ",.(sprintf("%.2f",sigma.var[j])),")")))
+  m.title <- bquote(paste(.(fname),"(",paste(mu," = ",   
+                    .(sprintf("%.2f",   mu.var[j])),","),
+              paste(sigma," = ",.(sprintf("%.2f",sigma.var[j])),")")))
   }    #      paste(" sigma = ",sprintf("%.2f",sigma.var[j]), ifelse(!is.null(fam$parameters$nu),",", " "), sep="")
 if (!is.null(fam$parameters$nu))
   {

@@ -14,7 +14,7 @@ package gamlss.dist
 
 book 3 
 "Generized Additive Models for Location Scale and Shape: A distributional 
-regression  approach with applications" explains the different method for fitting GAMLSS i.e. penalised Likelihood, Bayesian and Boosting.  (expected publication data summer 2023)
+regression  approach with applications" explains the different method for fitting GAMLSS i.e. penalised Likelihood, Bayesian and Boosting.  (expected publication data sping 2024)
  
 More more information about books and papers related to GAMLSS can be found in
 
@@ -22,9 +22,9 @@ http://www.gamlss.com/
 
 Question or suggestions about GAMLSS can be send to
 
-   d.stasinopoulos@londonmet.ac.uk
+   d.stasinopoulos@gre.ac.uk
    or
-   r.rigby@londonmet.ac.uk
+   r.rigby@gre.ac.uk
 _______________________________________________________________
 _______________________________________________________________
 Version 5.5-12

@@ -65,8 +65,8 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 				           "h2o",                         # h2o project 
 				           "pa",                          # partial regression
 				           "gnet", "lrs",                 # glmnet and lars
-                   "rfr",                         # random forest ranger
-				           "rfg",                         # generalised random forest 
+                   "rf1",                         # random forest ranger
+				           "rf2",                         # generalised random forest 
 				           "gbo",                         # generalised Tree boosting
 				           "gsel")                        # gamsel 
 # note that predict only read 2 characters Monday, May 4, 2009 at 11:27
