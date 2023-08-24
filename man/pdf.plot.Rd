@@ -62,7 +62,7 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 
 (see also \url{https://www.gamlss.com/}).
 }
-\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk} and Calliope Akantziliotou}
+\author{Mikis Stasinopoulos and Calliope Akantziliotou}
 \note{The range of the y values given by min, max and step are very important in the plot}
 
 \section{Warning}{The range of some distributions depends on the fitted parameters} 

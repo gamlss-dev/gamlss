@@ -57,7 +57,7 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 
 (see also \url{https://www.gamlss.com/}).
 }
-\author{Mikis Stasinopoulos , \email{d.stasinopoulos@londonmet.ac.uk}, based on ideas of Elaine Borghie 
+\author{Mikis Stasinopoulos, based on ideas of Elaine Borghie 
 from the World Health Organization}
 \note{The power option should be only used if the model  }
 

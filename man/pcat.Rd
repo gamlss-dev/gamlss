@@ -72,7 +72,7 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 
 (see also \url{https://www.gamlss.com/}).
 }
-\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk},  Paul Eilers and Marco Enea}
+\author{Mikis Stasinopoulos,  Paul Eilers and Marco Enea}
 \note{Note that \code{pcat} itself does no smoothing; it simply sets things up for \code{gamlss.pcat()} to do the smoothing within the backfitting.}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

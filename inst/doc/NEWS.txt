@@ -27,6 +27,9 @@ Question or suggestions about GAMLSS can be send to
    r.rigby@gre.ac.uk
 _______________________________________________________________
 _______________________________________________________________
+version 5.4-14
+
+
 Version 5.5-12
 
 1. gamlss 5.5-11 

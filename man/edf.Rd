@@ -42,8 +42,7 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 (see also \url{https://www.gamlss.com/}).
 }
 \author{
-Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}
-}
+Mikis Stasinopoulos}
 \note{The edf given are the ones fitted in the backfitting so the usually contained (depending on the additive term)
 the contatnt and the linear part.
 }

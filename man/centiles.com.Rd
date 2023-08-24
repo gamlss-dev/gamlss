@@ -55,7 +55,7 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 
 }
 \author{
-Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk} and Bob Rigby \email{r.rigby@londonmet.ac.uk}}
+Mikis Stasinopoulos and Bob Rigby}
 
 \section{Warning }{This function is appropriate only when one continuous explanatory variable is fitted in the model} 
 

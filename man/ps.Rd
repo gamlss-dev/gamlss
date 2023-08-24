@@ -174,7 +174,7 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 
 (see also \url{https://www.gamlss.com/}).
 }
-\author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby and Paul Eilers}
+\author{ Mikis Stasinopoulos, Bob Rigby and Paul Eilers}
 
 \section{Warning}{There are occasions where the automatic local methods do not work. One accusation which came to our attention is  when 
 the range of the response variable values is very large. Scaling the response variable will solve the problem.} 

@@ -34,7 +34,7 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 
 (see also \url{https://www.gamlss.com/}).
  }
-\author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby}
+\author{ Mikis Stasinopoulos, Bob Rigby}
 \note{The function \code{\link{update}} does a very similar job}
 
 

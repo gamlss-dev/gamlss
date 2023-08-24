@@ -46,7 +46,7 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 }
 
 
-\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk} and Bob Rigby}
+\author{Mikis Stasinopoulos and Bob Rigby}
 \note{The "weighted" residuals of a specified parameter can be zero and one if the square of first derivative 
      have been used in the fitting of this parameter}
 \seealso{ \code{\link{print.gamlss}}, \code{\link{summary.gamlss}},  \code{\link{fitted.gamlss}},  \code{\link{coef.gamlss}},  

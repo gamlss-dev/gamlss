@@ -46,7 +46,7 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 (see also \url{https://www.gamlss.com/}).
 }
 
-\author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby}
+\author{ Mikis Stasinopoulos, Bob Rigby}
 
 \seealso{ \code{\link{gamlss}}, \code{\link{fp}} }
 

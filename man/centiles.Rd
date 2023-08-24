@@ -79,7 +79,7 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 (see also \url{https://www.gamlss.com/}).
 }
 
-\author{Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby \email{r.rigby@londonmet.ac.uk} with contribution from Steve Ellison}
+\author{Mikis Stasinopoulos, Bob Rigby with contribution from Steve Ellison}
 
 
 \section{Warning }{This function is appropriate only when one continuous explanatory variable is fitted in the model}  

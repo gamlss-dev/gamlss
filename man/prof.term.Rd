@@ -59,7 +59,7 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 
 (see also \url{https://www.gamlss.com/}).
 }
-\author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk} and Bob Rigby}
+\author{ Mikis Stasinopoulos and Bob Rigby}
 \section{Warning }{A dense grid (i.e. small step) evaluation of the global deviance can take a long time, so start with a sparse grid (i.e. large step) 
 and decrease  gradually the step length for more accuracy. }  
 \seealso{\code{\link{gamlss}},  \code{\link{prof.dev}} }

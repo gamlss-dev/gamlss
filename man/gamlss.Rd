@@ -151,11 +151,10 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 \emph{Flexible Regression and Smoothing: Using GAMLSS in R},  Chapman and Hall/CRC.  
 
 (see also \url{https://www.gamlss.com/}).
-
 }
 
 
-\author{ Mikis Stasinopoulos \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby, Calliope Akantziliotou and Vlasios Voudouris}
+\author{ Mikis Stasinopoulos, Bob Rigby, Calliope Akantziliotou and Vlasios Voudouris}
 
 \note{The following generic functions can be used with a GAMLSS object: \code{print}, \code{summary},  \code{fitted},  \code{coef},  
           \code{residuals}, \code{update},  \code{plot}, \code{deviance}, \code{formula}   }

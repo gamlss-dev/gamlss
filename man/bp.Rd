@@ -79,8 +79,7 @@ pp, 248-273, SAGE Publications Sage India: New Delhi, India. \doi{10.1177/147108
 
 (see also  \url{https://www.gamlss.com/}).
 }
-\author{Mikis Stasinopoulos, \email{d.stasinopoulos@londonmet.ac.uk}, Bob Rigby 
-            \email{r.rigby@londonmet.ac.uk} and Fernanda De Bastiani}
+\author{Mikis Stasinopoulos, Bob Rigby and Fernanda De Bastiani}
 \note{
 The  bucket plot provides an additional residual diagnostic tool that can be used for fitted model checking, alongside other diagnostic tools, for example   worm plots, and Q (and Z) statistics.
 }
