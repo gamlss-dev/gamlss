@@ -11,7 +11,7 @@ Authors@R: c(person("Mikis", "Stasinopoulos", role = c("aut", "cre", "cph"),
            person("Daniil", "Kiose", role = "ctb") 
            )
 Title: Generalised Additive Models for Location Scale and Shape
-Maintainer: Mikis Stasinopoulos <d.stasinopoulos@londonmet.ac.uk>
+Maintainer: Mikis Stasinopoulos <d.stasinopoulos@gre.ac.uk>
 Depends: R (>= 3.3.0), graphics, stats, splines, utils, grDevices,
         gamlss.data (>= 5.0-0), gamlss.dist (>= 4.3.1), nlme, parallel
 LazyLoad: yes
