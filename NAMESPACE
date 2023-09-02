@@ -45,7 +45,10 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
        getPEF, devianceIncr, get.rqres, 
        gamlssMLpred, chooseDist, fitDistPred, getOrder,
        chooseDistPred,
-       numeric.deriv, getQuantile, loglogplot, ECDF, coefAll)
+       numeric.deriv, getQuantile, loglogplot, ECDF, coefAll,
+       .hat.WX, .binom, .counts, .gamlss.bi.list, .gamlss.multin.list, 
+        .gamlss.sm.list, .real0to1, .realAll, .realline,
+        .realplus )
 
 
 # datasets
@@ -152,7 +155,5 @@ S3method(print, pbz)
 S3method(print, pbc)
 #-------------------------
 S3method(print, cy)
-
-
 
 useDynLib(gamlss, .registration = TRUE)

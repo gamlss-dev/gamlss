@@ -17,7 +17,7 @@
 \alias{pbz}
 \alias{pbz.control}
 \alias{getZmatrix}
-
+\alias{.hat.WX}
 
 \title{P-Splines Fits in a GAMLSS Formula}
 
@@ -59,6 +59,8 @@ The function \code{pbc()} fits a cycle penalised beta regression spline such as 
 The function \code{pvc()} fits  varying coefficient models see Hastie and Tibshirani(1993) and it is more general and flexible than the old \code{vc()} function which was based on cubic splines.
 
 The function \code{getZmatrix()} creates a (random effect) design matrix \code{Z} which can be  used to fit a P-splines smoother using the \code{re())} function. (The \code{re()}  is an interface with the random effect function \code{lme} of the package \pkg{nlme}. 
+
+The function \code{.hat.WX()} is for internal use only.
 }
 \usage{
 pb(x, df = NULL, lambda = NULL, max.df=NULL, 
@@ -92,6 +94,8 @@ pbz.control(inter = 20, degree = 3, order = 2, start = c(1e-04, 1e-04),
 ps(x, df = 3, lambda = NULL, ps.intervals = 20, degree = 3, order = 3)
 
 getZmatrix(x, xmin = NULL, xmax = NULL, inter = 20, degree = 3, order = 2)
+
+.hat.WX(w, x)
 }
 
 \arguments{
@@ -118,6 +122,7 @@ getZmatrix(x, xmin = NULL, xmax = NULL, inter = 20, degree = 3, order = 2)
   \item{xmax}{maximum value for creating the B-spline}
   \item{sin}{whether to use the sin penalty or not}
   \item{lim}{at which level the second penalty of order 1 should start}
+  \item{w}{iterative weights only for function \code{.hat.WX} }
 } 
 \details{
 The \code{ps()} function is based on Brian Marx function which can be found in his website.
