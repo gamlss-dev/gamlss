@@ -1,30 +1,23 @@
 Package: gamlss
-Description: Functions for fitting the Generalized Additive Models for Location Scale and Shape introduced by Rigby and Stasinopoulos (2005), <doi:10.1111/j.1467-9876.2005.00510.x>. The models use a distributional regression approach where all the parameters of the conditional distribution of the response variable are modelled using explanatory variables.
-Version: 5.4-18
-Date: 2023-09-01
+Title: Generalised Additive Models for Location Scale and Shape
+Version: 5.4-19
+Date: 2023-09-05
 Authors@R: c(person("Mikis", "Stasinopoulos", role = c("aut", "cre", "cph"), 
-             email = "d.stasinopoulos@gre.ac.uk"),
-           person("Bob", "Rigby", role = c("aut")), 
-           person("Vlasios", "Voudouris", role = "ctb"),  
+             email = "d.stasinopoulos@gre.ac.uk", comment = c(ORCID = "0000-0003-2407-5704")),
+           person("Robert", "Rigby", role = "aut", email = "r.rigby@gre.ac.uk", comment = c(ORCID = "0000-0003-3853-1707")),
+           person("Vlasios", "Voudouris", role = "ctb"),
            person("Calliope", "Akantziliotou", role = "ctb"),
            person("Marco", "Enea", role = "ctb"),
-           person("Daniil", "Kiose", role = "ctb") 
+           person("Daniil", "Kiose", role = "ctb", comment = c(ORCID = "0000-0002-3596-5748")),
+           person("Achim", "Zeileis", role = "ctb", email = "Achim.Zeileis@R-project.org", comment = c(ORCID = "0000-0003-0918-3766"))
            )
-Title: Generalised Additive Models for Location Scale and Shape
-Maintainer: Mikis Stasinopoulos <d.stasinopoulos@gre.ac.uk>
-Depends: R (>= 3.3.0), graphics, stats, splines, utils, grDevices,
-        gamlss.data (>= 5.0-0), gamlss.dist (>= 4.3.1), nlme, parallel
-LazyLoad: yes
-Imports: MASS, survival, methods
+Description: Functions for fitting the Generalized Additive Models for Location Scale and Shape introduced by Rigby and Stasinopoulos (2005), <doi:10.1111/j.1467-9876.2005.00510.x>. The models use a distributional regression approach where all the parameters of the conditional distribution of the response variable are modelled using explanatory variables.
 License: GPL-2 | GPL-3
 URL: https://www.gamlss.com/
+BugReports: https://github.com/mstasinopoulos/GAMLSS-original/issues
+Depends: R (>= 3.3.0), graphics, stats, splines, utils, grDevices,
+        gamlss.data (>= 5.0-0), gamlss.dist (>= 4.3.1), nlme, parallel
+Imports: MASS, survival, methods
+Suggests: distributions3 (>= 0.2.1)
+LazyLoad: yes
 NeedsCompilation: yes
-Packaged: 2020-09-10 11:45:48 UTC; dimitriosstasinopoulos
-Author: Mikis Stasinopoulos [aut, cre, cph],
-  Bob Rigby [aut],
-  Vlasios Voudouris [ctb],
-  Calliope Akantziliotou [ctb],
-  Marco Enea [ctb],
-  Daniil Kiose [ctb]
-Repository: CRAN
-Date/Publication: 2020-09-12 06:40:02 UTC
