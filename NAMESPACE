@@ -156,4 +156,6 @@ S3method(print, pbc)
 #-------------------------
 S3method(print, cy)
 
+S3method(distributions3::prodist, gamlss)
+
 useDynLib(gamlss, .registration = TRUE)
