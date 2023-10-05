@@ -1,7 +1,7 @@
 Package: gamlss
 Title: Generalised Additive Models for Location Scale and Shape
-Version: 5.4-19
-Date: 2023-09-05
+Version: 5.4-20
+Date: 2023-10-04
 Authors@R: c(person("Mikis", "Stasinopoulos", role = c("aut", "cre", "cph"), 
              email = "d.stasinopoulos@gre.ac.uk", comment = c(ORCID = "0000-0003-2407-5704")),
            person("Robert", "Rigby", role = "aut", email = "r.rigby@gre.ac.uk", comment = c(ORCID = "0000-0003-3853-1707")),

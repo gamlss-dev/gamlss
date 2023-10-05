@@ -82,18 +82,19 @@ Version 5.2
  1. gamlss 
        i) the argument "data = sys.parent()"" in gamlss() and gamlssML()  
          has been replaced with just "data", to comply with new R protocol.
-       ii) A bug in the  functions centiles(), centiles.com(), centiles.fan(), centile.spit()
+       ii) A bug in the  functions centiles(), centiles.com(), 
+           centiles.fan(),    centile.spit()
            has been amended, thanks to Prof. Tim Cole who pointed out.     
          
 Version 5.1-9
    1. gamlss 
-      i)  the plotting in GAIC.scaled() have changed. Now bars are plotted. 
+      i)   the plotting in GAIC.scaled() have changed. Now bars are plotted. 
       ii)  centile.predict has a new argument "calibration"
       iii) calibration() has different output now has the "target", "calibrated" and               "sample" 
       iv) the argument cent for lms() and calibrartion have changed from 
-      cent= 100*pnorm((-4:4)*2/3) to 
-      cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6) 
-      to be consistent with centiles()
+          cent= 100*pnorm((-4:4)*2/3) to 
+           cent = c(0.4, 2, 10, 25, 50, 75, 90, 98, 99.6) 
+           to be consistent with centiles()
       
 
 Version 5.1-7
