@@ -148,9 +148,11 @@ stepGAIC.VR <-function(object,
       nm <- 1
    Terms <- terms(fit, what)
     if (trace)
-        cat("Distribution parameter: ", what, "\n") 
-        cat("Start:  AIC=", format(round(bAIC, 2)), "\n", cut.string(deparse(as.vector(formula(fit, what=what)))), 
-            "\n\n")
+    {
+      cat("Distribution parameter: ", what, "\n") 
+      cat("Start:  AIC=", format(round(bAIC, 2)), "\n", cut.string(deparse(as.vector(formula(fit, 
+                  what=what)))), "\n\n")    
+    }
     models[[nm]] <- list(deviance = mydeviance(fit), df.resid = n - 
         edf, change = "", AIC = bAIC)
     if (!is.null(keep)) 
@@ -231,7 +233,7 @@ stepGAIC.VR <-function(object,
           edf <- bAIC[1]
          bAIC <- bAIC[2]
         if (trace) 
-            cat("\nStep:  AIC=", format(round(bAIC, 2)), "\n", 
+        cat("\nStep:  AIC=", format(round(bAIC, 2)), "\n", 
                 cut.string(deparse(as.vector(formula(fit, what)))), 
                 "\n\n")
         if (bAIC >= AIC + 1e-07) 
@@ -378,8 +380,10 @@ direction <- match.arg(direction)
         form.vector[i] <- scope[[i]][items[i]]
     form <- deparse(formula(object, what))
     if(trace)
-        cat("Distribution parameter: ", what, "\n")
-        cat("Start: ", form)
+    {
+      cat("Distribution parameter: ", what, "\n")
+      cat("Start: ", form)
+    }
     fit <- object
     n <- length(fit$N)
     bAIC <- AIC(object, k=k)

@@ -61,8 +61,11 @@ if (have_snow)
     } else       direction    
 if  (npar==1)
 {
-cat("---------------------------------------------------", "\n")
-# get the mu model  
+if (trace)
+{
+  cat("---------------------------------------------------", "\n") 
+}
+# get the mu mode
   if ("mu" %in% object$par && mu.try==TRUE)
   {
     current.par <- "mu"
