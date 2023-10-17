@@ -1,8 +1,8 @@
 # created Wednesday, September 15, 2004 
 # author: Mikis Stasinopoulos
 # based on functions in MASS 
-#----------------------------------------------------------------------------------------
-#----------------------------------------------------------------------------------------
+################################################################################
+################################################################################
 # extractAIC  needs MASS
 extractAIC.gamlss<-function (fit, scale, k = 2, c = FALSE,  ...) 
 {
@@ -16,182 +16,11 @@ extractAIC.gamlss<-function (fit, scale, k = 2, c = FALSE,  ...)
        }
     else stop(paste("this is not a gamlss object"))
 }
-#----------------------------------------------------------------------------------------
-#library(MASS)
-# these are not needed with NAMESPACE
-#dropterm <- function (object, ...) 
-#UseMethod("dropterm")
-#addterm <- function (object, ...) 
-#UseMethod("addterm")
-# dropterm extractAIC  needs MASS
-# dropterm.gamlss<-function (object, 
-#                            scope, 
-#                            what = c("mu", "sigma", "nu", "tau"),
-#                            scale = 0, 
-#                            test = c("none", "Chisq"), 
-#                            k = 2, 
-#                            sorted = FALSE, 
-#                            trace = FALSE, 
-#                            ...) 
-# {
-# #-------------------------------------------------------------------------------
-#   drop1.scope<-function (terms1, terms2, what = c("mu", "sigma", "nu", "tau")) 
-#   {
-#     what <- match.arg(what)
-#     terms1 <- terms(terms1, what)
-#     f2 <- if (missing(terms2)) 
-#         numeric(0)
-#     else attr(terms(terms2, what), "factor")
-#     factor.scope(attr(terms1, "factor"), list(drop = f2))$drop
-#   }
-# #-------------------------------------------------------------------------------
-# safe_pchisq <- function (q, df, ...) 
-# {
-#   df[df <= 0] <- NA
-#   pchisq(q = q, df = df, ...)
-# }
-# #-------------------------------------------------------------------------------
-#     what <- match.arg(what)
-#     if (!what %in% object$par) 
-#         stop(paste(what, "is not a parameter in the object", "\n"))
-#     tl <- attr(terms(object, what ), "term.labels")
-#     if (missing(scope)) 
-#         scope <- drop1.scope(object, what = what)
-#     else 
-#        {
-#         if (!is.character(scope)) 
-#             scope <- attr(terms(update.formula(formula(object, what=what), scope), what), 
-#                 "term.labels")
-#         if (!all(match(scope, tl, FALSE))) 
-#             stop("scope is not a subset of term labels")
-#        }
-#     ns <- length(scope)
-#     ans <- matrix(nrow = ns + 1, ncol = 2, dimnames = list(c("<none>", 
-#         scope), c("df", "AIC")))
-#     ans[1, ] <- extractAIC(object, scale, k = k,   ...)
-#     for (i in seq(ns)) 
-#       {
-#         tt <- scope[i]
-#         if (trace) 
-#             cat("trying -", tt, "\n")
-#             
-#         nfit <- update(object,  as.formula(paste("~ . -", tt)), what = what, evaluate = FALSE, trace=FALSE) 
-#         nfit <- try(eval.parent(nfit), silent=TRUE)
-#               if (any(class(nfit)%in%"try-error"))
-#                  { 
-#                   cat("Model with term ", tt, "has failed \n")       
-#                   ans[i + 1, ] <- NA# extractAIC(object, scale, k = k, ...)          
-#                  }
-#             else ans[i + 1, ] <- extractAIC(nfit, scale, k = k,   ...)
-#       }
-#     dfs <- ans[1, 1] - ans[, 1]
-#     dfs[1] <- NA
-#     aod <- data.frame(Df = dfs, AIC = ans[, 2])
-#     o <- if (sorted) 
-#         order(aod$AIC)
-#     else seq(along = aod$AIC)
-#     test <- match.arg(test)
-#     if (test == "Chisq") 
-#       {
-#         dev <- ans[, 2] - k * ans[, 1]
-#         dev <- dev - dev[1]
-#         dev[1] <- NA
-#         nas <- !is.na(dev)
-#         P <- dev
-#         P[nas] <- safe_pchisq(dev[nas], dfs[nas], lower.tail = FALSE)
-#         aod[, c("LRT", "Pr(Chi)")] <- list(dev, P)
-#       }
-#     aod <- aod[o, ]
-#     head <- c("Single term deletions for", what, "\nModel:", deparse(as.vector(formula(object, what))))
-#     if (scale > 0) 
-#         head <- c(head, paste("\nscale: ", format(scale), "\n"))
-#     class(aod) <- c("anova", "data.frame")
-#     attr(aod, "heading") <- head
-#     aod
-# }
-#----------------------------------------------------------------------------------------
-#  addterm
-# addterm.gamlss <- function (object, 
-#                            scope,
-#                            what = c("mu", "sigma", "nu", "tau"), 
-#                           scale = 0, 
-#                            test = c("none", "Chisq"), 
-#                               k = 2, 
-#                          sorted = FALSE, 
-#                           trace = FALSE, 
-#                            ...) 
-# {
-# #-------------------------------------------------------------------------------
-#  add.scope <- function (terms1, terms2, what = c("mu", "sigma", "nu", "tau") ) 
-#     {
-#       what <- match.arg(what)
-#     terms1 <- terms(terms1, what)
-#     terms2 <- terms(terms2, what)
-#     factor.scope(attr(terms1, "factor"), list(add = attr(terms2, 
-#         "factor")))$add  
-#    }
-# #-------------------------------------------------------------------------------
-# safe_pchisq <- function (q, df, ...) 
-# {
-#   df[df <= 0] <- NA
-#   pchisq(q = q, df = df, ...)
-# }
-# #-------------------------------------------------------------------------------
-#    what <- match.arg(what)
-#     if (missing(scope) || is.null(scope)) 
-#         stop("no terms in scope")
-#     if (!is.character(scope)) 
-#         scope <- add.scope(object, terms(update.formula(formula(object, what=what), scope)), what = what)
-#     if (!length(scope)) 
-#         stop("no terms in scope for adding to object")
-#     ns <- length(scope)
-#     ans <- matrix(nrow = ns + 1, ncol = 2, dimnames = list(c("<none>", 
-#         scope), c("df", "AIC")))
-#     ans[1, ] <- extractAIC(object, scale, k = k,   ...)
-#     for (i in seq(ns)) 
-#       {
-#         tt <- scope[i]
-#         if (trace) 
-#             cat("trying +", tt, "\n")
-#         nfit <- update(object, as.formula(paste("~ . +", tt)), what = what, trace=FALSE, 
-#             evaluate = FALSE)
-#         nfit <- try(eval.parent(nfit), silent=TRUE)
-#              if (any(class(nfit)%in%"try-error"))
-#                  { 
-#                   cat("Model with term ", tt, "has failed \n")       
-#                   ans[i + 1, ] <- NA# extractAIC(object, scale, k = k, ...)          
-#                  }
-#             else ans[i + 1, ] <- extractAIC(nfit, scale, k = k,  ...)
-#       }
-#     dfs <- ans[, 1] - ans[1, 1]
-#     dfs[1] <- NA
-#     aod <- data.frame(Df = dfs, AIC = ans[, 2])
-#     o <- if (sorted) 
-#         order(aod$AIC)
-#     else seq(along = aod$AIC)
-#     test <- match.arg(test)
-#     if (test == "Chisq") 
-#       {
-#         dev <- ans[, 2] - k * ans[, 1]
-#         dev <- dev[1] - dev
-#         dev[1] <- NA
-#         nas <- !is.na(dev)
-#         P <- dev
-#         P[nas] <- safe_pchisq(dev[nas], dfs[nas], lower.tail = FALSE)
-#         aod[, c("LRT", "Pr(Chi)")] <- list(dev, P)
-#       }
-#     aod <- aod[o, ]
-#     head <- c("Single term additions for", what,"\nModel:", deparse(as.vector(formula(object,what))))
-#     if (scale > 0) 
-#         head <- c(head, paste("\nscale: ", format(scale), "\n"))
-#     class(aod) <- c("anova", "data.frame")
-#     attr(aod, "heading") <- head
-#     aod
-# }
-#----------------------------------------------------------------------------------------
-#----------------------------------------------------------------------------------------
+################################################################################
+################################################################################
+################################################################################
 # Venable and Ripley step AIC function
-#----------------------------------------------------------------------------------------
+################################################################################
 stepGAIC.VR <-function(object, 
                     scope, 
                 direction = c("both", "backward", "forward"), 
@@ -417,11 +246,15 @@ stepGAIC.VR <-function(object,
         fit$keep <- re.arrange(keep.list[seq(nm)])
     step.results(models = models[seq(nm)], fit, object, usingCp)
 }
-#----------------------------------------------------------------------------------------
+################################################################################
+################################################################################
+################################################################################
 # created Wednesday, September 15, 2004 
 # author: Mikis Stasinopoulos
 # based on the step.gam() function of Trevor Hastie
-#----------------------------------------------------------------------------------------
+################################################################################
+################################################################################
+################################################################################
 stepGAIC.CH <-function(object, 
                     scope = gamlss.scope(model.frame(object)), 
                 direction = c("both", "backward", "forward"), 
@@ -652,7 +485,7 @@ direction <- match.arg(direction)
         }
     }
 }
-#----------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # copy of the gam.scope S-plus function
 # its needs or a model.frame or a data frame 
 gamlss.scope <- function(frame, 
@@ -675,29 +508,11 @@ gamlss.scope <- function(frame,
     }
     step.list
 }
-#----------------------------------------------------------------------------------------
-# stepGAIC <-function(object, 
-#                     scope = gamlss.scope(model.frame(object)), 
-#                 direction = c("both", "backward", "forward"), 
-#                     trace = T, 
-#                      keep = NULL, 
-#                     steps = 1000,
-#                      what = c("mu", "sigma", "nu", "tau"),
-#                         k = 2,
-#                  additive = FALSE,
-#                     ...)
-# {
-# stepGAICcall <- match.call()  
-#     mnames <- c("", "object", "scope", "direction", "trace", "keep", "steps", "what", "k", "..." ) #  
-#     cnames <- names(stepGAICcall)  # 
-#     cnames <- cnames[match(mnames,cnames,0)] 
-#    newcall <- stepGAICcall[cnames] #   
-# newcall[[1]] <- if (additive == TRUE)  as.name("stepGAIC.CH") else as.name("stepGAIC.VR")
-# finalmodel <-eval(newcall)
-# finalmodel 
-# }
-#----------------------------------------------------------------------------------------
-#----------------------------------------------------------------------------------------
+################################################################################
+################################################################################
+################################################################################
 drop1.gamlss<-function(object, ...) dropterm(object, test="Chisq", ...)
  add1.gamlss<-function(object, ...)  addterm(object, test="Chisq", ...)
-#----------------------------------------------------------------------------------------
+################################################################################
+################################################################################
+ ################################################################################
