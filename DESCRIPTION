@@ -1,5 +1,5 @@
 Package: gamlss
-Title: Generalised Additive Models for Location Scale and Shape
+Title: Generalized Additive Models for Location Scale and Shape
 Version: 5.4-21
 Date: 2023-10-17
 Authors@R: c(person("Mikis", "Stasinopoulos", role = c("aut", "cre", "cph"), 
