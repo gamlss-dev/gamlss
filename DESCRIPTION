@@ -14,7 +14,7 @@ Authors@R: c(person("Mikis", "Stasinopoulos", role = c("aut", "cre", "cph"),
 Description: Functions for fitting the Generalized Additive Models for Location Scale and Shape introduced by Rigby and Stasinopoulos (2005), <doi:10.1111/j.1467-9876.2005.00510.x>. The models use a distributional regression approach where all the parameters of the conditional distribution of the response variable are modelled using explanatory variables.
 License: GPL-2 | GPL-3
 URL: https://www.gamlss.com/
-BugReports: https://github.com/mstasinopoulos/GAMLSS-original/issues
+BugReports: https://github.com/gamlss-dev/gamlss/issues
 Depends: R (>= 3.3.0), graphics, stats, splines, utils, grDevices,
         gamlss.data (>= 5.0-0), gamlss.dist (>= 4.3.1), nlme, parallel
 Imports: MASS, survival, methods

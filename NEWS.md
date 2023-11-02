@@ -1,4 +1,10 @@
-# Version 5.4-19
+# Version 5.4-21
+
+* The GitHub repository is now hosted under the new `gamlss-dev` organization:
+  <https://github.com/gamlss-dev/gamlss/>.
+
+
+# Version 5.4-20
 
 * The package is now hosted on GitHub at
   <https://github.com/mstasinopoulos/GAMLSS-original/>.

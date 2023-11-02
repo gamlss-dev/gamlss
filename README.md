@@ -6,5 +6,5 @@ The models use a distributional regression approach where all the parameters of 
 distribution of the response variable are modelled using explanatory variables.
 
 **CRAN package:** <https://CRAN.R-project.org/package=gamlss>  
-**GitHub repository:** <https://github.com/mstasinopoulos/GAMLSS-original/>  
+**GitHub repository:** <https://github.com/gamlss-dev/gamlss/>  
 **Project website:** <https://www.gamlss.com/>
