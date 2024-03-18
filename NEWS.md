@@ -31,7 +31,7 @@ The GitHub repository is now hosted under the new `gamlss-dev` organization:
 
 * `predict()` do not  print the message "new prediction"
 
-* `stepGAICAll.A()` produce less lines in the output 
+* `stepGAIC()` produce less lines in the output 
 
 
 
