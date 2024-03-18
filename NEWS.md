@@ -1,11 +1,39 @@
-# Version 5.4-21
+# Introduction
 
-* The GitHub repository is now hosted under the new `gamlss-dev` organization:
+gamlss is a R package implementing the Generalised Additive Models for
+ The package `gamlss` is an implementation of  Rigby and Stasinopoulos (2005),  Appl. Statist., 54,  pp. 507-554.
+
+There are three book available for infoarmation 
+
+* book 1 
+"Flexible Regression and Smoothing: Using GAMLSS in R" 
+explaining how the models can be used in R.
+
+* book 2 
+"Distributions for modeling location, scale and shape: Using GAMLSS in R" 
+explaining the explicit and generated distributions available in the 
+package gamlss.dist  
+
+* book 3 
+"Generized Additive Models for Location Scale and Shape: A distributional 
+regression  approach with applications" 
+explaining the different method for fitting GAMLSS i.e. penalised Likelihood, Bayesian and Boosting.  
+ 
+More more information about books and papers related to GAMLSS can be found in
+<https://gamlss.com/>.
+ 
+ 
+The GitHub repository is now hosted under the new `gamlss-dev` organization:
   <https://github.com/gamlss-dev/gamlss/>.
 
+
 # Version 5.4-21
 
-* The package is the newest version after merging master to main 
+* `predict()` do not  print the message "new prediction"
+
+* `stepGAICAll.A()` produce less lines in the output 
+
+
 
 
 # Version 5.4-20
