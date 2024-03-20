@@ -62,18 +62,18 @@ getOrder(obj, column = 1)
 \details{
 The following are the different \code{type} argument:
 \itemize{
-  \item{\code{realAll}:}{ All the \code{gamlss.family} continuous distributions defined on the real line, i.e. \code{realline} and the real positive line i.e. \code{realplus}}
+  \item{realAll:}{ All the \code{gamlss.family} continuous distributions defined on the real line, i.e. \code{realline} and the real positive line i.e. \code{realplus}}
   
-  \item{\code{realline}:}{ The \code{gamlss.family} continuous distributions : "NO", "GU", "RG" ,"LO", "NET", "TF", "TF2", "PE","PE2", "SN1", "SN2", "exGAUS", "SHASH", "SHASHo","SHASHo2", "EGB2", "JSU", "JSUo", "SEP1", "SEP2", "SEP3", "SEP4",  "ST1", "ST2", "ST3", "ST4", "ST5", "SST", "GT"}
+  \item{realline:} The \code{gamlss.family} continuous distributions : "NO", "GU", "RG" ,"LO", "NET", "TF", "TF2", "PE","PE2", "SN1", "SN2", "exGAUS", "SHASH", "SHASHo","SHASHo2", "EGB2", "JSU", "JSUo", "SEP1", "SEP2", "SEP3", "SEP4",  "ST1", "ST2", "ST3", "ST4", "ST5", "SST", "GT".
   
-  \item{\code{realplus}:}{ The \code{gamlss.family} continuous distributions in the positive real line: "EXP", "GA","IG","LOGNO", "LOGNO2","WEI", "WEI2", "WEI3", "IGAMMA","PARETO2", "PARETO2o", "GP", "BCCG", "BCCGo", "exGAUS", "GG", "GIG", "LNO","BCTo", "BCT", "BCPEo", "BCPE", "GB2"}
+  \item{realplus:} The \code{gamlss.family} continuous distributions in the positive real line: "EXP", "GA","IG","LOGNO", "LOGNO2","WEI", "WEI2", "WEI3", "IGAMMA","PARETO2", "PARETO2o", "GP", "BCCG", "BCCGo", "exGAUS", "GG", "GIG", "LNO","BCTo", "BCT", "BCPEo", "BCPE", "GB2".
   
-  \item{\code{real0to1}:}{ The \code{gamlss.family} continuous distributions from 0 to 1: "BE", "BEo", "BEINF0", "BEINF1", "BEOI", "BEZI", "BEINF", "GB1""}
+  \item{real0to1:} The \code{gamlss.family} continuous distributions from 0 to 1: "BE", "BEo", "BEINF0", "BEINF1", "BEOI", "BEZI", "BEINF", "GB1".
   
- \item{\code{counts}:}{ The \code{gamlss.family} distributions for counts: "PO", "GEOM", "GEOMo","LG", "YULE", "ZIPF", "WARING", "GPO", "DPO", "BNB", "NBF","NBI", "NBII", "PIG", "ZIP","ZIP2", "ZAP", "ZALG", "DEL", "ZAZIPF", "SI", "SICHEL","ZANBI",  "ZAPIG", "ZINBI",  "ZIPIG", "ZINBF", "ZABNB", "ZASICHEL", "ZINBF",  "ZIBNB", 
- "ZISICHEL"}
+ \item{counts:} The \code{gamlss.family} distributions for counts: "PO", "GEOM", "GEOMo","LG", "YULE", "ZIPF", "WARING", "GPO", "DPO", "BNB", "NBF","NBI", "NBII", "PIG", "ZIP","ZIP2", "ZAP", "ZALG", "DEL", "ZAZIPF", "SI", "SICHEL","ZANBI",  "ZAPIG", "ZINBI",  "ZIPIG", "ZINBF", "ZABNB", "ZASICHEL", "ZINBF",  "ZIBNB", 
+ "ZISICHEL".
 
-\item{\code{binom}:}{ The \code{gamlss.family} distributions for binomial type data :"BI", "BB", "DB", "ZIBI", "ZIBB", "ZABI", "ZABB"}
+\item{binom:} The \code{gamlss.family} distributions for binomial type data :"BI", "BB", "DB", "ZIBI", "ZIBB", "ZABI", "ZABB".
 
 The function \code{fitDist()} uses the function \code{gamlssML()} to fit the different models, the function  \code{fitDistPred()} uses  \code{gamlssMLpred()} and the function \code{chooseDist()} used \code{update.gamlss()}.
 }
