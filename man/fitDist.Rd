@@ -62,7 +62,7 @@ getOrder(obj, column = 1)
 \details{
 The following are the different \code{type} argument:
 \itemize{
-  \item{realAll:}{ All the \code{gamlss.family} continuous distributions defined on the real line, i.e. \code{realline} and the real positive line i.e. \code{realplus}}
+  \item{realAll:} All the \code{gamlss.family} continuous distributions defined on the real line, i.e. \code{realline} and the real positive line i.e. \code{realplus}.
   
   \item{realline:} The \code{gamlss.family} continuous distributions : "NO", "GU", "RG" ,"LO", "NET", "TF", "TF2", "PE","PE2", "SN1", "SN2", "exGAUS", "SHASH", "SHASHo","SHASHo2", "EGB2", "JSU", "JSUo", "SEP1", "SEP2", "SEP3", "SEP4",  "ST1", "ST2", "ST3", "ST4", "ST5", "SST", "GT".
   
