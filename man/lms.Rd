@@ -29,7 +29,7 @@ lms(y, x, families = LMS, data = NULL, k = 2,
   \item{fix.power}{if set it fix the power of the transformation for x}
  \item{lim.trans}{the limits for the search of the power parameter for x}
   \item{prof}{whether to use the profile GAIC of the power transformation}
-  \item{step}{if code{prof=TRUE} is used this determine the step for the profile GAIC }
+  \item{step}{if \code{prof=TRUE} is used this determine the step for the profile GAIC }
  \item{legend}{whether a legend is required in the plot with default \code{FALSE}}
  \item{mu.df}{\code{mu} effective degrees of freedom if required otherwise are estimated}
   \item{sigma.df}{\code{sigma} effective degrees of freedom if required otherwise are estimated}

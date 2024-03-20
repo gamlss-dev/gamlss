@@ -29,7 +29,7 @@ the \code{order} of the difference applied to the coefficients with default zero
 starting value for lambda if it estimated using `ML' or `GAIC'
 }
   \item{Lp}{
-The type of penalty required, \code{Lp=2} a proper ridge regression is the default. Use code{Lp=1} for lasso and different values for different penalties.  
+The type of penalty required, \code{Lp=2} a proper ridge regression is the default. Use \code{Lp=1} for lasso and different values for different penalties.  
 }
   \item{kappa}{a regulation parameters used for the weights in the penalties.}
   \item{iter}{the number of internal iteration allowed see details.}

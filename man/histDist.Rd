@@ -22,9 +22,7 @@ histDist(y, family = NO, freq = NULL, density = FALSE,
   \item{freq}{the frequencies of the data in \code{y} if exist. \code{freq} is used as \code{weights} in the \code{gamlss} fit}
  \item{density}{default value is FALSE. Change to TRUE if you would like a non-parametric density plot together with the parametric 
                 fitted distribution plot (for continuous variable only)}
-  \item{nbins}{The suggested number of bins (argument passed to \code{truehist()} of package MASS). 
-               Either a positive integer, or a character string naming a rule: "Scott" 
-               or "Freedman-Diaconis" or "FD". (Case is ignored.) }
+  \item{nbins}{The suggested number of bins (argument passed to \code{truehist()} of package MASS).  Either a positive integer, or a character string naming a rule: "Scott" or "Freedman-Diaconis" or "FD". (Case is ignored.) }
   \item{xlim}{the minimum and the maximum x-axis value (if the default values are out of range)}
   \item{ylim}{the minimum and the maximum y-axis value (if the default values are out of range)}
  \item{main}{the main title for the plot}
@@ -46,12 +44,13 @@ histDist(y, family = NO, freq = NULL, density = FALSE,
   This function first fits constants for each parameters of a GAMLSS distribution family using the \code{gamlss} function  
   and them plots the fitted distribution together with the appropriate plot according to whether 
   the \code{y} variable is of a continuous or discrete type. Histogram is plotted for continuous and barplot for discrete variables. 
-  The function \code{truehist} of 
+  The function \code{truehist()} of 
   Venables and Ripley's MASS package is used for the histogram plotting.  
 }
 \value{
   returns a plot
 }
+
 \references{Rigby, R. A. and  Stasinopoulos D. M. (2005). Generalized additive models for location, scale and shape,(with discussion), 
 \emph{Appl. Statist.}, \bold{54}, part 3, pp 507-554.
 

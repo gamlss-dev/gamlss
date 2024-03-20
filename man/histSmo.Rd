@@ -51,7 +51,7 @@ ii) The function \code{histSmoC()} uses smooth cubic splines and fits a Poison e
 
 iii) The function \code{histSmoP()} uses Penalised cubic splines (Eilers and Marx 1996). It is fitting a Poisson model to the frequencies using the \code{pb()} additive function of GAMLSS. This function is appropriate if automatic selection of the smoothing parameter is required.
 
-iv) The function \code{histSmo()} combines all the above functions in the sense that if lambda is fixed it uses  \code{histSmoO()}, if the df's are fixed it uses code{histSmoC()} and if none of these is specified it uses \code{histSmoP()}.
+iv) The function \code{histSmo()} combines all the above functions in the sense that if lambda is fixed it uses  \code{histSmoO()}, if the degrees  of freedom are fixed it uses \code{histSmoC()} and if none of these is specified it uses \code{histSmoP()}.
 
 }
 \value{
