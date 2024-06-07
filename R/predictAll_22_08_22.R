@@ -2,7 +2,9 @@
 ###############################################################################
 ###############################################################################
 ###############################################################################
-# last change 22-9-22 
+
+# last change 7-6-24
+# Tim Cole suggestion line 158-159
 # this the predictAll() function 
 # allows the user to get all the parameters using the  predict.gamlss().
 # creates a list containing y if exist in the newdata and predicted values for 
@@ -34,7 +36,8 @@
 #----------------------------------------------------------------------------------------
 predictAll <-function(object, 
                     newdata = NULL, 
-                       type = c("response", "link", "terms"),# note that default is "response" 
+                       type = c("response", "link", "terms"),
+                                      # note that default is "response" 
                       terms = NULL,   
                      se.fit = FALSE, 
                 use.weights = FALSE, 
@@ -44,7 +47,6 @@ predictAll <-function(object,
                      output = c("list","data.frame", "matrix"), # how to save it
                       ...)       
 {
-################################################################################
 ################################################################################
 ################################################################################
 ##-------- concat starts here---------------------------------------------------
@@ -149,6 +151,9 @@ if ((use.weights==FALSE)&&(se.fit==FALSE))#
   # {
             out <- list()
   whetherFitted <- as.gamlss.family(object$family[1])$par
+# if <par>.fix exists then set whetherFitted FALSE ------------------------
+  whetherFitted <- as.list(unlist(whetherFitted) &
+                             !paste0(names(whetherFitted), ".fix") %in% names(object))  
     if ("mu" %in% object$par)
         out$mu  <- if (whetherFitted$mu) 
           predict(object,newdata=newdata, what = "mu", type = type, 

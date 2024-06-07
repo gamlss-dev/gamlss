@@ -100,11 +100,11 @@ gamlssNews <- function() file.show(system.file("doc", "NEWS.txt", package="gamls
 ##           *start   starting values for mu, sigma, nu or tau (optional)
 ##             *fix   whether the specific parameter should be remained 
 ##                    fixed in the fitting procedure
-#========================================================================================
+#===============================================================================
 ###  The gamlss function contains the sub-functions
 ###  RS() CG() and mixed()
 ###  
-#----------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 library(survival)
 gamlss <- function(formula = formula(data),
              sigma.formula = ~1,
@@ -134,14 +134,14 @@ gamlss <- function(formula = formula(data),
 ##   subset = NULL,   four different model frames created therefore it is easier to apply 
 ##                    sub-setting and na.action to the whole data set not to the 
 ##                    frames 
-##---------------------------------------------------------------------------------------
+##------------------------------------------------------------------------------
 ## require(stats) Thursday, June 10, 2004 at 09:58 MS
 #require(splines) # this will be removed with namespaces
-#----------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 #gamlss.rc.list<-c("EX.rc","Exponential.rc") # the right censoring distribution list 
 #gamlss.bi.list<-c("BI", "Binomial", "BB", "Beta Binomial") # binomial denominators
 #.gamlss.multin.list<-c("MULTIN", "MN3", "MN4", "MN5")
-# ---------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # this is to replicate rqres within gamlss enviroment DS Friday, March 31, 2006 at 10:30
 rqres <- function (pfun = "pNO", 
                    type = c("Continuous", "Discrete", "Mixed"),
@@ -153,10 +153,10 @@ rqres <- function (pfun = "pNO",
                          ... )
 { }
 body(rqres) <-  eval(quote(body(rqres)), envir = getNamespace("gamlss"))
-##---------------------------------------------------------------------------------------
-##---------------------------------------------------------------------------------------
+##------------------------------------------------------------------------------
+##------------------------------------------------------------------------------
 ## first the definition of the three algorithms
-##---------------------------------------------------------------------------------------
+##------------------------------------------------------------------------------
 ## the mixing algorithm
 ##---------------------------------------------------------------------------------------
 ##---------------------------------------------------------------------------------------

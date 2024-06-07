@@ -24,8 +24,8 @@ summary.gamlss<- function (object,
   ifWarning <- rep(FALSE, length(object$parameters))# to create warnings
   if (type=="vcov")#  type vcov --------------------------------------------------
   {
-    coef <- covmat$coef
-    se <- covmat$se
+      coef <- covmat$coef
+        se <- covmat$se
     tvalue <- coef/se
     pvalue <-  2 * pt(-abs(tvalue), object$df.res)  #if (est.disp) 2 * pt(-abs(tvalue), df.r) else   2 * pnorm(-abs(tvalue)) 
     coef.table <- cbind(coef, se, tvalue, pvalue)
@@ -238,6 +238,14 @@ if (type=="qr")#     TYPE qr ---------------------------------------------------
     cat("Fitting method:", deparse(object$method), "\n\n") 
     est.disp <- FALSE
         df.r <- object$noObs - object$mu.df
+# omit moments with 0 df -------------------------------------------------------
+               ok <- lapply(object$parameters, function(x) {
+               df <- object[[paste(x, 'df', sep = '.')]]
+              fix <- paste(x, 'fix', sep = '.') %in% names(object)
+return(df > 0 || fix)}) |> unlist()
+object$parameters <- object$parameters[ok]
+       coef.table <- mu.coef.table <- sigma.coef.table <- nu.coef.table <- tau.coef.table <- NULL
+        
 #================ mu ESTIMATES ========================
     if ("mu"%in%object$parameters)   
     {

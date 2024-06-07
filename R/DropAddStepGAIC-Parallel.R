@@ -42,15 +42,18 @@
 dropterm.gamlss <- function (object, 
                      scope, 
                      what = c("mu", "sigma", "nu", "tau"),
-                     parameter = NULL,
+                parameter = NULL,
                     scale = 0, 
                      test = c("none", "Chisq"), 
                         k = 2, 
                    sorted = FALSE, 
                     trace = FALSE, 
-                 parallel = c("no", "multicore", "snow"), #The type of parallel operation to be used (if any). If missing, the default is taken from the option "boot.parallel" (and if that is not set, "no")
-                    ncpus = 1L, #integer: number of processes to be used in parallel operation: typically one would chose this to the number of available CPUs
-                       cl = NULL, # An optional parallel or snow cluster for use if parallel = "snow". If not supplied, a cluster on the local machine is created for the duration of the boot call.
+                 parallel = c("no", "multicore", "snow"), 
+#The type of parallel operation to be used (if any). If missing, the default is taken from the option "boot.parallel" (and if that is not set, "no")
+                    ncpus = 1L, 
+#integer: number of processes to be used in parallel operation: typically one would chose this to the number of available CPUs
+                       cl = NULL, 
+# An optional parallel or snow cluster for use if parallel = "snow". If not supplied, a cluster on the local machine is created for the duration of the boot call.
                      ...) 
 {
 ################################################################################
@@ -229,7 +232,7 @@ addterm.gamlss <- function (object,
     pchisq(q = q, df = df, ...)
   }
 ################################################################################
-  what <- if (!is.null(parameter))  {
+    what <- if (!is.null(parameter))  {
     match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
   if (!what %in% object$par) 
     stop(paste(what, "is not a parameter in the object", "\n"))
