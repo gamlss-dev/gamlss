@@ -1,0 +1,4 @@
+# Ignore compiled files
+src/*.o
+src/*.so
+src/*.dll
