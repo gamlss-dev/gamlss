@@ -15,7 +15,7 @@ Description: Functions for fitting the Generalized Additive Models for Location 
 License: GPL-2 | GPL-3
 URL: https://www.gamlss.com/
 BugReports: https://github.com/gamlss-dev/gamlss/issues
-Depends: R (>= 3.3.0), graphics, stats, splines, utils, grDevices,
+Depends:  R (>= 4.1.0), graphics, stats, splines, utils, grDevices,
         gamlss.data (>= 5.0-0), gamlss.dist (>= 4.3.1), nlme, parallel
 Imports: MASS, survival, methods
 Suggests: distributions3 (>= 0.2.1)
