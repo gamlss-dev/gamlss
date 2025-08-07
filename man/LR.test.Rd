@@ -39,9 +39,8 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 \author{Mikis Stasinopoulos}
 
 
-\seealso{
-\code{\link{gamlss}}, \code{\link{dropterm} }
-}
+\seealso{\code{\link{gamlss}}, \code{\link{stepGAIC}}}
+
 \examples{
 data(usair)
 m0<-gamlss(y~x1+x2, data=usair)
