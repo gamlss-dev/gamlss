@@ -313,8 +313,9 @@ if (inherits(object,"gamlss"))
    }
    Vresid <- qNO(eval(ures))
       dev <- -2*sum(eval(devi))
+     devi <- -2*eval(devi)
       out <-list()
-      out <- list(TGD=dev,  predictError=dev/dim(newdata)[1], resid=Vresid)   
+      out <- list(TGD=dev,  predictError=dev/dim(newdata)[1], devincr=devi, resid=Vresid)   
  } else # if gamlss2
  {
 ################################################################################   
@@ -362,8 +363,9 @@ if (inherits(object,"gamlss"))
 #             y <- newdata[,response.name]
 #    logLikIncr <- fam$p_d_f(y, param, log=TRUE)
 #           dev <- sum(-2*logLikIncr)
-      dev <- -2*logLik(object, newdata=newdata)           
-      out <- list(TGD=dev,  predictError=dev/dim(newdata)[1])   
+      dev <- deviance(object, newdata=newdata)
+      res <- resid(object,newdata=newdata)
+      out <- list(TGD=dev,  predictError=dev/dim(newdata)[1], resid=res)   
  }   
   class(out) <- "gamlssTGD"
   out
