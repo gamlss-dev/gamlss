@@ -10,9 +10,9 @@
 \alias{gamlss.pbc}
 \alias{gamlss.pbp}
 
-\title{Support for Functions  for smoothers}
+\title{Support Functions  for smoothers}
 \description{
- Those functions  are support for the functions  \code{pb()}, \code{pbo()},  \code{ps()},  \code{ridge()},  \code{ri()},  \code{cy()},  \code{pvc()},  and \code{pbm()}.
+ Those functions  are support for the functions  \code{pb()}, \code{pbo()},  \code{ps()}, \code{ri()},  \code{cy()},  \code{pvc()},  and \code{pbm()}.
 The functions are not intended to be called directly by users. 
 }
 \usage{
@@ -60,6 +60,6 @@ Stasinopoulos D. M., Rigby R.A., Heller G., Voudouris V., and De Bastiani F., (2
 
 \author{ Mikis Stasinopoulos, Bob Rigby}
 
-\seealso{ \code{\link{gamlss}}, \code{\link{pb}},  \code{\link{ps}}, \code{\link{ri}},\code{\link{ridge}},\code{\link{cy}},\code{\link{pvc}},\code{\link{pbm}} }
+\seealso{ \code{\link{gamlss}}, \code{\link{pb}},  \code{\link{ps}}, \code{\link{ri}},\code{\link{cy}},\code{\link{pvc}},\code{\link{pbm}} }
 
 \keyword{regression}% 
