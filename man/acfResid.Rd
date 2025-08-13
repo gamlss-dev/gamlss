@@ -53,7 +53,7 @@ Mikis Stasinopoulos. Bob Rigby. Vlasios Voudouris and Majid Djennad
 \examples{
 library(datasets)
 data(co2)
-m1<- gamlss(co2~pb(as.numeric(time(co2)))+factor(as.numetic(cycle(co2))))
+m1<- gamlss(co2~pb(as.numeric(time(co2)))+factor(as.numeric(cycle(co2))))
 acfResid(m1)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
