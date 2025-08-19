@@ -1,6 +1,7 @@
 \name{stepGAIC}
 
-\alias{stepGAIC}
+\alias{stepGAIC
+}
 \alias{stepGAIC.CH}
 \alias{stepGAIC.VR}
 \alias{stepGAICAll.A}
