@@ -1,14 +1,8 @@
-<<<<<<< HEAD
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
-src/*.o
-src/*.so
-src/*.dll
-=======
 # Ignore compiled files
 src/*.o
 src/*.so
 src/*.dll
->>>>>>> 54abfb9153fced07c6b7f88a7d405566a2a0503f
