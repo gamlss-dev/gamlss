@@ -104,7 +104,7 @@ ptrans<- function(x, p) if (p==0) log(x) else I(x^p)
        ylab <- deparse(substitute(y))
        xlab <- deparse(substitute(x))
           y <- if (!is.null(data)) get(deparse(substitute(y)), envir=as.environment(data)) else y
-          x <- if (!is.null(data)) get(deparse(substitute(x)), envir=as.environment(data)) else x
+          x <- xo <- if (!is.null(data)) get(deparse(substitute(x)), envir=as.environment(data)) else x
 ################################################################################ 
 ## if need to check for transformation in x    
   if (is.null(fix.power))
@@ -187,11 +187,11 @@ if(whichdist==0)
 ## calibration -----------------------------------------------------------------
   if (calibration)
   {
-    calibration(m0, xvar=x, cent=cent, pch = 15, cex = 0.5, col = gray(0.7), ylab=ylab, xlab=xlab, legend=legend)	
+    calibration(m0, xvar=xo, cent=cent, pch = 15, cex = 0.5, col = gray(0.7), ylab=ylab, xlab=xlab, legend=legend)	
   } 
   else 
   {
-    centiles(m0, xvar=x, cent=cent, pch = 15, cex = 0.5, 
+    centiles(m0, xvar=xo, cent=cent, pch = 15, cex = 0.5, 
              col = gray(0.7), ylab=ylab, xlab=xlab, legend=legend)		
   }
 ################################################################################
@@ -242,22 +242,22 @@ m0$call$mu.start <- NULL # this works OK
  ## saving the fitted functions for mu sigma nu and tau  for prediction --------
 if ("mu"%in%m0$par)
 {
-     muFun <- splinefun(x, fitted(m0,"mu"), method="natural")
+     muFun <- suppressWarnings(splinefun(x, fitted(m0,"mu"), method="natural"))
   m0$muFun <- muFun
 }
 if ("sigma"%in%m0$par)
 {
-  sigmaFun <- splinefun(x, fitted(m0,"sigma"), method="natural")
+  sigmaFun <- suppressWarnings(splinefun(x, fitted(m0,"sigma"), method="natural"))
   m0$sigmaFun <- sigmaFun
 }
 if ("nu"%in%m0$par)
 {
-  nuFun <- splinefun(x, fitted(m0,"nu"), method="natural")
+  nuFun <- suppressWarnings(splinefun(x, fitted(m0,"nu"), method="natural"))
   m0$nuFun <- nuFun
 }
 if ("tau"%in%m0$par)
 {
-  tauFun <- splinefun(x, fitted(m0,"tau"), method="natural")
+  tauFun <- suppressWarnings(splinefun(x, fitted(m0,"tau"), method="natural"))
   m0$tauFun <- tauFun
 }
 ################################################################################
