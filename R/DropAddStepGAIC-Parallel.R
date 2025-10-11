@@ -121,7 +121,7 @@ if (missing(parallel))
     if (trace) 
       cat("trying -", term, "\n")
     nfit <- update(object,  as.formula(paste("~ . -", term)), what = what, evaluate = FALSE, trace=FALSE) 
-    nfit <- try(eval.parent(nfit), silent=TRUE)
+    nfit <- try(eval(nfit, envir=sys.nframe()), silent=TRUE)# try(eval.parent(nfit), silent=TRUE)
     if (any(class(nfit)%in%"try-error"))
     { 
       cat("Model with term ", term, "has failed \n")       
@@ -270,7 +270,7 @@ fn <- function(term)
   if (trace) 
     cat("trying -", term, "\n")
   nfit <- update(object,  as.formula(paste("~ . +", term)), what = what, evaluate = FALSE, trace=FALSE) 
-  nfit <- try(eval.parent(nfit), silent=TRUE)
+  nfit <- try(eval(nfit, envir=sys.nframe()), silent=TRUE)# try(eval.parent(nfit), silent=TRUE)
   if (any(class(nfit)%in%"try-error"))
   { 
     cat("Model with term ", term, "has failed \n")       
@@ -421,7 +421,7 @@ step.results <- function(models, fit, object, usingCp = FALSE) #
        AIC <- sapply(models, "[[", "AIC")
    heading <- c("Stepwise Model Path \nAnalysis of Deviance Table", 
                  "\nInitial", what," Model:", deparse(as.vector(formula(object, what=what))), 
-                 "\nFinal", what, " Model:", deparse(as.vector(formula(fit, what=what))), 
+                 "\nFinal" , what, " Model:", deparse(as.vector(formula(fit, what=what))), 
                  "\n")
        aod <- if (usingCp) 
                data.frame(Step = change, Df = ddf, Deviance = dd, 
@@ -472,6 +472,7 @@ safe_pchisq <- function (q, df, ...)
 ################################################################################
 #  droptermP  starts here 
 ################################################################################
+
     what <- if (!is.null(parameter))  {
 match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
 if (!what %in% object$par) 
@@ -498,7 +499,7 @@ fn <- function(term)
       if (trace) 
         cat("trying -", term, "\n")
       nfit <- update(object,  as.formula(paste("~ . -", term)), what = what, evaluate = FALSE, trace=FALSE) 
-      nfit <- try(eval.parent(nfit), silent=TRUE)
+      nfit <- try(eval(nfit, envir=sys.nframe()), silent=TRUE)# try(eval.parent(nfit), silent=TRUE)
       if (any(class(nfit)%in%"try-error"))
       { 
         cat("Model with term ", term, "has failed \n")       
