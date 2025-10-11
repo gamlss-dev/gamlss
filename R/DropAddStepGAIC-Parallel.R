@@ -629,7 +629,7 @@ fn <- function(term)
     if (trace) 
       cat("trying -", term, "\n")
     nfit <- update(object,  as.formula(paste("~ . +", term)), what = what, evaluate = FALSE, trace=FALSE) 
-    nfit <- try(eval.parent(nfit), silent=TRUE)
+    nfit <- try(eval(nfit, envir=sys.nframe()), silent=TRUE)
     if (any(class(nfit)%in%"try-error"))
     { 
       cat("Model with term ", term, "has failed \n")       
