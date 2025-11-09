@@ -6,12 +6,13 @@
 This function gives the generalised R-squared of Nagelkerke (1991) for a GAMLSS model.
 }
 \usage{
-Rsq(object, type = c("Cox Snell","Cragg Uhler","both"))
+Rsq(object, type = c("Cox Snell","Cragg Uhler","both"),...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{a GAMLSS object}
   \item{type}{which definition of R squared.  Can be the "Cox Snell" or the Nagelkerke, "Cragg Uhler" or "both". }
+  \item{...}{for futher arguments}
 }
 \details{
 The \code{Rsq()} function  uses the definition for R-squared: 

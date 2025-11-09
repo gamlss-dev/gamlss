@@ -302,7 +302,13 @@ AIC.gamlss <- function (object, ..., k = 2, c = FALSE)
       }
 }
 ################################################################################
-GAIC <- function(object,..., k = 2, c = FALSE ) #UseMethod("AIC")
+# GAIC <- function(object, ..., k=2, c=FALSE)
+# {
+#   UseMethod("GAIC")
+# }
+# 
+# GAIC.default <- function(object,..., k = 2, c = FALSE ) #UseMethod("AIC")
+GAIC<- function(object,..., k = 2, c = FALSE )
 {
  if (length(list(...))) 
       {
@@ -561,7 +567,14 @@ if (!any(isgamlss)) stop("some of the objects are not gamlss")
 #-------------------------------------------------------------------------------
 # the generalised R-squared funtion
 # This should work now with Binomial
-Rsq <- function(object, type = c("Cox Snell","Cragg Uhler","both"))
+Rsq <- function(object, type = c("Cox Snell","Cragg Uhler","both"),...)
+{
+  UseMethod("Rsq")
+}
+
+
+
+Rsq.gamlss <- function(object, type = c("Cox Snell","Cragg Uhler","both"),...)
 {
   type <- match.arg(type)
   if (!is.gamlss(object)) stop("this is design for gamlss objects only")
