@@ -8,3 +8,9 @@ distribution of the response variable are modelled using explanatory variables.
 **CRAN package:** <https://CRAN.R-project.org/package=gamlss>  
 **GitHub repository:** <https://github.com/gamlss-dev/gamlss/>  
 **Project website:** <https://www.gamlss.com/>
+
+
+![Monthly](https://cranlogs.r-pkg.org/badges/gamlss)
+
+![Total](https://cranlogs.r-pkg.org/badges/grand-total/gamlss)
+
