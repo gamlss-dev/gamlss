@@ -302,14 +302,14 @@ AIC.gamlss <- function (object, ..., k = 2, c = FALSE)
       }
 }
 ################################################################################
-# GAIC <- function(object, ..., k=2, c=FALSE)
-# {
-#   UseMethod("GAIC")
-# }
-# 
-# GAIC.default <- function(object,..., k = 2, c = FALSE ) #UseMethod("AIC")
-GAIC<- function(object,..., k = 2, c = FALSE )
+GAIC <- function(object, ..., k=2, c=FALSE)
 {
+  UseMethod("GAIC")
+}
+
+GAIC.default <- function(object,..., k = 2, c = FALSE ) #UseMethod("AIC")
+{
+ #GAIC<- function(object,..., k = 2, c = FALSE )
  if (length(list(...))) 
       {
       object <- list(object, ...)
@@ -335,7 +335,15 @@ GAIC<- function(object,..., k = 2, c = FALSE )
       }
 }
 ################################################################################
-GAIC.table <- function(object,..., 
+################################################################################
+# GAIC.table <- function(object,..., 
+#                    k = c(2, 3.84, round(log(length(object$y)),2)),
+#                    text.to.show=NULL) 
+# {
+#   .Defunct(GAIC_table, package="gamlss")
+# }
+################################################################################
+GAIC_table <- function(object,..., 
                        k = c(2, 3.84, round(log(length(object$y)),2)),
                        text.to.show=NULL) 
 {
@@ -371,7 +379,7 @@ row.names(val) <- if (is.null(text.to.show)) as.character(Call[-1])
 #  diff.dev should be a function of the sample size
 ################################################################################
 ################################################################################
-GAIC.scaled <- function(object,..., 
+GAIC_scaled <- function(object,..., 
                       k = 2,      # which column
                       c = FALSE,  # whether corrected GAIC
                    plot = TRUE,   #

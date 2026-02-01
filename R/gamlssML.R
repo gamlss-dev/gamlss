@@ -198,9 +198,9 @@ mcall[[2]] <- if (any(grepl("~", deparse(substitute(formula)))))   mcall[[2]]
         w <- model.extract(mu.frame, weights) # weights for the likelihood
    if(is.null(w))   w <- rep(1, N)
    else if(any(w < 0)) stop("negative weights not allowed") #
-   fam  <- as.gamlss.family(family)
-  fname <- fam$family[[1]] 
-   dfun <- paste("d",fname,sep="")
+    fam  <- as.gamlss.family(family)
+   fname <- fam$family[[1]] 
+    dfun <- paste("d",fname,sep="")
   # pfun <- paste("p",fname,sep="")
     PDF <- eval(parse(text=dfun))
   #	CDF <- eval(parse(text=pfun))
