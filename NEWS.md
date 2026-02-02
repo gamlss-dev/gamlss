@@ -71,3 +71,10 @@ organization: <https://github.com/gamlss-dev/gamlss/>.
    `GAIC_scaled()` and  `GAIC_table()`, respectively, so the name do not class with the 
    generic function  `GAIC()`.
 
+# Version 5.5-2
+
+- function LR_test is modified to allow 'gamlss2' objects.
+
+- the functions GAIC() and Rsq() are now generic function 
+
+
