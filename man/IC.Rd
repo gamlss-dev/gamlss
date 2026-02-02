@@ -96,7 +96,8 @@ m3 <-  gamlss(y~pb(x), sigma.fo=~x, family=NO, data=abdom)
 m4 <-  gamlss(y~pb(x), sigma.fo=~pb(x), family=NO, data=abdom)
 AIC(m1,m2, m3, m4)
 AIC(m1,m2, m3, m4, c=TRUE)
-AIC(m1,m2, m3, m4, k=3)
+GAIC(m1,m2, m3, m4, k=3)
+
 GAIC_table(m1,m2, m3, m4)
 GAIC_scaled(m1,m2, m3, m4)
 \dontrun{

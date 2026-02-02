@@ -82,7 +82,6 @@ import(utils)
 import(grDevices)
 
 
-S3method(GAIC, gamlss)
 S3method(addterm, gamlss)
 S3method(add1, gamlss)
 S3method(drop1, gamlss)
@@ -119,6 +118,7 @@ S3method(summary, gamlssML)
 S3method(predict, gamlssML)
 
 S3method(Rsq, gamlss)
+S3method(GAIC, gamlss)
 
 # smoothers 
 # --------------------------
