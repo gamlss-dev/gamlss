@@ -48,7 +48,7 @@ export(gamlss, gamlss.control, glim.control, is.gamlss,
        numeric.deriv, getQuantile, loglogplot, ECDF, coefAll,
        .hat.WX, .binom, .counts, .gamlss.bi.list, .gamlss.multin.list, 
         .gamlss.sm.list, .real0to1, .realAll, .realline,
-        .realplus )
+        .realplus, GAIC)
 
 
 # datasets
@@ -81,6 +81,8 @@ import(parallel)
 import(utils)
 import(grDevices)
 
+
+S3method(GAIC, gamlss)
 S3method(addterm, gamlss)
 S3method(add1, gamlss)
 S3method(drop1, gamlss)
