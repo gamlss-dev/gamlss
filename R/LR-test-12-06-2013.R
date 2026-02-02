@@ -3,14 +3,20 @@
 #even thought no check is done  whether the models are nested
 LR.test <- function(null, alternative, print=TRUE)
   {
-  if (!("gamlss"%in%class(null))) stop("the null model is not a gamlss model") # ammended 12-06-2013
-  if (!("gamlss"%in%class(alternative))) stop("the alternative model is not a gamlss model")
+if (!missing(null)&&!(is.gamlss(null)|is(null, "gamlss2"))) 
+    stop("the null model is not a gamlss model")
+#  if (!("gamlss"%in%class(null))) stop("the null model is not a gamlss model") # ammended 12-06-2013
+  if (!missing(alternative)&&!(is.gamlss(alternative)|is(alternative, "gamlss2"))) 
+  stop("the alternative model is not a gamlss model")
+#if (!missing(null)&&!(is.gamlss(null)|is(null, "gamlss2"))) 
+#      stop("the null model is not a gamlss model")
+#  if (!("gamlss"%in%class(alternative))) stop("the alternative model is not a gamlss model")
      D0 <- deviance(null)
      D1 <- deviance(alternative)
   if (D1>D0) stop("The null model has smaller deviance than the alternative \n",
                   "The models should be nested" )
-    df0 <- null$df.fit
-    df1 <- alternative$df.fit
+   df0 <-  if (is.gamlss(null)) null$df.fit else null$df  
+   df1 <-  if (is.gamlss(null)) alternative$df.fit  else alternative$df
     chi <- D0-D1
      df <- df1-df0
      if (df<0) stop("The difference in df's is negative. \n",
