@@ -472,7 +472,6 @@ safe_pchisq <- function (q, df, ...)
 ################################################################################
 #  droptermP  starts here 
 ################################################################################
-
     what <- if (!is.null(parameter))  {
 match.arg(parameter, choices=c("mu", "sigma", "nu", "tau"))} else  match.arg(what)
 if (!what %in% object$par) 
@@ -739,7 +738,7 @@ if (what=="mu")
 else
 {
   object[[paste(what,"formula",sep=".")]] <- Terms
-  object[[paste(what,"formula",sep=".")]][[2]]<-NULL
+  object[[paste(what,"formula",sep=".")]][[2]] <- NULL
   if (paste(what, "formula", sep=".")%in%names(object$call)) 
     object$call[[paste(what,"formula",sep=".")]] <- formula(Terms)[-2]
   else ##this is when the sigma formula is not defined
