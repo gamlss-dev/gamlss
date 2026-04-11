@@ -41,7 +41,7 @@ TGD(object, ...)
 gamlssCV(formula = NULL, sigma.formula = ~1, nu.formula = ~1, 
          tau.formula = ~1, data = NULL, family = NO, 
          control = gamlss.control(trace = FALSE), 
-         K.fold = 10, set.seed = 123, rand = NULL, 
+         K.fold = 10, rand = NULL, 
          parallel = c("no", "multicore", "snow"), 
          ncpus = 1L, cl = NULL, ...)
 
@@ -98,9 +98,7 @@ stepTGDAll.A(object, scope = NULL, newdata = NULL,
   \item{direction}{The mode of stepwise search, can be one of \code{both}, \code{backward}, or \code{forward}, with a default of \code{both}. If the scope argument is missing the default for direction is backward}
   \item{keep}{see \code{stepGAIC()} for explanation}
   \item{steps}{the maximum number of steps to be considered. The default is 1000.}
-  
   \item{K.fold}{the number of subsets of the data used} 
-   \item{set.seed}{the seed to be used in creating \code{rand}}
    \item{parallel}{The type of parallel operation to be used (if any). If missing, the default is "no".}
   \item{ncpus}{integer: number of processes to be used in parallel operation: typically one would chose this to the number of available CPUs.}
   \item{cl}{An optional parallel or snow cluster for use if \code{parallel = "snow"}. If not supplied, a cluster on the local machine is created for the duration of the call.

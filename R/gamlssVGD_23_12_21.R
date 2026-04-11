@@ -412,7 +412,6 @@ gamlssCV <- function(formula = NULL,
                       family = NO,  
                      control = gamlss.control(trace=FALSE),
                       K.fold = 10,
-                    set.seed = 123,
                         rand = NULL,
                     parallel = c("no", "multicore", "snow"), 
                        ncpus = 1L, 
@@ -440,7 +439,6 @@ sys_call <- sys.call()
 if (is.null(data))   stop("data should be set here")
        N <- dim(data)[1]
 # RNAMES <- rownames(data)
-set.seed <- set.seed
     rand <- if (is.null(rand)) sample(K.fold , N, replace=TRUE)
             else rand
 if (length(rand)!=N) stop("the length of the rand should be equal to data")
