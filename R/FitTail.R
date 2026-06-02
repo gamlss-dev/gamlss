@@ -419,35 +419,44 @@ loglogplot0 <- function(x,  ...)
 # Mikis 9-1-2010 added weights
 ################################################################################
 ################################################################################
+################################################################################
+################################################################################
 ECDF <- function (y, weights=NULL)
 {
+if (anyNA(y)) 
+  {
+    y <-  y[!is.na(y)]
+    warning("NA's were removed")
+  }
+    N <- length(y)  
+if (N < 1)  stop("At least 1 obs is needed or to calculate an ECDF")  
 if (is.null(weights))
   {
-  ysort <- unique(sort(y))
-      n <- length(y)
-   ecdf <- cumsum(tabulate(match(y, ysort)))/(n + 1)
-    fun <- stepfun(ysort, c(0, ecdf))
-  class(fun) <- c("ecdf", "stepfun")
+     ysort <- unique(sort(y))
+      ecdf <- cumsum(tabulate(match(y, ysort)))/(N + 1)
+       fun <- stepfun(ysort, c(0, ecdf))
+class(fun) <- c("ecdf", "stepfun")
+attr(fun, "call") = sys.call()
   return(fun)
   } else
   {
-    if (length(weights)!=length(y)) stop("y and weights have different length")
-    i <- is.na(weights) | weights == 0
-    if (any(i))
-    {
-      y <- y[!i]
-weights <- weights[!i]
-    }
-  ysort <- unique(sort(y))
-      n <- length(y)
-weights <- tapply(weights, y, sum)
-   cumu <- cumsum(weights)
-   ecdf <- (cumu)/(cumu[length(cumu)]+1)
-    fun <- stepfun(ysort, c(0, ecdf))
-  class(fun) <- c("ecdf", "stepfun")
+weights <- weights[!is.na(y)]
+if (is.unsorted(y)) 
+  {
+s_order <-  order(y)
+      y <-  y[s_order]
+weights <-  weights[s_order]
+}
+      p <-  cumsum(weights)
+      p <- p/p[N]
+    fun <-  approxfun(y, p, yleft = 0, yright = 1, ties = "ordered", 
+                method = "constant")
+class(fun) = c("ecdf", "stepfun")
+attr(fun, "call") = sys.call()
     return(fun)
   }
 }
+
 ################################################################################
 ################################################################################
 ################################################################################
