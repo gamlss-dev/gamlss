@@ -446,17 +446,19 @@ if (is.unsorted(y))
 s_order <-  order(y)
       y <-  y[s_order]
 weights <-  weights[s_order]
-}
+}  # based on the function  weighted_ecdf of ggdidt
       p <-  cumsum(weights)
       p <- p/p[N]
     fun <-  approxfun(y, p, yleft = 0, yright = 1, ties = "ordered", 
-                method = "constant")
+                method = "constant") 
+# note that the saved weighted ecdf is not a step function like the unweighted 
+# one. It is an approxfun()     
+assign("weights", weights, envir = environment(fun)
 class(fun) = c("ecdf", "stepfun")
 attr(fun, "call") = sys.call()
     return(fun)
   }
 }
-
 ################################################################################
 ################################################################################
 ################################################################################
@@ -498,7 +500,7 @@ if (any(i))
 ################################################################################
 ################################################################################
 # This function allow weighted quantiles
-# It is bsed on the function wtd.quantile() of package Hmisc
+# It is based on the function wtd.quantile() of package Hmisc
 quantile_weights <- function (y, weights = NULL, probs = c(0, 0.25, 0.5, 0.75, 1))
 {
   if (!length(weights))
@@ -531,6 +533,9 @@ quantile_weights <- function (y, weights = NULL, probs = c(0, 0.25, 0.5, 0.75, 1
   names(quantiles) <- nams
   return(quantiles)
 }
+# --------------------------------------------------------------
+# this function is not exported 
+#---------------------------------------------------------------
 ################################################################################
 ################################################################################
 ################################################################################
