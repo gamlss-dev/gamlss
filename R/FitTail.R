@@ -453,7 +453,7 @@ weights <-  weights[s_order]
                 method = "constant") 
 # note that the saved weighted ecdf is not a step function like the unweighted 
 # one. It is an approxfun()     
-assign("weights", weights, envir = environment(fun)
+assign("weights", weights, envir = environment(fun))
 class(fun) = c("ecdf", "stepfun")
 attr(fun, "call") = sys.call()
     return(fun)
