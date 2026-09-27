@@ -6,29 +6,31 @@ editor_options:
 
 # Introduction
 
-gamlss is a R package implementing the Generalised Additive Models for
-The package `gamlss` is an implementation of Rigby and Stasinopoulos
+`gamlss` is a R package implementing the Generalised Additive Models for Location Scale ans Shape (GAMLSS). 
+The package `gamlss` is basesd on  ideas developed in Rigby and Stasinopoulos
 (2005), Appl. Statist., 54, pp. 507-554.
 
-There are three book available for information;
+There are also three book available;
 
-1)  "Flexible Regression and Smoothing: Using GAMLSS in R" explaining
-    how the models can be used in R.
+1)  "Flexible Regression and Smoothing: Using GAMLSS in R"; explaining
+    how the GAMLSS models in R can be used in R.
 
 2)  "Distributions for modeling location, scale and shape: Using GAMLSS
-    in R" explaining the explicit and generated distributions available
-    in the package gamlss.dist
+    in R"; explaining the explicit and generated distributions available
+    in the package gamlss.dist.
 
 3)  "Generized Additive Models for Location Scale and Shape: A
     distributional regression approach with applications" explaining the
     different method for fitting GAMLSS i.e. penalised Likelihood,
     Bayesian and Boosting.
 
-More more information about books and papers related to GAMLSS can be
+More information about books and papers related to GAMLSS can be
 found in <https://www.gamlss.com/>.
 
 The GitHub repository is now hosted under the new `gamlss-dev`
 organization: <https://github.com/gamlss-dev/gamlss/>.
+
+# Version 5.4-5
 
 # Version 5.4-23
 

@@ -421,7 +421,8 @@ loglogplot0 <- function(x,  ...)
 ################################################################################
 ################################################################################
 ################################################################################
-ECDF <- function (y, weights=NULL)
+# an older version whete there unweighted is different  
+ECDFold <- function (y, weights=NULL)
 {
 if (anyNA(y)) 
   {
@@ -448,16 +449,49 @@ s_order <-  order(y)
 weights <-  weights[s_order]
 }  # based on the function  weighted_ecdf of ggdidt
       p <-  cumsum(weights)
-      p <- p/p[N]
+      p <- p/(p[N]+1)
     fun <-  approxfun(y, p, yleft = 0, yright = 1, ties = "ordered", 
                 method = "constant") 
 # note that the saved weighted ecdf is not a step function like the unweighted 
 # one. It is an approxfun()     
+# funq <- stepfun(y, c(0,p), ties = "ordered")   
 assign("weights", weights, envir = environment(fun))
 class(fun) = c("ecdf", "stepfun")
 attr(fun, "call") = sys.call()
     return(fun)
   }
+}
+################################################################################
+################################################################################
+################################################################################
+################################################################################
+ECDF <- function (y, weights=NULL)
+{
+  if (anyNA(y)) 
+  {
+    y <-  y[!is.na(y)]
+    warning("NA's were removed")
+  }
+  N <- length(y)  
+  if (N < 1)  stop("At least 1 obs is needed or to calculate an ECDF")  
+  weights <- if (is.null(weights))  rep(1, N) else weights  
+  weights <- weights[!is.na(y)]
+  if (is.unsorted(y)) 
+  {
+    s_order <- order(y)
+    y <- y[s_order]
+    weights <- weights[s_order]
+  }  # based on the function  weighted_ecdf of ggdist
+  p <- cumsum(weights)
+  p <- p/(p[N]+1)
+  fun <- approxfun(y, p, yleft = 0, yright = 1, ties = "ordered", 
+                   method = "constant") 
+  # one. It is an approxfun()     
+  assign("weights", weights, envir = environment(fun))
+  assign("s_order", s_order, envir = environment(fun))
+  class(fun) = c("ecdf", "stepfun")
+  attr(fun, "call") = sys.call()
+  return(fun)
 }
 ################################################################################
 ################################################################################

@@ -10,7 +10,7 @@ distribution of the response variable are modelled using explanatory variables.
 **Project website:** <https://www.gamlss.com/>
 
 
-![Monthly](https://cranlogs.r-pkg.org/badges/gamlss)
+![MONTHLY DOWNLOADS](https://cranlogs.r-pkg.org/badges/gamlss)
 
-![Total](https://cranlogs.r-pkg.org/badges/grand-total/gamlss)
+![TOTAL DOWNLOADS](https://cranlogs.r-pkg.org/badges/grand-total/gamlss)
 
