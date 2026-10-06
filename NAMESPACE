@@ -117,7 +117,9 @@ S3method(vcov, gamlssML)
 S3method(summary, gamlssML)
 S3method(predict, gamlssML)
 
+S3method(Rsq, default)
 S3method(Rsq, gamlss)
+S3method(GAIC, default)
 S3method(GAIC, gamlss)
 
 # smoothers 
