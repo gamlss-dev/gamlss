@@ -140,7 +140,7 @@ fun <- function(dist,...)
             if (.Platform$OS.type == "windows")
             {
               cl <- parallel::makePSOCKcluster(rep("localhost", ncpus))
-              clusterEvalQ(cl,pacman::p_load(gamlss)) 
+              clusterEvalQ(cl,library(gamlss)) 
               exp.data =  paste0(object$call$data)
               clusterExport(cl, c(ls(envir = .GlobalEnv), exp.data))
             } else  cl <- parallel::makeForkCluster(ncpus)

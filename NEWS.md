@@ -32,11 +32,12 @@ organization: <https://github.com/gamlss-dev/gamlss/>.
 
 # Version 5.4-5
 
--  the name of the file "fitTail.R" has changed to "logloSurv.R"
+- the  dependency of the function `chooseDist()` on the package `pacman` was removed  (thanks to 
+Henrik Bengtsson for report it)
+
+-  the name of the file "fitTail.R" has changed to "loglogSurv.R"
 
 - In the function `pbz()` we have added an extra  check for the option `control` which check whether the control is a true `pbz.control` (Tim Cole's suggestion). 
-
-
 
 
 
