@@ -30,7 +30,7 @@ found in <https://www.gamlss.com/>.
 The GitHub repository is now hosted under the new `gamlss-dev`
 organization: <https://github.com/gamlss-dev/gamlss/>.
 
-# Version 5.4-5
+# Version 5.5-6
 
 - the  dependency of the function `chooseDist()` on the package `pacman` was removed  (thanks to 
 Henrik Bengtsson for report it)
